@@ -10,4 +10,4 @@ var TopicSchema = new Schema({
     keypoints: [{ type : mongoose.Schema.ObjectId, ref : 'Keypoint' }]
 });
 
-module.exports = mongoose.model('Topic', TopicSchema);
+module.exports = mongoose.model('topic', TopicSchema);

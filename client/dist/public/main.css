@@ -299,12 +299,12 @@ p,
  * Variables should be defined here, doing so should help keep
  * the styling uniform across Inventive
  */
-.kp {
+.topic {
   background: #f6f9fc;
   box-sizing: border-box;
   height: 100%;
   padding: 25px 0;
 }
-.kp .ui-container {
+.topic .ui-container {
   width: 85%;
 }

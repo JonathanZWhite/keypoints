@@ -2,6 +2,6 @@
     'use strict';
 
     angular.module('app.pages', [
-        'app.pages.keypoints'
+        'app.pages.topic'
     ]);
 })();

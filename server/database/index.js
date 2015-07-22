@@ -1,4 +1,4 @@
-var config = 	require('../config/secrets').config();
+var config = 	require('../config/secrets');
 var mongoose = 	require('mongoose');
 
 (function(module) {
@@ -16,6 +16,11 @@ var mongoose = 	require('mongoose');
 				console.error('Could not establish connection with MongoDB' + err);
 			}
 
+			// model initializations
+			require('../models/keypoint');
+			require('../models/topic');
+			require('../models/user');
+			// services
 			require('./main')(module);
 		});
 	}

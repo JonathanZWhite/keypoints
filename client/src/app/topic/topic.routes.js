@@ -3,22 +3,22 @@
 
     function config($stateProvider) {
         $stateProvider
-            .state('keypoints', {
-                url: '/keypoints/:url',
+            .state('topic', {
+                url: '/topic/:url',
                 views: {
                     'content@': {
-                        templateUrl: 'keypoints/keypoints.tpl.html',
+                        templateUrl: 'topic/topic.tpl.html',
                         controllerAs: 'vm',
-                        controller: 'KeypointsController'
+                        controller: 'TopicController'
                     }
                 },
                 data: {
-                    pageTitle: 'Keypints'
+                    pageTitle: 'Topic'
                 }
             });
     }
 
-    angular.module('app.pages.keypoints')
+    angular.module('app.pages.topic')
         .config(['$stateProvider', config]);
 
 }());

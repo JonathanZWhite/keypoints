@@ -1,5 +1,5 @@
 var bodyParser =        require('body-parser');
-var config =            require('../config/secrets').config();
+var config =            require('../config/secrets');
 var cookieParser =      require('cookie-parser');
 var express =           require('express');
 var path =              require('path');

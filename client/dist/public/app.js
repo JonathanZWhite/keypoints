@@ -12,7 +12,7 @@
     'use strict';
 
     angular.module('app.pages', [
-        'app.pages.keypoints'
+        'app.pages.topic'
     ]);
 })();
 
@@ -30,7 +30,7 @@
 })();
 
 angular
-    .module('app.pages.keypoints', []);
+    .module('app.pages.topic', []);
 
 (function() {
     'use strict';
@@ -74,18 +74,28 @@ angular
 
 }());
 
-angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("keypoints/keypoints.tpl.html","<section class=kp><div class=ui-container><textarea class=\"ui-textarea ui-textarea--medium ui-textarea--light\"></textarea> <button class=\"ui-btn ui-btn--medium\">Add keypoint</button></div></section>");}]);
+angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><textarea class=\"ui-textarea ui-textarea--medium ui-textarea--light\" ng-model=vm.keypoint></textarea> <button class=\"ui-btn ui-btn--medium\" ng-click=vm.addKeypoint()>Add keypoint</button></div></section>");}]);
 (function() {
     'use strict';
 
-    KeypointsController.$inject = [];
-    function KeypointsController() {
+    TopicController.$inject = ['TopicStore'];
+    function TopicController(TopicStore) {
+        var vm = this;
+        // model
+        vm.keypoint = '';
+        // functions
+        vm.addKeypoint = addKeypoint;
 
+        // TODO: create new topic if does not exist
+
+        function addKeypoint() {
+
+        }
     }
 
     angular
-        .module('app.pages.keypoints')
-        .controller('KeypointsController', KeypointsController);
+        .module('app.pages.topic')
+        .controller('TopicController', TopicController);
 })();
 
 (function() {
@@ -93,22 +103,88 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
 
     function config($stateProvider) {
         $stateProvider
-            .state('keypoints', {
-                url: '/keypoints/:url',
+            .state('topic', {
+                url: '/topic/:url',
                 views: {
                     'content@': {
-                        templateUrl: 'keypoints/keypoints.tpl.html',
+                        templateUrl: 'topic/topic.tpl.html',
                         controllerAs: 'vm',
-                        controller: 'KeypointsController'
+                        controller: 'TopicController'
                     }
                 },
                 data: {
-                    pageTitle: 'Keypints'
+                    pageTitle: 'Topic'
                 }
             });
     }
 
-    angular.module('app.pages.keypoints')
+    angular.module('app.pages.topic')
         .config(['$stateProvider', config]);
 
 }());
+
+(function() {
+	'use strict';
+
+	TopicStore.$inject = ['$http'];
+	function TopicStore($http) {
+		var base = 'api/topic/';
+
+		var Topic = {
+			// models
+			topic: {
+				model: {}
+			},
+
+			model: {
+				newTopic: {
+					
+				}
+			}
+		};
+
+		// activation
+		init();
+
+		return Topic;
+
+		function init() {
+			console.log('Topic store initialized');
+		}
+	}
+
+	angular
+        .module('app.pages.topic')
+        .factory('TopicStore', TopicStore);
+})();
+
+(function() {
+	'use strict';
+
+	TopicService.$inject = ['$http'];
+
+	function TopicService($http) {
+		var base = 'api/topic/';
+
+		var Topic = {
+			create: create
+		};
+
+		function create(title, url) {
+			return $http({
+				url: base + 'create',
+				method: 'POST',
+				data: {
+					title: title,
+					url: url
+				}
+			});
+		}
+
+		return Topic;
+	}
+
+	angular
+	    .module('app.services')
+	    .factory('TopicService', TopicService);
+})();

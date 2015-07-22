@@ -2,7 +2,7 @@
 'use strict';
 
 var express = 		require('express');
-var config = 		require('./config/secrets').config();
+var config = 		require('./config/secrets');
 var middleware = 	require('./middleware');
 var routes = 		require('./routes');
 var database = 		require('./database');

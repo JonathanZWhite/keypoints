@@ -1,5 +1,6 @@
 var keypointController = require('../controllers/keypoint');
+var topicController = require('../controllers/topic');
 
 module.exports = function(app, router) {
-    router.get('/api/keypoint/new', keypointController.getNew);
+    router.post('/api/topic/create', topicController.create);
 };

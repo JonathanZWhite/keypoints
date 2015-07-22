@@ -10,4 +10,4 @@ var UserSchema = new Schema({
     topics: [{ type : mongoose.Schema.ObjectId, ref : 'Topic' }]
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('user', UserSchema);

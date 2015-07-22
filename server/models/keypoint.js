@@ -10,4 +10,4 @@ var KeypointSchema = new Schema({
     image: String
 });
 
-module.exports = mongoose.model('Keypoint', KeypointSchema);
+module.exports = mongoose.model('keypoint', KeypointSchema);
