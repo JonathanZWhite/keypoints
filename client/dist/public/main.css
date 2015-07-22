@@ -1,0 +1,302 @@
+/*
+ * MAIN
+ *
+ * Import all your less files here
+ */
+/*
+ * GLOBALS
+ *
+ * All your global variables
+ */
+* {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0) !important;
+  -webkit-focus-ring-color: rgba(255, 255, 255, 0) !important;
+  font-weight: 400;
+  outline: 0;
+}
+.ng-cloak {
+  display: none !important;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+html,
+body,
+form,
+fieldset,
+table,
+tr,
+td,
+input,
+select {
+  font-family: 'Lato', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  width: 100%;
+}
+button {
+  cursor: pointer;
+}
+.ui-textarea {
+  border: none;
+  padding: 12.5px;
+  resize: none;
+  width: 100%;
+}
+.ui-textarea--light {
+  border: 1px solid #e9edf2;
+}
+.u-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.u-cursor-pointer {
+  cursor: pointer;
+}
+.u-clearfix {
+  clear: both;
+}
+.u-float-r {
+  float: right;
+}
+.u-float-l {
+  float: left;
+}
+.u-text-left {
+  text-align: left;
+}
+.u-text-center {
+  text-align: center;
+}
+.ui-container {
+  position: relative;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.ui-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.ui-column {
+  width: 100%;
+  float: left;
+  box-sizing: border-box;
+}
+/* For devices larger than 400px */
+@media (min-width: 400px) {
+  .ui-container {
+    width: 85%;
+    padding: 0;
+  }
+}
+/* For devices larger than 550px */
+@media (min-width: 550px) {
+  .ui-container {
+    width: 80%;
+  }
+  .ui-column {
+    margin-left: 4%;
+  }
+  .ui-column:first-child {
+    margin-left: 0;
+  }
+  .ui-column--one {
+    width: 4.66666666667%;
+  }
+  .ui-column--two {
+    width: 13.3333333333%;
+  }
+  .ui-column--three {
+    width: 22%;
+  }
+  .ui-column--four {
+    width: 30.6666666667%;
+  }
+  .ui-column--five {
+    width: 39.3333333333%;
+  }
+  .ui-column--six {
+    width: 48%;
+  }
+  .ui-column--seven {
+    width: 56.6666666667%;
+  }
+  .ui-column--eight {
+    width: 65.3333333333%;
+  }
+  .ui-column--nine {
+    width: 74.0%;
+  }
+  .ui-column--ten {
+    width: 82.6666666667%;
+  }
+  .ui-column--eleven {
+    width: 91.3333333333%;
+  }
+  .ui-column--twelve {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+html,
+body,
+body div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.box-sizing {
+  box-sizing: border-box;
+}
+.content-box {
+  box-sizing: content-box;
+}
+/*
+ * TYPOGRAPHY
+ *
+ * Define all your typography classes here, doing so should help you keep
+ * your typography uniform across your project
+ */
+.font-main {
+  font-family: 'Lato', sans-serif;
+}
+.font-alt {
+  font-family: 'Quando', serif;
+}
+.caption {
+  font-size: 14px;
+  line-height: 1.333;
+  letter-spacing: 0.211px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: 0.158px;
+}
+p {
+  letter-space: 0.422px;
+  line-height: 25px;
+}
+h1 {
+  font-size: 45.16px;
+}
+h2 {
+  font-size: 28.68px;
+}
+h3 {
+  font-size: 25.19px;
+}
+h4 {
+  font-size: 22.13px;
+}
+h5 {
+  font-size: 19.44px;
+  line-height: 35px;
+}
+p {
+  font-size: 16px;
+}
+.caption {
+  font-size: 14px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+.caption {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.font-smoothing {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/*
+ * VARIABLES
+ *
+ * Variables should be defined here, doing so should help keep
+ * the styling uniform across Inventive
+ */
+.kp {
+  background: #f6f9fc;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 25px 0;
+}
+.kp .ui-container {
+  width: 85%;
+}

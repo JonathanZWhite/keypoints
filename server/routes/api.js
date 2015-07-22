@@ -1,13 +1,4 @@
-var authController =        require('../controllers/auth');
-var fileBrowserController = require('../controllers/code-editor');
-var githubController =      require('../controllers/github');
-var linkedinController =    require('../controllers/linkedin');
-var multiparty =            require('connect-multiparty');
-var multipartyMiddleware =  multiparty();
-var themeController =       require('../controllers/theme');
-var userController =        require('../controllers/user');
 var path =                  require('path');
-
 
 module.exports = function(app, router) {
     // CORS

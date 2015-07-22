@@ -7,6 +7,6 @@
     }
 
     angular
-        .module('app.keypoints')
+        .module('app.pages.keypoints')
         .controller('KeypointsController', KeypointsController);
 })();

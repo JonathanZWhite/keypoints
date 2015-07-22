@@ -4,7 +4,6 @@ var gulp = 					require('gulp');
 var LessPluginCleanCSS = 	require('less-plugin-clean-css');
 var merge = 				require('merge-stream');
 var path = 					require('path');
-var pngquant = 				require('imagemin-pngquant');
 var spawn = 				require('child_process').spawn;
 var del = 					require('del');
 var config = 				require('./gulp.config')();
@@ -69,20 +68,6 @@ gulp.task('copy', ['clean-copy'], function() {
 	return merge(index, themeScripts);
 });
 
-gulp.task('config', function() {
-	var config = require('./client/src/config')[env];
-
-	return gulp
-		.src('config.json')
-		.pipe($.ngConstant({
-			constants: config,
-			name: 'app.core',
-			stream: true,
-			deps: false
-		}))
-		.pipe(gulp.dest('client/tmp/'));
-});
-
 gulp.task('bower', function() {
 	return $.bower()
 		.pipe(gulp.dest('lib/'));
@@ -122,13 +107,6 @@ gulp.task('images',['clean-images'], function() {
 		.pipe(gulp.dest('client/dist/assets/images/platform'));
 
 	return merge(backgrounds, platform);
-
-	// if env === production
-	// .pipe(imagemin({
-	// 	progressive: true,
-	// 	svgoPlugins: [{ removeViewBox: false }],
-	// 	use: [pngquant()]
-	// }))
 });
 
 gulp.task('clean-templatecache', function(done) {
@@ -165,14 +143,6 @@ gulp.task('less', function() {
 		}))
 		.pipe(gulp.dest('client/dist/public'));
 
-	var templates = gulp
-		.src('client/src/less/templates.less')
-		.pipe($.less())
-		.pipe($.autoprefixer({
-			browsers: ['last 2 versions']
-		}))
-		.pipe(gulp.dest('client/dist/public'));
-
 	var reset = gulp
 		.src('client/src/less/reset.less')
 		.pipe($.less())
@@ -181,21 +151,8 @@ gulp.task('less', function() {
 		}))
 		.pipe(gulp.dest('client/dist/public'));
 
-	return merge(main, templates, reset);
+	return merge(main, reset);
 });
-
-gulp.task('less-server', function() {
-	log('Compiling less on server...');
-
-	gulp
-		.src(['server/views/ten/assets/css/style.less'])
-		.pipe($.less())
-		.pipe($.autoprefixer({
-			browsers: ['last 2 versions']
-		}))
-		.pipe(gulp.dest('server/views/ten/assets/css'));
-});
-
 
 gulp.task('serve', function() {
 	$.nodemon({
@@ -310,6 +267,6 @@ function clean(path, done) {
     del(path, done);
 }
 
-gulp.task('reload', ['bower', 'config', 'copy', 'images', 'concat', 'less', 'less-server']);
-gulp.task('all', ['bower', 'config', 'copy', 'images', 'concat', 'less', 'less-server', 'serve']);
+gulp.task('reload', ['bower', 'copy', 'images', 'concat', 'less', 'less-server']);
+gulp.task('all', ['bower', 'copy', 'images', 'concat', 'less', 'serve']);
 gulp.task('default', ['build']);

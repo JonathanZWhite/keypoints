@@ -4,6 +4,7 @@
     function config($stateProvider) {
         $stateProvider
             .state('keypoints', {
+                url: '/keypoints/:url',
                 views: {
                     'content@': {
                         templateUrl: 'keypoints/keypoints.tpl.html',
@@ -14,10 +15,10 @@
                 data: {
                     pageTitle: 'Keypints'
                 }
-            })
+            });
     }
 
-    angular.module('app.keypoints')
+    angular.module('app.pages.keypoints')
         .config(['$stateProvider', config]);
 
 }());
