@@ -5,7 +5,12 @@ var mongoose =  require('mongoose');
 var Schema =    mongoose.Schema;
 
 var TopicSchema = new Schema({
-    url: String,
+    url: {
+        type: String,
+        required: true,
+        unique: true,
+        dropDups: true
+    },
     title: String,
     keypoints: [{ type : mongoose.Schema.ObjectId, ref : 'Keypoint' }]
 });
