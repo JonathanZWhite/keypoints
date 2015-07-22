@@ -1,18 +1,22 @@
 (function() {
     'use strict';
 
-    TopicController.$inject = ['TopicStore'];
-    function TopicController(TopicStore) {
+    TopicController.$inject = ['$stateParams', 'TopicService'];
+    function TopicController($stateParams, TopicService) {
         var vm = this;
         // model
         vm.keypoint = '';
         // functions
-        vm.addKeypoint = addKeypoint;
 
         // TODO: create new topic if does not exist
+        init();
 
-        function addKeypoint() {
+        function init() {
+            _createTopic();
+        }
 
+        function _createTopic() {
+            TopicService.create($stateParams.url);
         }
     }
 

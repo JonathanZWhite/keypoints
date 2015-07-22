@@ -10,14 +10,11 @@
 			create: create
 		};
 
-		function create(title, url) {
+		function create(url) {
 			return $http({
 				url: base + 'create',
 				method: 'POST',
-				data: {
-					title: title,
-					url: url
-				}
+				data: { url: url }
 			});
 		}
 

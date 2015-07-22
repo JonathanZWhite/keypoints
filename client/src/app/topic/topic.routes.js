@@ -4,7 +4,7 @@
     function config($stateProvider) {
         $stateProvider
             .state('topic', {
-                url: '/topic/:url',
+                url: '/topic?url',
                 views: {
                     'content@': {
                         templateUrl: 'topic/topic.tpl.html',

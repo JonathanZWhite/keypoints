@@ -4,7 +4,8 @@
         .module('app', [
             'app.core',
             'app.components',
-            'app.pages'
+            'app.pages',
+            'app.services'
         ]);
 })();
 
@@ -78,18 +79,22 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
 (function() {
     'use strict';
 
-    TopicController.$inject = ['TopicStore'];
-    function TopicController(TopicStore) {
+    TopicController.$inject = ['$stateParams', 'TopicService'];
+    function TopicController($stateParams, TopicService) {
         var vm = this;
         // model
         vm.keypoint = '';
         // functions
-        vm.addKeypoint = addKeypoint;
 
         // TODO: create new topic if does not exist
+        init();
 
-        function addKeypoint() {
+        function init() {
+            _createTopic();
+        }
 
+        function _createTopic() {
+            TopicService.create($stateParams.url);
         }
     }
 
@@ -104,7 +109,7 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
     function config($stateProvider) {
         $stateProvider
             .state('topic', {
-                url: '/topic/:url',
+                url: '/topic?url',
                 views: {
                     'content@': {
                         templateUrl: 'topic/topic.tpl.html',
@@ -170,14 +175,11 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
 			create: create
 		};
 
-		function create(title, url) {
+		function create(url) {
 			return $http({
 				url: base + 'create',
 				method: 'POST',
-				data: {
-					title: title,
-					url: url
-				}
+				data: { url: url }
 			});
 		}
 
