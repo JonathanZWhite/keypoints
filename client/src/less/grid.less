@@ -1,0 +1,77 @@
+.ui-container {
+    position: relative;
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.ui-row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.ui-column {
+    width: 100%;
+    float: left;
+    box-sizing: border-box;
+}
+
+/* For devices larger than 400px */
+@media (min-width: 400px) {
+    .ui-container {
+        width: 85%;
+        padding: 0;
+    }
+}
+
+/* For devices larger than 550px */
+@media (min-width: 550px) {
+    .ui-container {
+        width: 80%;
+    }
+    .ui-column {
+        margin-left: 4%;
+    }
+    .ui-column:first-child {
+        margin-left: 0;
+    }
+    .ui-column--one {
+        width: 4.66666666667%;
+    }
+    .ui-column--two {
+        width: 13.3333333333%;
+    }
+    .ui-column--three {
+        width: 22%;
+    }
+    .ui-column--four {
+        width: 30.6666666667%;
+    }
+    .ui-column--five {
+        width: 39.3333333333%;
+    }
+    .ui-column--six {
+        width: 48%;
+    }
+    .ui-column--seven {
+        width: 56.6666666667%;
+    }
+    .ui-column--eight {
+        width: 65.3333333333%;
+    }
+    .ui-column--nine {
+        width: 74.0%;
+    }
+    .ui-column--ten {
+        width: 82.6666666667%;
+    }
+    .ui-column--eleven {
+        width: 91.3333333333%;
+    }
+    .ui-column--twelve {
+        width: 100%;
+        margin-left: 0;
+    }
+}

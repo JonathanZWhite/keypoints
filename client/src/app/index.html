@@ -1,0 +1,28 @@
+<!DOCTYPE html lang="en">
+<html lang="en" ng-app="app" ng-controller="AppController" class="ng-cloak" ng-cloak>
+    <head>
+        <title ng-bind="pageTitle"></title>
+        <base href="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- font awesome from BootstrapCDN -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <!-- font from google -->
+        <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+        <!-- stylesheet -->
+        <link href='public/main.css' rel='stylesheet' type='text/css'>
+        <link href='public/reset.css' rel='stylesheet' type='text/css'>
+        <link href='lib/angular-ui-tree/dist/angular-ui-tree.min.css' rel='stylesheet' type='text/css'>
+        <!-- Bower dependencies -->
+        <script type="text/javascript" src="lib/angular/angular.js"></script>
+        <script type="text/javascript" src="lib/angular-animate/angular-animate.min.js"></script>
+        <script type="text/javascript" src="lib/angular-cookies/angular-cookies.min.js"></script>
+        <script type="text/javascript" src="lib/angular-resource/angular-resource.min.js"></script>
+        <script type="text/javascript" src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+        <script type="text/javascript" src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+        <script type="text/javascript" src="lib/angular-ui-tree/dist/angular-ui-tree.min.js"></script>
+        <script type="text/javascript" src="public/app.js"></script>
+    </head>
+    <body>
+        <section id="content" ui-view="content"></section>
+    </body>
+</html>
