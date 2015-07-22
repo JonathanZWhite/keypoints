@@ -1,14 +1,5 @@
-var path =                  require('path');
+var keypointController = require('../controllers/keypoint');
 
 module.exports = function(app, router) {
-    // CORS
-    router.all('*', function(req, res, next) {
-    	res.header('Access-Control-Allow-Origin', '*');
-    	res.header('Access-Control-Allow-Headers', ' Access-Control-Allow-Origin: http://http://*.local-inventive.io:3000', 'X-Requested-With, Authorization, Content-Type, Username, Password');
-    	next();
-    });
-
-    router.get('/*', function(req, res) {
-    	res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
-    });
+    router.get('/api/keypoint/new', keypointController.getNew);
 };

@@ -74,7 +74,7 @@ angular
 
 }());
 
-angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("keypoints/keypoints.tpl.html","<section class=kp><div class=ui-container><textarea class=\"ui-textarea ui-textarea--light\">\n\n        </textarea></div></section>");}]);
+angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("keypoints/keypoints.tpl.html","<section class=kp><div class=ui-container><textarea class=\"ui-textarea ui-textarea--medium ui-textarea--light\"></textarea> <button class=\"ui-btn ui-btn--medium\">Add keypoint</button></div></section>");}]);
 (function() {
     'use strict';
 

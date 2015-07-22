@@ -46,8 +46,16 @@ button {
   resize: none;
   width: 100%;
 }
+.ui-textarea--medium {
+  min-height: 125px;
+  margin-bottom: 12.5px;
+}
 .ui-textarea--light {
   border: 1px solid #e9edf2;
+}
+.ui-btn--medium {
+  height: 40px;
+  width: 100%;
 }
 .u-truncate {
   white-space: nowrap;

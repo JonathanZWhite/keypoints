@@ -5,8 +5,12 @@ var express = 		require('express');
 var config = 		require('./config/secrets').config();
 var middleware = 	require('./middleware');
 var routes = 		require('./routes');
+var database = 		require('./database');
 
 var app = express();
+
+// initializations
+database.init();
 
 middleware = middleware(app);
 routes(app, middleware);
