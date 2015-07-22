@@ -75,22 +75,26 @@ angular
 
 }());
 
-angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><textarea class=\"ui-textarea ui-textarea--medium ui-textarea--light\" ng-model=vm.keypoint></textarea> <button class=\"ui-btn ui-btn--medium\" ng-click=vm.addKeypoint()>Add keypoint</button></div></section>");}]);
+angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><textarea class=\"ui-textarea ui-textarea--medium ui-textarea--light\" ng-model=vm.keypoint></textarea> <button class=\"ui-btn ui-btn--medium\" ng-click=vm.createKeypoint()>Add keypoint</button></div></section>");}]);
 (function() {
     'use strict';
 
-    TopicController.$inject = ['$stateParams', 'TopicService'];
-    function TopicController($stateParams, TopicService) {
+    TopicController.$inject = ['$stateParams', 'KeypointService', 'TopicService'];
+    function TopicController($stateParams, KeypointService, TopicService) {
         var vm = this;
         // model
         vm.keypoint = '';
         // functions
-
-        // TODO: create new topic if does not exist
+        vm.createKeypoint = createKeypoint;
+        //activation
         init();
 
         function init() {
             _createTopic();
+        }
+
+        function createKeypoint() {
+            KeypointService.create($stateParams.url, vm.keypoint);
         }
 
         function _createTopic() {
@@ -161,6 +165,37 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
 	angular
         .module('app.pages.topic')
         .factory('TopicStore', TopicStore);
+})();
+
+(function() {
+	'use strict';
+
+	KeypointService.$inject = ['$http'];
+
+	function KeypointService($http) {
+		var base = 'api/keypoint/';
+
+		var Keypoint = {
+			create: create
+		};
+
+		function create(url, keypoint) {
+			return $http({
+				url: base + 'create',
+				method: 'POST',
+				data: {
+					url: url,
+					keypoint: keypoint
+				}
+			});
+		}
+
+		return Keypoint;
+	}
+
+	angular
+	    .module('app.services')
+	    .factory('KeypointService', KeypointService);
 })();
 
 (function() {

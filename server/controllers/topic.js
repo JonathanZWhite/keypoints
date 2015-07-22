@@ -3,9 +3,9 @@
 
 var async = require('async');
 var topicController = {};
-var DBService = require('../database');
 var errorhandler = require('../utils').errorhandler;
 var MetaInspector = require('node-metainspector');
+var Topic = require('../models/topic');
 
 topicController.create = create;
 
@@ -30,7 +30,7 @@ function create(req, res) {
             url: url
         };
 
-        DBService.create('topic', payload, next);
+        Topic.make(payload, next);
     }];
 
     async.waterfall(tasks, function(err, result) {

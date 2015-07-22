@@ -12,7 +12,13 @@ var TopicSchema = new Schema({
         dropDups: true
     },
     title: String,
-    keypoints: [{ type : mongoose.Schema.ObjectId, ref : 'Keypoint' }]
+    keypoints: [{ type : mongoose.Schema.ObjectId, ref : 'keypoint' }]
 });
+
+TopicSchema.statics.make = make;
+
+function make(payload, callback) {
+    this.create(payload, callback);
+}
 
 module.exports = mongoose.model('topic', TopicSchema);
