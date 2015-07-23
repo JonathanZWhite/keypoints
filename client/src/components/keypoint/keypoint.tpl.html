@@ -1,0 +1,30 @@
+<div class="topic__card ui-card"
+    ng-class="{ 'topic__card--contenteditable': vm.keypoint.contenteditable }">
+    <div class="kp__meta">
+        <span class="caption caption--dark"
+            ng-bind="vm.keypoint.created | date:'mediumDate'"></span>
+        <ul class="kp__options">
+            <li class="kp__option"
+                ng-click="vm.delKeypoint(vm.keypoint)">
+                <i class="caption--dark fa fa-trash-o"></i>
+            </li>
+            <li class="kp__option">
+                <i class="caption--dark fa fa-bars"></i>
+            </li>
+            <li class="kp__option"
+                ng-click="vm.enableContenteditable()">
+                <i class="caption--dark fa fa-pencil"></i>
+            </li>
+        </ul>
+    </div>
+
+    <p class="text--dark"
+        contenteditable="{{ vm.keypoint.contenteditable }}"
+        ng-class="{ 'ui-contenteditabe': vm.keypoint.contenteditable }"
+        ng-model="vm.keypoint.keypoint"><p>
+
+    <button
+        class="kp-btn ui-btn ui-btn--medium ui-btn--success"
+        ng-if="vm.keypoint.contenteditable"
+        ng-click="vm.updateKeypoint()">update</button>
+</div>

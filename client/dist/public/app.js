@@ -37,7 +37,15 @@ angular
 (function() {
     'use strict';
 
-    angular.module('app.components', []);
+    angular.module('app.components.keypoint', []);
+})();
+
+(function() {
+    'use strict';
+
+    angular.module('app.components', [
+        'app.components.keypoint'
+    ]);
 })();
 
 (function() {
@@ -82,7 +90,8 @@ angular
 
 }());
 
-angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><div class=edit-overlay ng-show=vm.contenteditable ng-click=vm.disableContenteditable()></div><textarea class=\"ui-textarea ui-textarea--medium ui-textarea--light\" ng-model=vm.keypoint></textarea> <button class=\"topic__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.createKeypoint()>Add keypoint</button><div class=\"topic__card ui-card\" ng-repeat=\"keypoint in vm.keypoints track by $index\" ng-class=\"{ \'topic__card--contenteditable\': keypoint.contenteditable }\"><div class=kp__meta><span class=\"caption caption--dark\" ng-bind=\"keypoint.created | date:\'mediumDate\'\"></span><ul class=kp__options><li class=kp__option ng-click=vm.delKeypoint(keypoint)><i class=\"caption--dark fa fa-trash-o\"></i></li><li class=kp__option><i class=\"caption--dark fa fa-bars\"></i></li><li class=kp__option ng-click=vm.enableContenteditable(keypoint)><i class=\"caption--dark fa fa-pencil\"></i></li></ul></div><p class=text--dark contenteditable=\"{{ keypoint.contenteditable }}\" ng-class=\"{ \'ui-contenteditabe\': keypoint.contenteditable }\" ng-model=keypoint.keypoint></p><p><button class=\"kp-btn ui-btn ui-btn--medium ui-btn--success\" ng-if=keypoint.contenteditable ng-click=vm.updateKeypoint(keypoint)>update</button></p></div></div></section>");}]);
+angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><div class=edit-overlay ng-show=vm.contenteditable ng-click=vm.disableContenteditable()></div><textarea class=\"ui-textarea ui-textarea--medium ui-textarea--light\" ng-model=vm.keypoint></textarea> <button class=\"topic__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.createKeypoint()>Add keypoint</button><keypoint ng-repeat=\"keypoint in vm.keypoints track by $index\" keypoint=keypoint is-contenteditable=vm.contenteditable></keypoint></div></section>");
+$templateCache.put("keypoint/keypoint.tpl.html","<div class=\"topic__card ui-card\" ng-class=\"{ \'topic__card--contenteditable\': vm.keypoint.contenteditable }\"><div class=kp__meta><span class=\"caption caption--dark\" ng-bind=\"vm.keypoint.created | date:\'mediumDate\'\"></span><ul class=kp__options><li class=kp__option ng-click=vm.delKeypoint(vm.keypoint)><i class=\"caption--dark fa fa-trash-o\"></i></li><li class=kp__option><i class=\"caption--dark fa fa-bars\"></i></li><li class=kp__option ng-click=vm.enableContenteditable()><i class=\"caption--dark fa fa-pencil\"></i></li></ul></div><p class=text--dark contenteditable=\"{{ vm.keypoint.contenteditable }}\" ng-class=\"{ \'ui-contenteditabe\': vm.keypoint.contenteditable }\" ng-model=vm.keypoint.keypoint></p><p><button class=\"kp-btn ui-btn ui-btn--medium ui-btn--success\" ng-if=vm.keypoint.contenteditable ng-click=vm.updateKeypoint()>update</button></p></div>");}]);
 (function() {
     'use strict';
 
@@ -97,10 +106,6 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
         // functions
         vm.createKeypoint = createKeypoint;
         vm.contenteditable = false;
-        vm.delKeypoint = delKeypoint;
-        vm.disableContenteditable = disableContenteditable;
-        vm.enableContenteditable = enableContenteditable;
-        vm.updateKeypoint = updateKeypoint;
         // activation
         init();
 
@@ -116,35 +121,6 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
                 .then(function(resp) {
                     vm.keypoints.unshift(resp.data);
                 });
-        }
-
-        function disableContenteditable() {
-            _keypoint.keypoint = _keypointOldValue;
-            vm.contenteditable = false;
-            _keypoint.contenteditable = false;
-        }
-
-        function enableContenteditable(keypoint) {
-            _keypoint = keypoint;
-            _keypointOldValue = angular.copy(keypoint.keypoint);
-            vm.contenteditable = true;
-            keypoint.contenteditable = true;
-        }
-
-        function delKeypoint(keypoint) {
-            KeypointService.del(keypoint._id)
-                .then(function(resp) {
-                    if (resp.data.status) {
-                        var index = vm.keypoints.indexOf(keypoint);
-                        vm.keypoints.splice(index, 1);
-                    }
-                });
-        }
-
-        function updateKeypoint(keypoint) {
-            keypoint.contenteditable = false;
-            vm.contenteditable = false;
-            KeypointService.update(keypoint);
         }
     }
 
@@ -335,3 +311,90 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
 	    .module('app.services')
 	    .factory('TopicService', TopicService);
 })();
+
+(function () {
+    'use strict';
+
+    /**
+     * Keypoint is the actual user
+     */
+    Keypoint.$inject = ['$document', 'KeypointService'];
+    function Keypoint($document, KeypointService) {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                keypoint: '=',
+                isContenteditable: '='
+            },
+            templateUrl: 'keypoint/keypoint.tpl.html',
+            controllerAs: 'vm',
+            bindToController: true,
+            controller: Controller,
+            link: link
+        };
+
+        function link(scope, elem, attrs, vm) {
+            function handleDocumentClick() {
+                if (!vm.isContenteditable) {
+                    return;
+                }
+
+                vm.keypoint.keypoint = vm.keypointOldValue;
+                vm.isContenteditable = false;
+                vm.keypoint.contenteditable = false;
+                scope.$apply();
+            }
+
+            $document.on('click', handleDocumentClick);
+            elem.on('click', handleElemClick);
+
+            function handleElemClick() {
+                 event.stopPropagation();
+                 console.log('Stopping prop');
+            }
+        }
+    }
+
+    function Controller($document, KeypointService) {
+        var vm = this;
+
+        vm.keypointOldValue;
+        vm.disableContenteditable = disableContenteditable;
+        vm.enableContenteditable = enableContenteditable;
+        vm.updateKeypoint = updateKeypoint;
+
+        function disableContenteditable() {
+            vm.keypoint = keypointOldValue;
+            vm.keypoint.contenteditable = false;
+            vm.isContenteditable = false;
+        }
+
+        function enableContenteditable() {
+            vm.keypointOldValue = angular.copy(vm.keypoint.keypoint);
+            vm.keypoint.contenteditable = true;
+            vm.isContenteditable = true;
+        }
+
+        function updateKeypoint() {
+            vm.keypoint.contenteditable = false;
+            KeypointService.update(vm.keypoint);
+            vm.isContenteditable = false;
+        }
+
+        // function delKeypoint() {
+        //     KeypointService.del(vm.keypoint._id)
+        //         .then(function(resp) {
+        //             if (resp.data.status) {
+        //                 var index = vm.keypoints.indexOf(keypoint);
+        //                 vm.keypoints.splice(index, 1);
+        //             }
+        //         });
+        // }
+    }
+
+    angular
+        .module('app.components.keypoint')
+        .directive('keypoint', Keypoint);
+
+}());
