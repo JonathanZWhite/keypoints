@@ -7,6 +7,7 @@ var Keypoint = require('../models/keypoint');
 keypointController.create = create;
 keypointController.list = list;
 keypointController.del = del;
+keypointController.update = update;
 
 function create(req, res) {
     console.log('Creating new keypoint...');
@@ -16,8 +17,7 @@ function create(req, res) {
 }
 
 function del(req, res) {
-    console.log(req.query);
-    Keypoint.del(req.query.url, req.query.keypointId, function(resp) {
+    Keypoint.del(req.query.keypointId, function(resp) {
         res.json(resp);
     });
 }
@@ -25,6 +25,13 @@ function del(req, res) {
 function list(req, res) {
     console.log('Getting list of keypoints...');
     Keypoint.list(req.query.url, function(resp) {
+        res.json(resp);
+    });
+}
+
+function update(req, res) {
+    console.log('Updating keypoint...');
+    Keypoint.update(req.body.keypoint, function(resp) {
         res.json(resp);
     });
 }

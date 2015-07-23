@@ -9,7 +9,8 @@
 		var Keypoint = {
 			create: create,
 			del: del,
-			list: list
+			list: list,
+			update: update
 		};
 
 		function create(url, keypoint) {
@@ -23,12 +24,11 @@
 			});
 		}
 
-		function del(url, keypointId) {
+		function del(keypointId) {
 			return $http({
 				url: base + 'del',
 				method: 'DELETE',
 				params: {
-					url: url,
 					keypointId: keypointId
 				}
 			});
@@ -39,6 +39,16 @@
 				url: base + 'list',
 				method: 'GET',
 				params: { url: url }
+			});
+		}
+
+		function update(keypoint) {
+			return $http({
+				url: base + 'update',
+				method: 'PUT',
+				data: {
+					keypoint: keypoint
+				}
 			});
 		}
 

@@ -9,6 +9,7 @@ var mongoose =  require('mongoose');
 var Schema =    mongoose.Schema;
 var Topic = require('./topic');
 var topicService = require('../topic');
+var _ = require('lodash-node');
 
 var KeypointSchema = new Schema({
     created: { type : Date, default: Date.now },
@@ -21,8 +22,9 @@ var KeypointSchema = new Schema({
 KeypointSchema.statics.make = make;
 KeypointSchema.statics.list = list;
 KeypointSchema.statics.del = del;
+KeypointSchema.statics.update = update;
 
-function del(url, keypointId, callback) {
+function del(keypointId, callback) {
     Keypoint.findByIdAndRemove(keypointId, function(err) {
         if (err) {
             return errorhandler(err);
@@ -102,6 +104,32 @@ function list(url, callback) {
         }
 
         callback(result);
+    });
+}
+
+function update(keypoint, callback) {
+    var tasks = [function(next) {
+        Keypoint.findById(keypoint._id, function(err, oldKeypoint) {
+            if (err) {
+                return errorhandler(err);
+            }
+
+            next(null, oldKeypoint);
+        });
+    }, function(oldKeypoint, next) {
+        keypoint = _.extend(oldKeypoint, keypoint);
+        // keypoint.updated
+        keypoint.save(function(err, keypoint) {
+            next(err, keypoint);
+        });
+    }];
+
+    async.waterfall(tasks, function(err, result) {
+        if (err) {
+            return errorhandler(err);
+        }
+
+        callback({ status: true });
     });
 }
 

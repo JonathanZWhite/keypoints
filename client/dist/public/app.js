@@ -89,6 +89,8 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
     TopicController.$inject = ['$stateParams', 'KeypointService', 'TopicService'];
     function TopicController($stateParams, KeypointService, TopicService) {
         var vm = this;
+        var _keypoint;
+        var _keypointOldValue;
         // model
         vm.keypoint = '';
         vm.keypoints = [];
@@ -98,6 +100,7 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
         vm.delKeypoint = delKeypoint;
         vm.disableContenteditable = disableContenteditable;
         vm.enableContenteditable = enableContenteditable;
+        vm.updateKeypoint = updateKeypoint;
         // activation
         init();
 
@@ -116,28 +119,32 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
         }
 
         function disableContenteditable() {
+            _keypoint.keypoint = _keypointOldValue;
             vm.contenteditable = false;
-            
-            vm.keypoints.forEach(function(keypoint) {
-                if (keypoint.contenteditable) {
-                    keypoint.contenteditable = false
-                }
-            });
+            _keypoint.contenteditable = false;
         }
 
         function enableContenteditable(keypoint) {
+            _keypoint = keypoint;
+            _keypointOldValue = angular.copy(keypoint.keypoint);
             vm.contenteditable = true;
             keypoint.contenteditable = true;
         }
 
         function delKeypoint(keypoint) {
-            KeypointService.del($stateParams.url, keypoint._id)
+            KeypointService.del(keypoint._id)
                 .then(function(resp) {
                     if (resp.data.status) {
                         var index = vm.keypoints.indexOf(keypoint);
                         vm.keypoints.splice(index, 1);
                     }
                 });
+        }
+
+        function updateKeypoint(keypoint) {
+            keypoint.contenteditable = false;
+            vm.contenteditable = false;
+            KeypointService.update(keypoint);
         }
     }
 
@@ -250,7 +257,8 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
 		var Keypoint = {
 			create: create,
 			del: del,
-			list: list
+			list: list,
+			update: update
 		};
 
 		function create(url, keypoint) {
@@ -264,12 +272,11 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
 			});
 		}
 
-		function del(url, keypointId) {
+		function del(keypointId) {
 			return $http({
 				url: base + 'del',
 				method: 'DELETE',
 				params: {
-					url: url,
 					keypointId: keypointId
 				}
 			});
@@ -280,6 +287,16 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
 				url: base + 'list',
 				method: 'GET',
 				params: { url: url }
+			});
+		}
+
+		function update(keypoint) {
+			return $http({
+				url: base + 'update',
+				method: 'PUT',
+				data: {
+					keypoint: keypoint
+				}
 			});
 		}
 
