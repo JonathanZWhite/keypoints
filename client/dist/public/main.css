@@ -54,6 +54,11 @@ button {
 .ui-textarea--light {
   border: 1px solid #e9edf2;
 }
+.ui-contenteditable {
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15) inset;
+  border: 2px solid #50bf7f;
+  border-radius: 3px;
+}
 .ui-btn--medium {
   border-radius: 2px;
   font-weight: 700;
@@ -61,10 +66,16 @@ button {
   text-transform: uppercase;
   width: 100%;
 }
-.ui-btn--highlight {
-  background: #4fb9f3;
+.ui-btn--highlight,
+.ui-btn--success {
   border: none;
   color: #ffffff;
+}
+.ui-btn--highlight {
+  background: #4fb9f3;
+}
+.ui-btn--success {
+  background: #50bf7f;
 }
 .ui-card {
   box-sizing: border-box;
@@ -286,6 +297,14 @@ p {
  * Variables should be defined here, doing so should help keep
  * the styling uniform across Inventive
  */
+.edit-overlay {
+  background: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
 .topic {
   background: #f6f9fc;
   box-sizing: border-box;
@@ -298,11 +317,19 @@ p {
 .topic__card {
   margin-bottom: 12.5px;
 }
+.topic__card--contenteditable {
+  position: relative;
+}
 .topic .ui-container {
   width: 85%;
 }
 .kp__meta {
   margin-bottom: 6.25px;
+}
+.kp-btn {
+  position: absolute;
+  margin-top: 25px;
+  left: 0;
 }
 .kp__options {
   float: right;

@@ -4,6 +4,7 @@
         .module('app', [
             'app.core',
             'app.components',
+            'app.directives',
             'app.pages',
             'app.services'
         ]);
@@ -42,6 +43,12 @@ angular
 (function() {
     'use strict';
 
+    angular.module('app.directives', []);
+})();
+
+(function() {
+    'use strict';
+
     angular.module('app.services', []);
 })();
 
@@ -75,7 +82,7 @@ angular
 
 }());
 
-angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><textarea class=\"ui-textarea ui-textarea--medium ui-textarea--light\" ng-model=vm.keypoint></textarea> <button class=\"topic__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.createKeypoint()>Add keypoint</button><div class=\"topic__card ui-card\" ng-repeat=\"keypoint in vm.keypoints track by $index\"><div class=kp__meta><span class=\"caption caption--dark\" ng-bind=\"keypoint.created | date:\'mediumDate\'\"></span><ul class=kp__options><li class=kp__option ng-click=vm.delKeypoint(keypoint)><i class=\"caption--dark fa fa-trash-o\"></i></li><li class=kp__option><i class=\"caption--dark fa fa-bars\"></i></li><li class=kp__option><i class=\"caption--dark fa fa-pencil\"></i></li></ul></div><p class=text--dark ng-bind=keypoint.keypoint></p><p></p></div></div></section>");}]);
+angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><div class=edit-overlay ng-show=vm.contenteditable ng-click=vm.disableContenteditable()></div><textarea class=\"ui-textarea ui-textarea--medium ui-textarea--light\" ng-model=vm.keypoint></textarea> <button class=\"topic__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.createKeypoint()>Add keypoint</button><div class=\"topic__card ui-card\" ng-repeat=\"keypoint in vm.keypoints track by $index\" ng-class=\"{ \'topic__card--contenteditable\': keypoint.contenteditable }\"><div class=kp__meta><span class=\"caption caption--dark\" ng-bind=\"keypoint.created | date:\'mediumDate\'\"></span><ul class=kp__options><li class=kp__option ng-click=vm.delKeypoint(keypoint)><i class=\"caption--dark fa fa-trash-o\"></i></li><li class=kp__option><i class=\"caption--dark fa fa-bars\"></i></li><li class=kp__option ng-click=vm.enableContenteditable(keypoint)><i class=\"caption--dark fa fa-pencil\"></i></li></ul></div><p class=text--dark contenteditable=\"{{ keypoint.contenteditable }}\" ng-class=\"{ \'ui-contenteditabe\': keypoint.contenteditable }\" ng-model=keypoint.keypoint></p><p><button class=\"kp-btn ui-btn ui-btn--medium ui-btn--success\" ng-if=keypoint.contenteditable ng-click=vm.updateKeypoint(keypoint)>update</button></p></div></div></section>");}]);
 (function() {
     'use strict';
 
@@ -87,7 +94,10 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
         vm.keypoints = [];
         // functions
         vm.createKeypoint = createKeypoint;
+        vm.contenteditable = false;
         vm.delKeypoint = delKeypoint;
+        vm.disableContenteditable = disableContenteditable;
+        vm.enableContenteditable = enableContenteditable;
         // activation
         init();
 
@@ -103,6 +113,21 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
                 .then(function(resp) {
                     vm.keypoints.unshift(resp.data);
                 });
+        }
+
+        function disableContenteditable() {
+            vm.contenteditable = false;
+            
+            vm.keypoints.forEach(function(keypoint) {
+                if (keypoint.contenteditable) {
+                    keypoint.contenteditable = false
+                }
+            });
+        }
+
+        function enableContenteditable(keypoint) {
+            vm.contenteditable = true;
+            keypoint.contenteditable = true;
         }
 
         function delKeypoint(keypoint) {
@@ -180,6 +205,39 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
         .module('app.pages.topic')
         .factory('TopicStore', TopicStore);
 })();
+
+(function() {
+    'use strict';
+
+    Contenteditable.$inject = [];
+    function Contenteditable() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: link
+        };
+
+        function link(scope, element, attrs, ngModel) {
+            function read() {
+                ngModel.$setViewValue(element.html());
+            }
+
+            ngModel.$render = function() {
+                element.html(ngModel.$viewValue || '');
+            };
+
+            element.bind('blur keyup change', function() {
+                scope.$apply(read);
+            });
+        }
+    }
+
+
+    angular
+        .module('app.directives')
+        .directive('contenteditable', Contenteditable);
+
+}());
 
 (function() {
 	'use strict';

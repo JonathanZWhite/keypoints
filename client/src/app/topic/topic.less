@@ -1,3 +1,12 @@
+.edit-overlay {
+    background: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
 .topic {
     background: @color-background-light;
     box-sizing: border-box;
@@ -12,6 +21,9 @@
     .topic__card {
         margin-bottom: @space-small;
     }
+    .topic__card--contenteditable {
+        position: relative;
+    }
 
     .topic .ui-container {
         width: 85%;
@@ -20,6 +32,12 @@
 
 .kp__meta {
     margin-bottom: @space-smaller;
+}
+
+.kp-btn {
+    position: absolute;
+    margin-top: @space-medium;
+    left: 0;
 }
 
 .kp__options {

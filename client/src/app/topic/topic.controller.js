@@ -9,7 +9,10 @@
         vm.keypoints = [];
         // functions
         vm.createKeypoint = createKeypoint;
+        vm.contenteditable = false;
         vm.delKeypoint = delKeypoint;
+        vm.disableContenteditable = disableContenteditable;
+        vm.enableContenteditable = enableContenteditable;
         // activation
         init();
 
@@ -25,6 +28,21 @@
                 .then(function(resp) {
                     vm.keypoints.unshift(resp.data);
                 });
+        }
+
+        function disableContenteditable() {
+            vm.contenteditable = false;
+            
+            vm.keypoints.forEach(function(keypoint) {
+                if (keypoint.contenteditable) {
+                    keypoint.contenteditable = false
+                }
+            });
+        }
+
+        function enableContenteditable(keypoint) {
+            vm.contenteditable = true;
+            keypoint.contenteditable = true;
         }
 
         function delKeypoint(keypoint) {

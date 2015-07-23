@@ -15,16 +15,14 @@ module.exports = function() {
 			'client/src/app/**/*.module.js',
 			'client/src/app/**/**/*.module.js',
 			'client/src/app/**/**/**/*.module.js',
-			'client/src/components/**/*.module.js',
-			'client/src/services/**/*.module.js',
+			'client/src/**/**/*.module.js',
 
 			'client/src/app/*.js',
 			'client/tmp/*.js',
 			'client/src/app/**/*.js',
 			'client/src/app/**/**/*.js',
 			'client/src/app/**/**/**/*.js',
-			'client/src/components/**/*.js',
-			'client/src/services/**/*.js',
+			'client/src/**/**/*.js',
 			'!client/src/app/**/*.spec.js'
 		],
         nodeTestWatchFiles: [

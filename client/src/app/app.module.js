@@ -4,6 +4,7 @@
         .module('app', [
             'app.core',
             'app.components',
+            'app.directives',
             'app.pages',
             'app.services'
         ]);

@@ -51,6 +51,12 @@ button { cursor: pointer; }
         border: 1px solid @color-brand-light--light;
     }
 
+.ui-contenteditable {
+    box-shadow: 0 1px 5px rgba(0,0,0,0.15) inset;
+    border: 2px solid @color-state-success;
+    border-radius: 3px;
+}
+
 .ui-btn {}
 
     .ui-btn--medium {
@@ -61,10 +67,18 @@ button { cursor: pointer; }
         width: 100%;
     }
 
-    .ui-btn--highlight {
-        background: @color-brand-highlight;
+    .ui-btn--highlight,
+    .ui-btn--success {
         border: none;
         color: @color-brand-white;
+    }
+
+    .ui-btn--highlight {
+        background: @color-brand-highlight;
+    }
+
+    .ui-btn--success {
+        background: @color-state-success;
     }
 
 .ui-card {
