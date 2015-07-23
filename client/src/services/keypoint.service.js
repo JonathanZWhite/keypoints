@@ -7,7 +7,9 @@
 		var base = 'api/keypoint/';
 
 		var Keypoint = {
-			create: create
+			create: create,
+			del: del,
+			list: list
 		};
 
 		function create(url, keypoint) {
@@ -18,6 +20,25 @@
 					url: url,
 					keypoint: keypoint
 				}
+			});
+		}
+
+		function del(url, keypointId) {
+			return $http({
+				url: base + 'del',
+				method: 'DELETE',
+				params: {
+					url: url,
+					keypointId: keypointId
+				}
+			});
+		}
+
+		function list(url) {
+			return $http({
+				url: base + 'list',
+				method: 'GET',
+				params: { url: url }
 			});
 		}
 

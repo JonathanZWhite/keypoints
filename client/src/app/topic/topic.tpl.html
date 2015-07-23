@@ -4,7 +4,28 @@
             class="ui-textarea ui-textarea--medium ui-textarea--light"
             ng-model="vm.keypoint"></textarea>
         <button
-            class="ui-btn ui-btn--medium"
+            class="topic__btn ui-btn ui-btn--medium ui-btn--highlight"
             ng-click="vm.createKeypoint()">Add keypoint</button>
+        <div class="topic__card ui-card"
+            ng-repeat="keypoint in vm.keypoints track by $index">
+            <div class="kp__meta">
+                <span class="caption caption--dark"
+                    ng-bind="keypoint.created | date:'mediumDate'"></span>
+                <ul class="kp__options">
+                    <li class="kp__option"
+                        ng-click="vm.delKeypoint(keypoint)">
+                        <i class="caption--dark fa fa-trash-o"></i>
+                    </li>
+                    <li class="kp__option">
+                        <i class="caption--dark fa fa-bars"></i>
+                    </li>
+                    <li class="kp__option">
+                        <i class="caption--dark fa fa-pencil"></i>
+                    </li>
+                </ul>
+            </div>
+            <p class="text--dark"
+                ng-bind="keypoint.keypoint"><p>
+        </div>
     </div>
 </section>

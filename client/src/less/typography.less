@@ -10,31 +10,20 @@
 // New font styles
 .font-main { font-family: 'Lato', sans-serif; }
 
-.font-alt { font-family: 'Quando', serif; }
-
 // General Typography Styles
 // --------------------------------------------------
-// http://modularscale.com/scale/?px1=18&px2=16&ra1=1.333&ra2=0
-.caption { font-size: @fs-caption; line-height: 1.333; letter-spacing: 0.211px }
+h1 { font-size: @h1; }
+h2 { font-size: @h2; }
+h3 { font-size: @h3; }
+h4 { font-size: @h4; }
+h5 { font-size: @h5; }
+p { font-size: @p; }
+.caption { font-size: @caption; }
 
-h1, h2, h3, h4, h5, h6 { letter-spacing: 0.158px; }
-
-p { letter-space: 0.422px; line-height: @space-medium; }
-
-h1 { font-size: @fs-h1; }
-h2 { font-size: @fs-h2; }
-h3 { font-size: @fs-h3; }
-h4 { font-size: @fs-h4; }
-h5 {
-    font-size: @fs-h5;
-    line-height: 35px;
+.caption--dark {
+    color: @color-font-dark--lightest;
 }
-p { font-size: @fs-p; }
-.caption { font-size: @fs-caption; }
 
-h1, h2, h3, h4, h5, p, .caption { .font-smoothing; }
-
-.font-smoothing {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+.text--dark {
+    color: @color-font-dark--light;
 }

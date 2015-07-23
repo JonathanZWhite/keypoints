@@ -24,7 +24,8 @@ a {
 
 html, body, form, fieldset, table, tr, td, input, select {
 	.font-main;
-	.font-smoothing;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 	height: 100%;
 	width: 100%;
 }
@@ -35,6 +36,7 @@ button { cursor: pointer; }
 // --------------------------------------------------
 .ui-textarea {
     border: none;
+    font-size: @p;
     padding: @space-small;
     resize: none;
     width: 100%;
@@ -52,9 +54,26 @@ button { cursor: pointer; }
 .ui-btn {}
 
     .ui-btn--medium {
+        border-radius: 2px;
+        font-weight: @fw-bold;
         height: 40px;
+        text-transform: uppercase;
         width: 100%;
     }
+
+    .ui-btn--highlight {
+        background: @color-brand-highlight;
+        border: none;
+        color: @color-brand-white;
+    }
+
+.ui-card {
+    box-sizing: border-box;
+	box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.15);
+    background: @color-brand-white;
+	border-radius: 3px;
+	padding: @space-small;
+}
 
 // Utility
 // --------------------------------------------------
