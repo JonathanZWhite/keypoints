@@ -11,8 +11,7 @@ var TopicSchema = new Schema({
         unique: true,
         dropDups: true
     },
-    title: String,
-    keypoints: [{ type : mongoose.Schema.ObjectId, ref : 'keypoint' }]
+    title: String
 });
 
 TopicSchema.statics.make = make;

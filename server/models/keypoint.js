@@ -7,9 +7,10 @@ var errorhandler = require('../utils').errorhandler;
 var mongoose =  require('mongoose');
 var Schema =    mongoose.Schema;
 var Topic = require('./topic');
+var topicService = require('../topic');
 
 var KeypointSchema = new Schema({
-    topic: [{ type : mongoose.Schema.ObjectId, ref : 'topic' }],
+    topic: { type : mongoose.Schema.ObjectId, ref : 'topic' },
     contentType: String,
     keypoint: String,
     image: String
@@ -19,11 +20,20 @@ KeypointSchema.statics.make = make;
 
 function make(payload, callback) {
     var tasks = [function(next) {
-        // look up url and then save
         Topic.findOne({ url: payload.url }, function(err, topic) {
-            next(null, topic._id);
+            if (err) {
+                return next(err);
+            }
+
+            if (topic) {
+                next(null, topic._id);
+            } else {
+                topicService.create(payload.url, function(resp) {
+                    next(null, resp._id);
+                });
+            }
         });
-    }, function(next, topicId) {
+    }, function(topicId, next) {
         var keypoint = new Keypoint({
             topic: topicId,
             contentType: 'text',
@@ -31,9 +41,12 @@ function make(payload, callback) {
         });
 
         keypoint.save(function(err) {
+            console.log('Look', err);
             if (err) {
                 return callback(err);
             }
+
+            console.log('Saving keypoint...');
 
             callback(null, keypoint);
         });

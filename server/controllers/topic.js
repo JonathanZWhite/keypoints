@@ -3,42 +3,15 @@
 
 var async = require('async');
 var topicController = {};
-var errorhandler = require('../utils').errorhandler;
 var MetaInspector = require('node-metainspector');
-var Topic = require('../models/topic');
+var topicService = require('../topic');
 
 topicController.create = create;
 
 function create(req, res) {
     var url = req.body.url;
-    var tasks = [function(next) {
-        var metaInspector = new MetaInspector(url, { timeout: 10000 });
-
-        metaInspector.on('fetch', function() {
-            console.log('This is the title', metaInspector.title)
-            return next(null, metaInspector.title);
-        });
-
-        metaInspector.on('error', function(err) {
-            return next(err);
-        });
-
-        metaInspector.fetch();
-    }, function(title, next) {
-        var payload = {
-            title: title,
-            url: url
-        };
-
-        Topic.make(payload, next);
-    }];
-
-    async.waterfall(tasks, function(err, result) {
-        if (err) {
-            return errorhandler(err);
-        }
-
-        console.log('These are the results', result);
+    topicService.create(req.body.url, function(resp) {
+        res.json(resp);
     });
 }
 

@@ -86,19 +86,9 @@ angular.module("app.core").run(["$templateCache", function($templateCache) {$tem
         vm.keypoint = '';
         // functions
         vm.createKeypoint = createKeypoint;
-        //activation
-        init();
-
-        function init() {
-            _createTopic();
-        }
 
         function createKeypoint() {
             KeypointService.create($stateParams.url, vm.keypoint);
-        }
-
-        function _createTopic() {
-            TopicService.create($stateParams.url);
         }
     }
 
