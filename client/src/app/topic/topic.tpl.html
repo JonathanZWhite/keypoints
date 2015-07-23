@@ -13,6 +13,7 @@
         <keypoint
             ng-repeat="keypoint in vm.keypoints track by $index"
             keypoint="keypoint"
+            keypoints="vm.keypoints"
             is-contenteditable="vm.contenteditable"></keypoint>
     </div>
 </section>

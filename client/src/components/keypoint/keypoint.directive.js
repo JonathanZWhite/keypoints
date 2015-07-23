@@ -11,6 +11,7 @@
             replace: true,
             scope: {
                 keypoint: '=',
+                keypoints: '=',
                 isContenteditable: '='
             },
             templateUrl: 'keypoint/keypoint.tpl.html',
@@ -46,6 +47,7 @@
         var vm = this;
 
         vm.keypointOldValue;
+        vm.delKeypoint = delKeypoint;
         vm.disableContenteditable = disableContenteditable;
         vm.enableContenteditable = enableContenteditable;
         vm.updateKeypoint = updateKeypoint;
@@ -68,15 +70,15 @@
             vm.isContenteditable = false;
         }
 
-        // function delKeypoint() {
-        //     KeypointService.del(vm.keypoint._id)
-        //         .then(function(resp) {
-        //             if (resp.data.status) {
-        //                 var index = vm.keypoints.indexOf(keypoint);
-        //                 vm.keypoints.splice(index, 1);
-        //             }
-        //         });
-        // }
+        function delKeypoint() {
+            KeypointService.del(vm.keypoint._id)
+                .then(function(resp) {
+                    if (resp.data.status) {
+                        var index = vm.keypoints.indexOf(vm.keypoint);
+                        vm.keypoints.splice(index, 1);
+                    }
+                });
+        }
     }
 
     angular
