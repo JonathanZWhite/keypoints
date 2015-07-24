@@ -311,17 +311,17 @@ p {
   height: 100%;
   padding: 25px 0;
 }
-.topic__btn {
-  margin-bottom: 25px;
-}
-.topic__card {
-  margin-bottom: 12.5px;
-}
-.topic__card--contenteditable {
-  position: relative;
-}
 .topic .ui-container {
   width: 85%;
+}
+.composer__btn {
+  margin-bottom: 25px;
+}
+.keypoint {
+  margin-bottom: 12.5px;
+}
+.keypoint--contenteditable {
+  position: relative;
 }
 .kp__meta {
   margin-bottom: 6.25px;

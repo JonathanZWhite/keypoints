@@ -21,7 +21,11 @@
 
     function Controller($stateParams, KeypointService) {
         var vm = this;
+        // model
         vm.keypoint = '';
+        // function
+        vm.createKeypoint = createKeypoint;
+
 
         function createKeypoint() {
             if (!vm.keypoint) return;

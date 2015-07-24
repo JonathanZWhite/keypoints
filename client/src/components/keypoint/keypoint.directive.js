@@ -46,7 +46,7 @@
     function Controller($document, KeypointService) {
         var vm = this;
 
-        vm.keypointOldValue;
+        vm.keypointOldValue = '';
         vm.delKeypoint = delKeypoint;
         vm.disableContenteditable = disableContenteditable;
         vm.enableContenteditable = enableContenteditable;
