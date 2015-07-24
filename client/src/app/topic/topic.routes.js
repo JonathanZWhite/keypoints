@@ -3,6 +3,17 @@
 
     function config($stateProvider) {
         $stateProvider
+            .state('home', {
+                url : '/',
+                views: {
+                    'content@': {
+                        template: '<h1>Hello world</h1>',
+                    }
+                },
+                data: {
+                    pageTitle: 'Topic'
+                }
+            })
             .state('topic', {
                 url: '/topic?url',
                 views: {

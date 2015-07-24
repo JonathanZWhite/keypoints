@@ -1,5 +1,5 @@
 <style>
-html, body, iframe, h2 {
+html, body, iframe {
     margin: 0;
     border: 0;
     padding: 0;
@@ -9,13 +9,11 @@ html, body, iframe, h2 {
     background: white;
     color: black;
 }
-h2 {
-    height: 50px;
-    font-size: 20px;
-}
+
 iframe {
-    height: calc(100vh - 50px);
+    position: absolute;
+    right: 0;
 }
+
 </style>
-<h2>Displaying https://robwu.nl in a frame</h2>
-<iframe src="https://robwu.nl/"></iframe>
+<iframe src="http://localhost:3000/topic?url=www.youtube.com%2Fwatch%3Fv#"></iframe>

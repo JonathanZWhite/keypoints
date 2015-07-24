@@ -17,8 +17,9 @@
         "script.js",
         "frame.html"
     ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://localhost:8000;",
     "permissions": [
         "activeTab",
-        "https://ajax.googleapis.com/"
+        "https://localhost:8000/"
     ]
 }

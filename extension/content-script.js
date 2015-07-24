@@ -13,7 +13,7 @@ if (!location.ancestorOrigins.contains(extensionOrigin)) {
     iframe.src = chrome.runtime.getURL('frame.html');
 
     // Some styles for a fancy sidebar
-    iframe.style.cssText = 'position:fixed;top:0;left:0;display:block;' +
-                           'width:300px;height:100%;z-index:1000;';
+    iframe.style.cssText = 'position:fixed; top:0; right:0; display:block;' +
+                           'width:350px;height:100%;z-index:1000;';
     document.body.appendChild(iframe);
 }
