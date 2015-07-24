@@ -4,12 +4,8 @@
             ng-show="vm.contenteditable"
             ng-click="vm.disableContenteditable()"></div>
 
-        <textarea
-            class="ui-textarea ui-textarea--medium ui-textarea--light"
-            ng-model="vm.keypoint"></textarea>
-        <button
-            class="topic__btn ui-btn ui-btn--medium ui-btn--highlight"
-            ng-click="vm.createKeypoint()">Add keypoint</button>
+        <composer
+            keypoints="vm.keypoints"></composer>
         <keypoint
             ng-repeat="keypoint in vm.keypoints track by $index"
             keypoint="keypoint"
