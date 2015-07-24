@@ -1,8 +1,8 @@
 (function() {
     'use strict';
 
-    TopicController.$inject = ['$stateParams', 'KeypointService'];
-    function TopicController($stateParams, KeypointService) {
+    TopicController.$inject = ['$stateParams', 'KeypointService', 'MesssagesService'];
+    function TopicController($stateParams, KeypointService, MesssagesService) {
         var vm = this;
         // model
         vm.keypoints = [];

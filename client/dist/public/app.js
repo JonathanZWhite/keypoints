@@ -103,8 +103,8 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 (function() {
     'use strict';
 
-    TopicController.$inject = ['$stateParams', 'KeypointService'];
-    function TopicController($stateParams, KeypointService) {
+    TopicController.$inject = ['$stateParams', 'KeypointService', 'MesssagesService'];
+    function TopicController($stateParams, KeypointService, MesssagesService) {
         var vm = this;
         // model
         vm.keypoints = [];
@@ -292,6 +292,33 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 	angular
 	    .module('app.services')
 	    .factory('KeypointService', KeypointService);
+})();
+
+(function() {
+	'use strict';
+
+	MesssagesService.$inject = ['$window'];
+
+	function MesssagesService($window) {
+		var Messages = {};
+
+		init();
+
+		function init() {
+			$window.addEventListener('message', handleChange, false);
+		}
+
+		function handleChange(message) {
+			console.log('Look', message);
+		}
+
+
+		return Messages;
+	}
+
+	angular
+	    .module('app.services')
+	    .factory('MesssagesService', MesssagesService);
 })();
 
 (function() {
