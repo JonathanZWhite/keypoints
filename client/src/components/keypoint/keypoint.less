@@ -1,12 +1,27 @@
 .keypoint {
+	position: relative;
+	padding-top: 0;
 	margin-bottom: @space-small;
 }
+	.keypoint--preview {
+		padding: 0;
+	}
+
+	.keypoint--preview .kp__meta {
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		padding: @space-small;
+	}
+
 	.keypoint--contenteditable {
 		position: relative;
 	}
 
 	.kp__meta {
-	    margin-bottom: @space-smaller;
+		background: @color-brand-white;
+	    padding: @space-small 0;
 	}
 
 	.kp-btn {
@@ -24,7 +39,8 @@
 	.kp__preview {
 		background-size: cover;
 		background-position: center center;
-		height: 150px;
+		height: 175px;
+		padding-top: 40px;
 	}
 
 	    .kp__option {

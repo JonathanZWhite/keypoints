@@ -1,5 +1,6 @@
 <div class="keypoint ui-card"
-    ng-class="{ 'keypoint--contenteditable': vm.keypoint.contenteditable, 'keypoint--preview': vm.mode === 'image' }">
+    ng-class="{ 'keypoint--contenteditable': vm.keypoint.contenteditable, 'keypoint--preview': vm.keypoint.contentType === 'image' }">
+
     <div class="kp__meta">
         <span class="caption caption--dark"
             ng-bind="vm.keypoint.created | date:'mediumDate'"></span>
@@ -12,18 +13,21 @@
                 <i class="caption--dark fa fa-bars"></i>
             </li>
             <li class="kp__option"
-                ng-click="vm.enableContenteditable()">
+                ng-click="vm.enableContenteditable()"
+                ng-if="vm.keypoint.contentType === 'text'">
                 <i class="caption--dark fa fa-pencil"></i>
             </li>
         </ul>
     </div>
 
     <p class="text--dark"
+        ng-if="vm.keypoint.contentType === 'text'"
         contenteditable="{{ vm.keypoint.contenteditable }}"
         ng-class="{ 'ui-contenteditabe': vm.keypoint.contenteditable }"
         ng-model="vm.keypoint.keypoint"><p>
 
     <div class="kp__preview"
+        ng-if="vm.keypoint.contentType === 'image'"
         ng-style="{ 'background-image': 'url(' + vm.keypoint.image + ')' }"></div>
 
     <button

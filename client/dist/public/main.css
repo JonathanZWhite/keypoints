@@ -346,13 +346,26 @@ p {
   color: #4fb9f3;
 }
 .keypoint {
+  position: relative;
+  padding-top: 0;
   margin-bottom: 12.5px;
+}
+.keypoint--preview {
+  padding: 0;
+}
+.keypoint--preview .kp__meta {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  padding: 12.5px;
 }
 .keypoint--contenteditable {
   position: relative;
 }
 .kp__meta {
-  margin-bottom: 6.25px;
+  background: #ffffff;
+  padding: 12.5px 0;
 }
 .kp-btn {
   position: absolute;
@@ -367,7 +380,8 @@ p {
 .kp__preview {
   background-size: cover;
   background-position: center center;
-  height: 150px;
+  height: 175px;
+  padding-top: 40px;
 }
 .kp__option {
   display: inline-block;
