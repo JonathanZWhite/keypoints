@@ -13,13 +13,14 @@
 			update: update
 		};
 
-		function create(url, keypoint) {
+		function create(url, keypoint, image) {
 			return $http({
 				url: base + 'create',
 				method: 'POST',
 				data: {
 					url: url,
-					keypoint: keypoint
+					keypoint: keypoint,
+					image: image
 				}
 			});
 		}

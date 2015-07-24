@@ -23,14 +23,20 @@
         var vm = this;
         // model
         vm.keypoint = '';
+        vm.image = '';
+        vm.mode = 'text';
         // function
         vm.createKeypoint = createKeypoint;
+        vm.toggleMode = toggleMode;
 
+        function toggleMode(mode) {
+            vm.mode = mode;
+        }
 
         function createKeypoint() {
-            if (!vm.keypoint) return;
+            if (!vm.keypoint && !vm.image) return;
 
-            KeypointService.create($stateParams.url, vm.keypoint)
+            KeypointService.create($stateParams.url, vm.keypoint, vm.image)
                 .then(function(resp) {
                     vm.keypoints.unshift(resp.data);
                 });

@@ -50,14 +50,19 @@ function make(payload, callback) {
             }
         });
     }, function(topicId, next) {
+        var contentType = payload.keypoint ? 'text' : 'image';
         var keypoint = new Keypoint({
             topic: topicId,
-            contentType: 'text',
-            keypoint: payload.keypoint
+            contentType: contentType
         });
 
+        if (contentType === 'text') {
+            keypoint.keypoint = payload.keypoint;
+        } else {
+            keypoint.image = payload.image;
+        }
+
         keypoint.save(function(err) {
-            console.log('Look', err);
             if (err) {
                 return callback(err);
             }

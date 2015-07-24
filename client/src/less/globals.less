@@ -51,10 +51,31 @@ button { cursor: pointer; }
         border: 1px solid @color-brand-light--light;
     }
 
+.ui-input {
+    border: none;
+    font-size: @p;
+    padding: @space-small;
+}
+
+    .ui-input--medium {
+        height: 40px;
+        margin-bottom: @space-small;
+        width: 100%;
+    }
+
+    .ui-input--light {
+        border: 1px solid @color-brand-light--light;
+    }
+
 .ui-contenteditable {
     box-shadow: 0 1px 5px rgba(0,0,0,0.15) inset;
     border: 2px solid @color-state-success;
     border-radius: 3px;
+}
+
+.ui-list {
+	list-style: none;
+	overflow: auto;
 }
 
 .ui-btn {}

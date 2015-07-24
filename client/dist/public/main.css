@@ -54,10 +54,27 @@ button {
 .ui-textarea--light {
   border: 1px solid #e9edf2;
 }
+.ui-input {
+  border: none;
+  font-size: 14px;
+  padding: 12.5px;
+}
+.ui-input--medium {
+  height: 40px;
+  margin-bottom: 12.5px;
+  width: 100%;
+}
+.ui-input--light {
+  border: 1px solid #e9edf2;
+}
 .ui-contenteditable {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15) inset;
   border: 2px solid #50bf7f;
   border-radius: 3px;
+}
+.ui-list {
+  list-style: none;
+  overflow: auto;
 }
 .ui-btn--medium {
   border-radius: 2px;
@@ -281,6 +298,7 @@ h5 {
 }
 p {
   font-size: 14px;
+  line-height: 21px;
 }
 .caption {
   font-size: 12px;
@@ -317,6 +335,16 @@ p {
 .composer__btn {
   margin-bottom: 25px;
 }
+.composer__options {
+  float: right;
+  margin-bottom: 3.125px;
+}
+.composer__option {
+  cursor: pointer;
+}
+.composer__option--active {
+  color: #4fb9f3;
+}
 .keypoint {
   margin-bottom: 12.5px;
 }
@@ -335,6 +363,11 @@ p {
 .kp__options {
   float: right;
   list-style: none;
+}
+.kp__preview {
+  background-size: cover;
+  background-position: center center;
+  height: 150px;
 }
 .kp__option {
   display: inline-block;
