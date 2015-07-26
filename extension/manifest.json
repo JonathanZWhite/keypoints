@@ -5,7 +5,7 @@
     "description": "This extension shows a Google Image search result for the current page",
     "version": "1.0",
     "background": {
-      "scripts": ["background.js"]
+      "scripts": ["dist/background.bundle.js"]
     },
     "browser_action": {
         "default_icon": "icon.png",
@@ -13,7 +13,7 @@
         "default_title" : "Post to Google Buzz"
     },
     "content_scripts": [{
-        "js": ["inject.js"],
+        "js": ["dist/inject.bundle.js"],
         "matches": ["http://*/*", "https://*/*"]
     }],
     "web_accessible_resources": [

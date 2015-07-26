@@ -1,8 +1,11 @@
 var distPath = './dist/';
 
 module.exports = {
-    entry: './background.js',
+    entry: {
+        background: './background/background.js',
+        inject: './inject/inject.js'
+    },
     output: {
-        filename:  distPath + 'bundle.js'
+        filename:  distPath + '[name].bundle.js'
     }
 };
