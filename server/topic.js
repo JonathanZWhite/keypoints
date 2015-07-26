@@ -5,11 +5,13 @@ var async = require('async');
 var errorhandler = require('./utils').errorhandler;
 var MetaInspector = require('node-metainspector');
 var Topic = require('./models/topic');
+var utils = require('../shared/utils');
 
 (function(module) {
     module.create = create;
 
     function create(url, callback) {
+        url = utils.removeUrlIdentifier(url);
         var tasks = [function(next) {
             // TODO: get real title
             var payload = {
@@ -29,19 +31,3 @@ var Topic = require('./models/topic');
         });
     }
 }(exports));
-
-// function(next) {
-//     var metaInspector = new MetaInspector(url, { timeout: 10000 });
-//
-//     metaInspector.on('fetch', function() {
-//         console.log('Fetching...', metaInspector.title);
-//         return next(null, metaInspector.title);
-//     });
-//
-//     metaInspector.on('error', function(err) {
-//         console.log('There was an error', err);
-//         return next(err);
-//     });
-//
-//     metaInspector.fetch();
-// },

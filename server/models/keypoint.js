@@ -9,6 +9,7 @@ var mongoose =  require('mongoose');
 var Schema =    mongoose.Schema;
 var Topic = require('./topic');
 var topicService = require('../topic');
+var utils = require('../../shared/utils');
 var _ = require('lodash-node');
 
 var KeypointSchema = new Schema({
@@ -37,7 +38,8 @@ function del(keypointId, callback) {
 function make(payload, callback) {
     console.log('This is the payload', payload);
     var tasks = [function(next) {
-        Topic.findOne({ url: payload.url }, function(err, topic) {
+        var url = utils.removeUrlIdentifier(payload.url);
+        Topic.findOne({ url: url}, function(err, topic) {
             if (err) {
                 return next(err);
             }
