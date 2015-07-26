@@ -21,8 +21,8 @@ var db = require('./database');
 	});
 
     function signup(req, res, callback) {
-        console.log('Look', req.body);
         passport.authenticate('signup', function(err, user) {
+            console.log('<><><>< Look', err, user);
             req.logIn(user, function(err) { // serializes user
                 return callback(user);
             });
@@ -33,7 +33,9 @@ var db = require('./database');
             usernameField: 'email',
             passReqToCallback : true
         }, function findOrCreateUser(req, email, password, callback) {
-            db.create('user', req.body, callback);
+            db.create('user', req.body, function(err, user) {
+                console.log('<<<<<', err, user);
+            });
         })
     );
 }(exports));

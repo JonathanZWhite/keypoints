@@ -1,8 +1,10 @@
 /*jslint node: true */
 'use strict';
 
+var async = require('async');
 var mongoose =  require('mongoose');
 var Schema =    mongoose.Schema;
+var User;
 
 var UserSchema = new Schema({
     email: String,
@@ -11,4 +13,35 @@ var UserSchema = new Schema({
     password: String
 });
 
-module.exports = mongoose.model('user', UserSchema);
+UserSchema.pre('save',function(next) {
+    var self = this;
+    var tasks = [function(callback) {
+        _checkUnique(self, 'email', self.email, callback);
+    }, function(callback) {
+        _checkUnique(self, 'username', self.username, callback);
+    }];
+
+    async.parallel(tasks, next);
+});
+
+function _checkUnique(self, field, value, callback) {
+    var query = {};
+    query[field] = value;
+
+    User.findOne(query, function(err, user) {
+        if(err) {
+            return callback(err);
+        }
+
+        if (user) {
+            self.invalidate(field, field + ' must be unique');
+            callback(new Error(field + ' must be unique'));
+        } else {
+            callback();
+        }
+    });
+}
+
+User = mongoose.model('user', UserSchema);
+
+module.exports = User;
