@@ -7,14 +7,13 @@
 		var base = 'api/topic/';
 
 		var Topic = {
-			create: create
+			getAll: getAll
 		};
 
-		function create(url) {
+		function getAll() {
 			return $http({
-				url: base + 'create',
-				method: 'POST',
-				data: { url: url }
+				url: base + 'all',
+				method: 'GET'
 			});
 		}
 

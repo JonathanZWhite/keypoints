@@ -3,6 +3,7 @@
 
 var mongoose =  require('mongoose');
 var Schema =    mongoose.Schema;
+var Topic;
 
 var TopicSchema = new Schema({
     url: {
@@ -11,13 +12,17 @@ var TopicSchema = new Schema({
         unique: true,
         dropDups: true
     },
-    title: String
+    title: String,
+    image: String,
+    description: String
 });
 
 TopicSchema.statics.make = make;
 
 function make(payload, callback) {
-    this.create(payload, callback);
+    Topic.create(payload, callback);
 }
 
-module.exports = mongoose.model('topic', TopicSchema);
+Topic = mongoose.model('topic', TopicSchema);
+
+module.exports = Topic;

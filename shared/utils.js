@@ -3,7 +3,10 @@ var utils = {
 };
 
 function removeUrlIdentifier(url) {
-    return url.substr(url.indexOf('://') + 3 );
+    return url
+        .replace('http://', '')
+        .replace('https://', '')
+        .replace('www.', '');
 }
 
 module.exports = utils;

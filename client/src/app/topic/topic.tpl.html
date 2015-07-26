@@ -4,6 +4,10 @@
             ng-show="vm.contenteditable"
             ng-click="vm.disableContenteditable()"></div>
 
+        <h5
+            class="topic__head head--dark"
+            ng-bind="vm.topicStore.topic.title"></h5>
+
         <composer
             keypoints="vm.keypointStore.keypoints"></composer>
         <keypoint

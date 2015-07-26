@@ -1,8 +1,8 @@
 (function() {
     'use strict';
 
-    TopicController.$inject = ['$stateParams', 'KeypointStore', 'MesssagesService'];
-    function TopicController($stateParams, KeypointStore, MesssagesService) {
+    TopicController.$inject = ['$stateParams', 'KeypointStore', 'MesssagesService', 'TopicStore'];
+    function TopicController($stateParams, KeypointStore, MesssagesService, TopicStore) {
         var vm = this;
         // model
         vm.keypoints = [];
@@ -10,6 +10,7 @@
         vm.contenteditable = false;
 
         vm.keypointStore = KeypointStore.model;
+        vm.topicStore = TopicStore.model;
     }
 
     angular

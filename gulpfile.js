@@ -181,11 +181,6 @@ gulp.task('watch', ['vet', 'all'], function() {
 	], ['less'])
 		.on('change', changeEvent);
 
-	gulp.watch([
-		'server/views/**/assets/css/*.less'
-	], ['less-server'])
-		.on('change', changeEvent);
-
 	gulp.watch(['client/src/app/index.html','server/views/libs/**.js'], ['copy'])
 		.on('change', changeEvent);
 
@@ -267,6 +262,6 @@ function clean(path, done) {
     del(path, done);
 }
 
-gulp.task('reload', ['bower', 'copy', 'images', 'concat', 'less', 'less-server']);
+gulp.task('reload', ['bower', 'copy', 'images', 'concat', 'less']);
 gulp.task('all', ['bower', 'copy', 'images', 'concat', 'less', 'serve']);
 gulp.task('default', ['build']);

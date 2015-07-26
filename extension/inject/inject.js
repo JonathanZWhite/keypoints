@@ -16,7 +16,7 @@ var Inject = (function() {
     }
 
     function _injectIframe() {
-        var formattedHref = removeUrlIdentifier(window.location.href);
+        var formattedHref = utils.removeUrlIdentifier(window.location.href);
         this.iframe = document.createElement('iframe');
         this.iframe.src = 'https://localhost:8000/topic?url=' + formattedHref;
         this.iframe.style.cssText = 'position:fixed; top:0; right:0; display:block;' +

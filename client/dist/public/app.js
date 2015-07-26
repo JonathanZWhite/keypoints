@@ -14,6 +14,7 @@
     'use strict';
 
     angular.module('app.pages', [
+        'app.pages.list',
         'app.pages.topic'
     ]);
 })();
@@ -30,6 +31,9 @@
         ]);
 
 })();
+
+angular
+    .module('app.pages.list', []);
 
 angular
     .module('app.pages.topic', []);
@@ -97,14 +101,55 @@ angular
 
 }());
 
-angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><div class=edit-overlay ng-show=vm.contenteditable ng-click=vm.disableContenteditable()></div><composer keypoints=vm.keypointStore.keypoints></composer><keypoint ng-repeat=\"keypoint in vm.keypointStore.keypoints track by $index\" keypoint=keypoint keypoints=vm.keypointStore.keypoints is-contenteditable=vm.contenteditable></keypoint></div></section>");
+angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("list/list.tpl.html","<section class=list>{{vm.listStore}}</section>");
+$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><div class=edit-overlay ng-show=vm.contenteditable ng-click=vm.disableContenteditable()></div><h5 class=\"topic__head head--dark\" ng-bind=vm.topicStore.topic.title></h5><composer keypoints=vm.keypointStore.keypoints></composer><keypoint ng-repeat=\"keypoint in vm.keypointStore.keypoints track by $index\" keypoint=keypoint keypoints=vm.keypointStore.keypoints is-contenteditable=vm.contenteditable></keypoint></div></section>");
 $templateCache.put("composer/composer.tpl.html","<div class=composer><div class=composer__options><span class=\"composer__option caption caption--dark\" ng-click=\"vm.toggleMode(\'text\')\" ng-class=\"{ \'composer__option--active\': vm.mode === \'text\' }\">TEXT</span> <span class=\"caption caption--dark\">|</span> <span class=\"composer__option caption caption--dark\" ng-click=\"vm.toggleMode(\'image\')\" ng-class=\"{ \'composer__option--active\': vm.mode === \'image\' }\">IMAGE</span></div><textarea placeholder=\"Enter in a keypoint about whatever article you are reading\" ng-show=\"vm.mode === \'text\'\" class=\"ui-textarea ui-textarea--medium ui-textarea--light\" ng-model=vm.keypoint></textarea> <input placeholder=http://imgur.com ng-show=\"vm.mode === \'image\'\" class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.image> <button class=\"composer__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.createKeypoint()>Add keypoint</button></div>");
 $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\" ng-class=\"{ \'keypoint--contenteditable\': vm.keypoint.contenteditable, \'keypoint--preview\': vm.keypoint.contentType === \'image\' }\"><div class=kp__meta><span class=\"caption caption--dark\" ng-bind=\"vm.keypoint.created | date:\'mediumDate\'\"></span><ul class=kp__options><li class=kp__option ng-click=vm.delKeypoint(vm.keypoint)><i class=\"caption--dark fa fa-trash-o\"></i></li><li class=kp__option><i class=\"caption--dark fa fa-bars\"></i></li><li class=kp__option ng-click=vm.enableContenteditable() ng-if=\"vm.keypoint.contentType === \'text\'\"><i class=\"caption--dark fa fa-pencil\"></i></li></ul></div><p class=text--dark ng-if=\"vm.keypoint.contentType === \'text\'\" contenteditable=\"{{ vm.keypoint.contenteditable }}\" ng-class=\"{ \'ui-contenteditabe\': vm.keypoint.contenteditable }\" ng-model=vm.keypoint.keypoint></p><p><div class=kp__preview ng-if=\"vm.keypoint.contentType === \'image\'\" ng-style=\"{ \'background-image\': \'url(\' + vm.keypoint.image + \')\' }\"></div><button class=\"kp-btn ui-btn ui-btn--medium ui-btn--success\" ng-if=vm.keypoint.contenteditable ng-click=vm.updateKeypoint()>update</button></p></div>");}]);
 (function() {
     'use strict';
 
-    TopicController.$inject = ['$stateParams', 'KeypointStore', 'MesssagesService'];
-    function TopicController($stateParams, KeypointStore, MesssagesService) {
+    ListController.$inject = ['ListStore'];
+    function ListController(ListStore) {
+        var vm = this;
+
+        vm.listStore = ListStore.model;
+    }
+
+    angular
+        .module('app.pages.list')
+        .controller('ListController', ListController);
+})();
+
+(function() {
+    'use strict';
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('list', {
+                url: '/list',
+                views: {
+                    'content@': {
+                        templateUrl: 'list/list.tpl.html',
+                        controllerAs: 'vm',
+                        controller: 'ListController'
+                    }
+                },
+                data: {
+                    pageTitle: 'List'
+                }
+            });
+    }
+
+    angular.module('app.pages.list')
+        .config(['$stateProvider', config]);
+
+}());
+
+(function() {
+    'use strict';
+
+    TopicController.$inject = ['$stateParams', 'KeypointStore', 'MesssagesService', 'TopicStore'];
+    function TopicController($stateParams, KeypointStore, MesssagesService, TopicStore) {
         var vm = this;
         // model
         vm.keypoints = [];
@@ -112,6 +157,7 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
         vm.contenteditable = false;
 
         vm.keypointStore = KeypointStore.model;
+        vm.topicStore = TopicStore.model;
     }
 
     angular
@@ -154,41 +200,6 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
         .config(['$stateProvider', config]);
 
 }());
-
-(function() {
-	'use strict';
-
-	TopicStore.$inject = ['$http'];
-	function TopicStore($http) {
-		var base = 'api/topic/';
-
-		var Topic = {
-			// models
-			topic: {
-				model: {}
-			},
-
-			model: {
-				newTopic: {
-					
-				}
-			}
-		};
-
-		// activation
-		init();
-
-		return Topic;
-
-		function init() {
-			console.log('Topic store initialized');
-		}
-	}
-
-	angular
-        .module('app.pages.topic')
-        .factory('TopicStore', TopicStore);
-})();
 
 (function() {
     'use strict';
@@ -305,6 +316,36 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 (function() {
 	'use strict';
 
+	ListStore.$inject = ['TopicService'];
+
+	function ListStore(TopicService) {
+		var List = {
+			model: {
+				topics: {}
+			}
+		};
+
+		init();
+
+		function init() {
+			console.log('Initializing list store');
+			TopicService.getAll()
+				.then(function(resp) {
+					List.model.topics = resp.data;
+				});
+		}
+
+		return List;
+	}
+
+	angular
+	    .module('app.services')
+	    .factory('ListStore', ListStore);
+})();
+
+(function() {
+	'use strict';
+
 	MesssagesService.$inject = ['$window', 'KeypointStore'];
 
 	function MesssagesService($window, KeypointStore) {
@@ -340,14 +381,13 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 		var base = 'api/topic/';
 
 		var Topic = {
-			create: create
+			getAll: getAll
 		};
 
-		function create(url) {
+		function getAll() {
 			return $http({
-				url: base + 'create',
-				method: 'POST',
-				data: { url: url }
+				url: base + 'all',
+				method: 'GET'
 			});
 		}
 
@@ -357,6 +397,55 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 	angular
 	    .module('app.services')
 	    .factory('TopicService', TopicService);
+})();
+
+(function() {
+	'use strict';
+
+	TopicStore.$inject = ['$http', '$stateParams'];
+
+	function TopicStore($http, $stateParams) {
+		var base = 'api/topic/';
+
+		var Topic = {
+			model: {
+				topic: {}
+			},
+			create: create
+		};
+
+		init();
+
+		function init() {
+			console.log('Initializing');
+			get($stateParams.url)
+				.then(function(resp) {
+					Topic.model.topic = resp.data;
+				});
+		}
+
+		function create(url) {
+			return $http({
+				url: base + 'create',
+				method: 'POST',
+				data: { url: url }
+			});
+		}
+
+		function get(url) {
+			return $http({
+				url: base + 'get',
+				method: 'GET',
+				params: { url: url }
+			});
+		}
+
+		return Topic;
+	}
+
+	angular
+	    .module('app.services')
+	    .factory('TopicStore', TopicStore);
 })();
 
 (function () {

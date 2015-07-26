@@ -40,6 +40,9 @@ select {
 button {
   cursor: pointer;
 }
+body {
+  background: #f6f9fc;
+}
 .ui-textarea {
   border: none;
   font-size: 14px;
@@ -309,6 +312,9 @@ p {
 .text--dark {
   color: #44484f;
 }
+.head--dark {
+  color: #44484f;
+}
 /*
  * VARIABLES
  *
@@ -324,13 +330,16 @@ p {
   left: 0;
 }
 .topic {
-  background: #f6f9fc;
   box-sizing: border-box;
   height: 100%;
   padding: 25px 0;
 }
 .topic .ui-container {
   width: 85%;
+}
+.topic__head {
+  font-weight: 700;
+  margin-bottom: 12.5px;
 }
 .composer__btn {
   margin-bottom: 25px;
