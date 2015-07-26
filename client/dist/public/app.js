@@ -49,6 +49,15 @@ angular
 (function() {
     'use strict';
 
+    angular.module('app.components', [
+        'app.components.composer',
+        'app.components.keypoint'
+    ]);
+})();
+
+(function() {
+    'use strict';
+
     angular.module('app.directives', []);
 })();
 
@@ -56,15 +65,6 @@ angular
     'use strict';
 
     angular.module('app.services', []);
-})();
-
-(function() {
-    'use strict';
-
-    angular.module('app.components', [
-        'app.components.composer',
-        'app.components.keypoint'
-    ]);
 })();
 
 (function () {
