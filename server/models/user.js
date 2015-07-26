@@ -6,8 +6,9 @@ var Schema =    mongoose.Schema;
 
 var UserSchema = new Schema({
     email: String,
-    password: String,
-    topics: [{ type : mongoose.Schema.ObjectId, ref : 'topic' }]
+    username: String,
+    profile: { type: String, default: 'http://americanmuslimconsumer.com/wp-content/uploads/2013/09/blank-user.jpg' },
+    password: String
 });
 
 module.exports = mongoose.model('user', UserSchema);

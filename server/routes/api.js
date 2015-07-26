@@ -1,3 +1,4 @@
+var authController = require('../controllers/auth');
 var keypointController = require('../controllers/keypoint');
 var topicController = require('../controllers/topic');
 
@@ -11,4 +12,7 @@ module.exports = function(app, router) {
     // topic
     router.get('/api/topic/get', topicController.get);
     router.get('/api/topic/all', topicController.getAll);
+
+    // auth
+    router.post('/api/auth/signup', authController.signup);
 };
