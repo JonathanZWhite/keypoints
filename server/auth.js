@@ -5,6 +5,7 @@ var _ = require('lodash-node');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User =     require('./models/user');
+var db = require('./database');
 
 (function(Auth) {
     Auth.signup = signup;
@@ -22,10 +23,9 @@ var User =     require('./models/user');
     function signup(req, res, callback) {
         console.log('Look', req.body);
         passport.authenticate('signup', function(err, user) {
-            console.log('doing something', user);
-            // req.logIn(user, function(err) { // serializes user
-            //     return callback(user);
-            // });
+            req.logIn(user, function(err) { // serializes user
+                return callback(user);
+            });
         })(req, res);
     }
 
@@ -33,19 +33,7 @@ var User =     require('./models/user');
             usernameField: 'email',
             passReqToCallback : true
         }, function findOrCreateUser(req, email, password, callback) {
-            var user;
-            var newUser = new User();
-
-            // wraps front-end model with mongoose
-            user = _.extend(newUser, req.body);
-
-            user.save(function(err) {
-                if (err) {
-                    return callback(null, false);
-                }
-
-                return callback(null, user);
-            });
+            db.create('user', req.body, callback);
         })
     );
 }(exports));

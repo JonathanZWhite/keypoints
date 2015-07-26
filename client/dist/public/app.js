@@ -148,8 +148,8 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 (function() {
     'use strict';
 
-    TopicController.$inject = ['$stateParams', 'KeypointStore', 'MesssagesService', 'TopicStore'];
-    function TopicController($stateParams, KeypointStore, MesssagesService, TopicStore) {
+    TopicController.$inject = ['$stateParams', 'KeypointStore', 'MesssagesService', 'TopicStore', 'AuthService'];
+    function TopicController($stateParams, KeypointStore, MesssagesService, TopicStore, AuthService) {
         var vm = this;
         // model
         vm.keypoints = [];
@@ -158,6 +158,11 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 
         vm.keypointStore = KeypointStore.model;
         vm.topicStore = TopicStore.model;
+
+        // AuthService.signup()
+        //     .then(function(resp) {
+                AuthService.get();
+            // });
     }
 
     angular
@@ -233,6 +238,46 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
         .directive('contenteditable', Contenteditable);
 
 }());
+
+(function() {
+	'use strict';
+
+	AuthService.$inject = ['$http'];
+
+	function AuthService($http) {
+		var base = 'api/auth/';
+
+		var Auth = {
+			get: get,
+			signup: signup
+		};
+
+		function signup() {
+			return $http({
+				url: base + 'signup',
+				method: 'POST',
+				data: {
+					email: 'jonathanzwhite@gmail.com',
+					password: 'movingcastle',
+					username: 'jonathanzwhite'
+				}
+			});
+		}
+
+		function get() {
+			return $http({
+				url: base + 'get',
+				method: 'GET'
+			});
+		}
+
+		return Auth;
+	}
+
+	angular
+	    .module('app.services')
+	    .factory('AuthService', AuthService);
+})();
 
 (function() {
 	'use strict';

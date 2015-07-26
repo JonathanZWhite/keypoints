@@ -89,10 +89,7 @@
 	};
 
 	function removeUrlIdentifier(url) {
-	    return url
-	        .replace('http://', '')
-	        .replace('https://', '')
-	        .replace('www.', '');
+	    return url.replace('http://', '').replace('https://', '').replace('www.', '');
 	}
 
 	module.exports = utils;

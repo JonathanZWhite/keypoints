@@ -7,7 +7,7 @@ authController.signup = signup;
 
 function signup(req, res) {
     auth.signup(req, res, function(resp) {
-        console.log('Done!', resp);
+        res.json(resp);
     });
 }
 
