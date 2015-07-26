@@ -1,3 +1,4 @@
+// file known as content-script 
 var script = document.createElement('script');
 script.src = chrome.extension.getURL('script.js');
 (document.head||document.documentElement).appendChild(script);
@@ -19,3 +20,20 @@ if (!location.ancestorOrigins.contains(extensionOrigin)) {
     iframe.id = 'keypoints';
     document.body.appendChild(iframe);
 }
+
+var Inject = {};
+
+Inject.init = init;
+
+function init() {
+    console.log('initializing listener...');
+    chrome.runtime.onMessage.addListener(_messageHandler);
+    chrome.extension.onMessage.addListener(_messageHandler);
+}
+
+function _messageHandler() {
+    console.log('Received a message');
+    alert('Received a message');
+}
+
+window.addEventListener('load', Inject.init());

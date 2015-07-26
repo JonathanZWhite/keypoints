@@ -88,11 +88,6 @@ function getImageUrl(searchTerm, callback, errorCallback) {
   x.send();
 }
 
-chrome.devtools.panels.create("Font Picker", "icon.png", "popup.html", function(panel) {
-    alert('Panel created!');
-});
-
-
 function renderStatus(statusText) {
   document.getElementById('status').textContent = statusText;
 }
