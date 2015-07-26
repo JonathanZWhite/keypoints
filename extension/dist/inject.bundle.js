@@ -60,9 +60,10 @@
 	    }
 
 	    function _injectIframe() {
-	        console.log('action: injecting iframe');
+	        var href = window.location.href;
+	        var formattedHref = href.substr(href.indexOf('://')+3);
 	        this.iframe = document.createElement('iframe');
-	        this.iframe.src = 'http://localhost:3000/topic?url=www.youtube.com%2Fwatch%3Fv#';
+	        this.iframe.src = 'http://localhost:3000/topic?url=' + formattedHref;
 	        this.iframe.style.cssText = 'position:fixed; top:0; right:0; display:block;' +
 	                               'width:350px;height:100%;z-index:1000;';
 	        this.iframe.id = 'keypoints';

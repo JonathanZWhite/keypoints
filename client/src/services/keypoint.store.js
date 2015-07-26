@@ -37,8 +37,7 @@
 				}
 			})
 			.success(function(resp) {
-				console.log('Yay!', resp);
-				Keypoint.model.keypoints.unshift(resp.data);
+				Keypoint.model.keypoints.unshift(resp);
 			});
 		}
 

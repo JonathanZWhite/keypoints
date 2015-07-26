@@ -49,15 +49,6 @@ angular
 (function() {
     'use strict';
 
-    angular.module('app.components', [
-        'app.components.composer',
-        'app.components.keypoint'
-    ]);
-})();
-
-(function() {
-    'use strict';
-
     angular.module('app.directives', []);
 })();
 
@@ -65,6 +56,15 @@ angular
     'use strict';
 
     angular.module('app.services', []);
+})();
+
+(function() {
+    'use strict';
+
+    angular.module('app.components', [
+        'app.components.composer',
+        'app.components.keypoint'
+    ]);
 })();
 
 (function () {
@@ -262,8 +262,7 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 				}
 			})
 			.success(function(resp) {
-				console.log('Yay!', resp);
-				Keypoint.model.keypoints.unshift(resp.data);
+				Keypoint.model.keypoints.unshift(resp);
 			});
 		}
 
@@ -398,10 +397,7 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
         function createKeypoint() {
             if (!vm.keypoint && !vm.image) return;
 
-            KeypointStore.create($stateParams.url, vm.keypoint, vm.image)
-                .then(function(resp) {
-                    vm.keypoints.unshift(resp.data);
-                });
+            KeypointStore.create($stateParams.url, vm.keypoint, vm.image);
         }
     }
 

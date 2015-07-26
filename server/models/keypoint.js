@@ -35,6 +35,7 @@ function del(keypointId, callback) {
 }
 
 function make(payload, callback) {
+    console.log('This is the payload', payload);
     var tasks = [function(next) {
         Topic.findOne({ url: payload.url }, function(err, topic) {
             if (err) {

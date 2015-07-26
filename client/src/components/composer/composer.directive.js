@@ -36,10 +36,7 @@
         function createKeypoint() {
             if (!vm.keypoint && !vm.image) return;
 
-            KeypointStore.create($stateParams.url, vm.keypoint, vm.image)
-                .then(function(resp) {
-                    vm.keypoints.unshift(resp.data);
-                });
+            KeypointStore.create($stateParams.url, vm.keypoint, vm.image);
         }
     }
 
