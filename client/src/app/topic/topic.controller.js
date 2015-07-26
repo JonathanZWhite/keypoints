@@ -1,23 +1,15 @@
 (function() {
     'use strict';
 
-    TopicController.$inject = ['$stateParams', 'KeypointService', 'MesssagesService'];
-    function TopicController($stateParams, KeypointService, MesssagesService) {
+    TopicController.$inject = ['$stateParams', 'KeypointStore', 'MesssagesService'];
+    function TopicController($stateParams, KeypointStore, MesssagesService) {
         var vm = this;
         // model
         vm.keypoints = [];
         // functions
         vm.contenteditable = false;
 
-        // activation
-        init();
-
-        function init() {
-            KeypointService.list($stateParams.url)
-                .then(function(resp) {
-                    vm.keypoints = resp.data;
-                });
-        }
+        vm.keypointStore = KeypointStore.model;
     }
 
     angular

@@ -5,11 +5,11 @@
             ng-click="vm.disableContenteditable()"></div>
 
         <composer
-            keypoints="vm.keypoints"></composer>
+            keypoints="vm.keypointStore.keypoints"></composer>
         <keypoint
-            ng-repeat="keypoint in vm.keypoints track by $index"
+            ng-repeat="keypoint in vm.keypointStore.keypoints track by $index"
             keypoint="keypoint"
-            keypoints="vm.keypoints"
+            keypoints="vm.keypointStore.keypoints"
             is-contenteditable="vm.contenteditable"></keypoint>
     </div>
 </section>

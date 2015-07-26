@@ -69,7 +69,7 @@ function make(payload, callback) {
 
             next(null, keypoint);
         });
-    }]
+    }];
 
     async.waterfall(tasks, function(err, result) {
         if (err) {

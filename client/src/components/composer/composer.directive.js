@@ -4,8 +4,8 @@
     /**
      * Composer is the actual user
      */
-    Composer.$inject = ['$stateParams', 'KeypointService'];
-    function Composer($stateParams, KeypointService) {
+    Composer.$inject = ['$stateParams', 'KeypointStore'];
+    function Composer($stateParams, KeypointStore) {
         return {
             restrict: 'E',
             replace: true,
@@ -19,7 +19,7 @@
         };
     }
 
-    function Controller($stateParams, KeypointService) {
+    function Controller($stateParams, KeypointStore) {
         var vm = this;
         // model
         vm.keypoint = '';
@@ -36,7 +36,7 @@
         function createKeypoint() {
             if (!vm.keypoint && !vm.image) return;
 
-            KeypointService.create($stateParams.url, vm.keypoint, vm.image)
+            KeypointStore.create($stateParams.url, vm.keypoint, vm.image)
                 .then(function(resp) {
                     vm.keypoints.unshift(resp.data);
                 });

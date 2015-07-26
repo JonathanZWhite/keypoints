@@ -1,17 +1,30 @@
 (function() {
 	'use strict';
 
-	KeypointService.$inject = ['$http'];
+	KeypointStore.$inject = ['$http', '$stateParams'];
 
-	function KeypointService($http) {
+	function KeypointStore($http, $stateParams) {
 		var base = 'api/keypoint/';
 
 		var Keypoint = {
+			model: {
+				keypoints: []
+			},
 			create: create,
 			del: del,
 			list: list,
 			update: update
 		};
+
+		init();
+
+		function init() {
+			console.log('initializing keypoint store');
+			list($stateParams.url)
+				.then(function(resp) {
+					Keypoint.model.keypoints = resp.data;
+				});
+		}
 
 		function create(url, keypoint, image) {
 			return $http({
@@ -22,6 +35,10 @@
 					keypoint: keypoint,
 					image: image
 				}
+			})
+			.success(function(resp) {
+				console.log('Yay!', resp);
+				Keypoint.model.keypoints.unshift(resp.data);
 			});
 		}
 
@@ -58,5 +75,5 @@
 
 	angular
 	    .module('app.services')
-	    .factory('KeypointService', KeypointService);
+	    .factory('KeypointStore', KeypointStore);
 })();

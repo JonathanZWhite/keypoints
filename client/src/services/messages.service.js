@@ -1,9 +1,9 @@
 (function() {
 	'use strict';
 
-	MesssagesService.$inject = ['$window'];
+	MesssagesService.$inject = ['$window', 'KeypointStore'];
 
-	function MesssagesService($window) {
+	function MesssagesService($window, KeypointStore) {
 		var Messages = {};
 
 		init();
@@ -13,7 +13,9 @@
 		}
 
 		function handleChange(message) {
-			console.log('Look', message);
+			console.log('Look', message.data);
+			var payload = message.data;
+			KeypointStore.create(payload.url, payload.keypoint, payload.image);
 		}
 
 

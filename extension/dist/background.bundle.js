@@ -52,14 +52,13 @@
 
 	function clickHandler(event) {
 	    var url = event.pageUrl;
-	    var selected = event.selectionText;
-	    var contentType = event.mediaType === 'image' ? 'image' : 'text';
-	    var imageSrc = event.srcUrl;
+	    var keypoint = event.selectionText;
+	    var image = event.srcUrl;
 
-	    _message(url, selected, contentType, imageSrc);
+	    _message(url, keypoint, image);
 	}
 
-	function _message(url, selected, contentType, imageSrc) {
+	function _message(url, keypoint, image) {
 	    chrome.tabs.query({
 	        active: true,
 	        currentWindow: true
@@ -67,9 +66,8 @@
 	        chrome.tabs.sendMessage(tabs[0].id, {
 	            payload: {
 	                url: url,
-	                selected: selected,
-	                contentType: contentType,
-	                imageSrc: imageSrc
+	                keypoint: keypoint,
+	                image: image
 	            }
 	        }, function(response) {});
 	    });

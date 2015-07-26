@@ -1,44 +1,3 @@
-// file known as content-script
-var script = document.createElement('script');
-script.src = chrome.extension.getURL('script.js');
-(document.head||document.documentElement).appendChild(script);
-script.onload = function() {
-    script.parentNode.removeChild(script);
-};
-
-// var Inject = {};
-//
-// Inject.init = init;
-
-// var Inject = {
-//     init: function init() {
-//         console.log('initializing: inject');
-//         this._injectIframe();
-//         chrome.extension.onMessage.addListener(this._messageHandler); // listens to background
-//     },
-//     _iframe: '',
-//     test: 'yoo',
-//     _injectIframe: function _injectIframe() {
-//         console.log('action: injecting iframe');
-//         var self = this;
-//         self._iframe = document.createElement('iframe');
-//         self._iframe.src = chrome.extension.getURL('frame.html');
-//         self._iframe.style.cssText = 'position:fixed; top:0; right:0; display:block;' +
-//                                'width:350px;height:100%;z-index:1000;';
-//         self._iframe.id = 'keypoints';
-//         this.test = 'doo';
-//         console.log('Look', this);
-//         document.body.appendChild(self._iframe);
-//     },
-//     _messageHandler: function(request, sender, sendResponse) {
-//         var self = this;
-//         console.log('Received a message', request, sender, sendResponse);
-//         console.log('this:', this);
-//         console.log('<<<<', Inject);
-//         console.log('<<<<', Inject.test);
-//     }
-// };
-
 var Inject = (function() {
     var inject = {
         iframe: null,
@@ -57,7 +16,7 @@ var Inject = (function() {
     function _injectIframe() {
         console.log('action: injecting iframe');
         this.iframe = document.createElement('iframe');
-        this.iframe.src = chrome.extension.getURL('frame.html');
+        this.iframe.src = 'http://localhost:3000/topic?url=www.youtube.com%2Fwatch%3Fv#';
         this.iframe.style.cssText = 'position:fixed; top:0; right:0; display:block;' +
                                'width:350px;height:100%;z-index:1000;';
         this.iframe.id = 'keypoints';
@@ -65,9 +24,8 @@ var Inject = (function() {
     }
 
     function _messageHandler(request, sender, sendResponse) {
-        var self = this;
-        console.log('Received a message', request, sender, sendResponse);
-        console.log('this:', this.iframe);
+        console.log('Sending message', request.payload);
+        this.iframe.contentWindow.postMessage(request.payload, '*');
     }
 }());
 

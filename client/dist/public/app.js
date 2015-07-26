@@ -97,29 +97,21 @@ angular
 
 }());
 
-angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><div class=edit-overlay ng-show=vm.contenteditable ng-click=vm.disableContenteditable()></div><composer keypoints=vm.keypoints></composer><keypoint ng-repeat=\"keypoint in vm.keypoints track by $index\" keypoint=keypoint keypoints=vm.keypoints is-contenteditable=vm.contenteditable></keypoint></div></section>");
+angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><div class=edit-overlay ng-show=vm.contenteditable ng-click=vm.disableContenteditable()></div><composer keypoints=vm.keypointStore.keypoints></composer><keypoint ng-repeat=\"keypoint in vm.keypointStore.keypoints track by $index\" keypoint=keypoint keypoints=vm.keypointStore.keypoints is-contenteditable=vm.contenteditable></keypoint></div></section>");
 $templateCache.put("composer/composer.tpl.html","<div class=composer><div class=composer__options><span class=\"composer__option caption caption--dark\" ng-click=\"vm.toggleMode(\'text\')\" ng-class=\"{ \'composer__option--active\': vm.mode === \'text\' }\">TEXT</span> <span class=\"caption caption--dark\">|</span> <span class=\"composer__option caption caption--dark\" ng-click=\"vm.toggleMode(\'image\')\" ng-class=\"{ \'composer__option--active\': vm.mode === \'image\' }\">IMAGE</span></div><textarea placeholder=\"Enter in a keypoint about whatever article you are reading\" ng-show=\"vm.mode === \'text\'\" class=\"ui-textarea ui-textarea--medium ui-textarea--light\" ng-model=vm.keypoint></textarea> <input placeholder=http://imgur.com ng-show=\"vm.mode === \'image\'\" class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.image> <button class=\"composer__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.createKeypoint()>Add keypoint</button></div>");
 $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\" ng-class=\"{ \'keypoint--contenteditable\': vm.keypoint.contenteditable, \'keypoint--preview\': vm.keypoint.contentType === \'image\' }\"><div class=kp__meta><span class=\"caption caption--dark\" ng-bind=\"vm.keypoint.created | date:\'mediumDate\'\"></span><ul class=kp__options><li class=kp__option ng-click=vm.delKeypoint(vm.keypoint)><i class=\"caption--dark fa fa-trash-o\"></i></li><li class=kp__option><i class=\"caption--dark fa fa-bars\"></i></li><li class=kp__option ng-click=vm.enableContenteditable() ng-if=\"vm.keypoint.contentType === \'text\'\"><i class=\"caption--dark fa fa-pencil\"></i></li></ul></div><p class=text--dark ng-if=\"vm.keypoint.contentType === \'text\'\" contenteditable=\"{{ vm.keypoint.contenteditable }}\" ng-class=\"{ \'ui-contenteditabe\': vm.keypoint.contenteditable }\" ng-model=vm.keypoint.keypoint></p><p><div class=kp__preview ng-if=\"vm.keypoint.contentType === \'image\'\" ng-style=\"{ \'background-image\': \'url(\' + vm.keypoint.image + \')\' }\"></div><button class=\"kp-btn ui-btn ui-btn--medium ui-btn--success\" ng-if=vm.keypoint.contenteditable ng-click=vm.updateKeypoint()>update</button></p></div>");}]);
 (function() {
     'use strict';
 
-    TopicController.$inject = ['$stateParams', 'KeypointService', 'MesssagesService'];
-    function TopicController($stateParams, KeypointService, MesssagesService) {
+    TopicController.$inject = ['$stateParams', 'KeypointStore', 'MesssagesService'];
+    function TopicController($stateParams, KeypointStore, MesssagesService) {
         var vm = this;
         // model
         vm.keypoints = [];
         // functions
         vm.contenteditable = false;
 
-        // activation
-        init();
-
-        function init() {
-            KeypointService.list($stateParams.url)
-                .then(function(resp) {
-                    vm.keypoints = resp.data;
-                });
-        }
+        vm.keypointStore = KeypointStore.model;
     }
 
     angular
@@ -234,17 +226,30 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 (function() {
 	'use strict';
 
-	KeypointService.$inject = ['$http'];
+	KeypointStore.$inject = ['$http', '$stateParams'];
 
-	function KeypointService($http) {
+	function KeypointStore($http, $stateParams) {
 		var base = 'api/keypoint/';
 
 		var Keypoint = {
+			model: {
+				keypoints: []
+			},
 			create: create,
 			del: del,
 			list: list,
 			update: update
 		};
+
+		init();
+
+		function init() {
+			console.log('initializing keypoint store');
+			list($stateParams.url)
+				.then(function(resp) {
+					Keypoint.model.keypoints = resp.data;
+				});
+		}
 
 		function create(url, keypoint, image) {
 			return $http({
@@ -255,6 +260,10 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 					keypoint: keypoint,
 					image: image
 				}
+			})
+			.success(function(resp) {
+				console.log('Yay!', resp);
+				Keypoint.model.keypoints.unshift(resp.data);
 			});
 		}
 
@@ -291,15 +300,15 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 
 	angular
 	    .module('app.services')
-	    .factory('KeypointService', KeypointService);
+	    .factory('KeypointStore', KeypointStore);
 })();
 
 (function() {
 	'use strict';
 
-	MesssagesService.$inject = ['$window'];
+	MesssagesService.$inject = ['$window', 'KeypointStore'];
 
-	function MesssagesService($window) {
+	function MesssagesService($window, KeypointStore) {
 		var Messages = {};
 
 		init();
@@ -309,7 +318,9 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 		}
 
 		function handleChange(message) {
-			console.log('Look', message);
+			console.log('Look', message.data);
+			var payload = message.data;
+			KeypointStore.create(payload.url, payload.keypoint, payload.image);
 		}
 
 
@@ -355,8 +366,8 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
     /**
      * Composer is the actual user
      */
-    Composer.$inject = ['$stateParams', 'KeypointService'];
-    function Composer($stateParams, KeypointService) {
+    Composer.$inject = ['$stateParams', 'KeypointStore'];
+    function Composer($stateParams, KeypointStore) {
         return {
             restrict: 'E',
             replace: true,
@@ -370,7 +381,7 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
         };
     }
 
-    function Controller($stateParams, KeypointService) {
+    function Controller($stateParams, KeypointStore) {
         var vm = this;
         // model
         vm.keypoint = '';
@@ -387,7 +398,7 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
         function createKeypoint() {
             if (!vm.keypoint && !vm.image) return;
 
-            KeypointService.create($stateParams.url, vm.keypoint, vm.image)
+            KeypointStore.create($stateParams.url, vm.keypoint, vm.image)
                 .then(function(resp) {
                     vm.keypoints.unshift(resp.data);
                 });
@@ -406,8 +417,8 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
     /**
      * Keypoint is the actual user
      */
-    Keypoint.$inject = ['$document', 'KeypointService'];
-    function Keypoint($document, KeypointService) {
+    Keypoint.$inject = ['$document', 'KeypointStore'];
+    function Keypoint($document, KeypointStore) {
         return {
             restrict: 'E',
             replace: true,
@@ -445,7 +456,7 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
         }
     }
 
-    function Controller($document, KeypointService) {
+    function Controller($document, KeypointStore) {
         var vm = this;
 
         vm.keypointOldValue = '';
@@ -468,12 +479,12 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 
         function updateKeypoint() {
             vm.keypoint.contenteditable = false;
-            KeypointService.update(vm.keypoint);
+            KeypointStore.update(vm.keypoint);
             vm.isContenteditable = false;
         }
 
         function delKeypoint() {
-            KeypointService.del(vm.keypoint._id)
+            KeypointStore.del(vm.keypoint._id)
                 .then(function(resp) {
                     if (resp.data.status) {
                         var index = vm.keypoints.indexOf(vm.keypoint);

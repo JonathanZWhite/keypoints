@@ -4,8 +4,8 @@
     /**
      * Keypoint is the actual user
      */
-    Keypoint.$inject = ['$document', 'KeypointService'];
-    function Keypoint($document, KeypointService) {
+    Keypoint.$inject = ['$document', 'KeypointStore'];
+    function Keypoint($document, KeypointStore) {
         return {
             restrict: 'E',
             replace: true,
@@ -43,7 +43,7 @@
         }
     }
 
-    function Controller($document, KeypointService) {
+    function Controller($document, KeypointStore) {
         var vm = this;
 
         vm.keypointOldValue = '';
@@ -66,12 +66,12 @@
 
         function updateKeypoint() {
             vm.keypoint.contenteditable = false;
-            KeypointService.update(vm.keypoint);
+            KeypointStore.update(vm.keypoint);
             vm.isContenteditable = false;
         }
 
         function delKeypoint() {
-            KeypointService.del(vm.keypoint._id)
+            KeypointStore.del(vm.keypoint._id)
                 .then(function(resp) {
                     if (resp.data.status) {
                         var index = vm.keypoints.indexOf(vm.keypoint);
