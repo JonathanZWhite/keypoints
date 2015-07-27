@@ -2,6 +2,7 @@
 'use strict';
 
 var async = require('async');
+var db = require('../database');
 var mongoose =  require('mongoose');
 var Schema =    mongoose.Schema;
 var User;
@@ -28,7 +29,7 @@ function _checkUnique(self, field, value, callback) {
     var query = {};
     query[field] = value;
 
-    User.findOne(query, function(err, user) {
+    db.get('user', query, function(err, user) {
         if(err) {
             return callback(err);
         }
