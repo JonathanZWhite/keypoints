@@ -44,7 +44,7 @@ function make(userId, payload, callback) {
 
         db.get('topic', query, function(err, topic) {
             if (err) return next(err);
-            
+
             if (topic) {
                 next(null, topic._id);
             } else {
@@ -101,26 +101,16 @@ function list(userId, url, callback) {
 
 function update(keypoint, callback) {
     var tasks = [function(next) {
-        Keypoint.findById(keypoint._id, function(err, oldKeypoint) {
-            if (err) {
-                return errorhandler(err);
-            }
-
+        db.findById('keypoint', keypoint._id, function(err, oldKeypoint) {
+            if (err) return errorhandler(err);
             next(null, oldKeypoint);
         });
     }, function(oldKeypoint, next) {
-        keypoint = _.extend(oldKeypoint, keypoint);
-        // keypoint.updated
-        keypoint.save(function(err, keypoint) {
-            next(err, keypoint);
-        });
+        db.update(oldKeypoint, keypoint, next);
     }];
 
     async.waterfall(tasks, function(err, result) {
-        if (err) {
-            return errorhandler(err);
-        }
-
+        if (err) return errorhandler(err);
         callback({ status: true });
     });
 }
