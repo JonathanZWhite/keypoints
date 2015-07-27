@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 module.exports = function(module) {
 	module.create = create;
 	module.get = get;
-	module.setsGet = setsGet;
+	module.find = find;
 
 	function create(key, payload, callback) {
 		if (!key) {
@@ -22,7 +22,7 @@ module.exports = function(module) {
 		mongoose.model(key).findOne(query, callback);
 	}
 
-	function setsGet(key, query, callback) {
+	function find(key, query, callback) {
 		if (!key) {
 			return callback({ status: false });
 		}
