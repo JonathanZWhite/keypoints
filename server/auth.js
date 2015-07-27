@@ -76,9 +76,19 @@ var errorhandler = require('./utils').errorhandler;
     ));
 
     function signup(req, res, callback) {
-        passport.authenticate('signup', function(err, user) {
+        passport.authenticate('signup', function(err, resp) {
+            var user = resp.data;
             req.logIn(user, function(err) { // serializes user
-                return callback(user);
+                if (err) {
+                    errorhandler(err);
+                    return callback({
+                        status: 400,
+                        data: null,
+                        message: 'Uh oh! An unknown error occurred, please try again later'
+                    });
+                }
+
+                return callback(resp);
             });
         })(req, res);
     }
@@ -88,7 +98,19 @@ var errorhandler = require('./utils').errorhandler;
             passReqToCallback : true
         }, function findOrCreateUser(req, email, password, callback) {
             db.create('user', req.body, function(err, user) {
-                console.log('<<<<<', err, user);
+                if (err) {
+                    errorhandler(err);
+                    return callback(null, {
+                        status: 400,
+                        data: null,
+                        message: 'Uh oh! An unknown error occurred, please try again later'
+                    });
+                }
+
+                return callback(null, {
+                    status: 200,
+                    data: user
+                });
             });
         })
     );
