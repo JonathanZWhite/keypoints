@@ -2,6 +2,7 @@
 'use strict';
 
 var async = require('async');
+var bcrypt = require('bcrypt-nodejs');
 var db = require('../database');
 var mongoose =  require('mongoose');
 var Schema =    mongoose.Schema;
@@ -15,17 +16,30 @@ var UserSchema = new Schema({
 });
 
 UserSchema.pre('save',function(next) {
-    var self = this;
+    var user = this;
     var tasks = [function(callback) {
-        _checkUnique(self, 'email', self.email, callback);
+        _checkUnique(user, 'email', user.email, callback);
     }, function(callback) {
-        _checkUnique(self, 'username', self.username, callback);
+        _checkUnique(user, 'username', user.username, callback);
     }];
 
     async.parallel(tasks, next);
 });
 
-function _checkUnique(self, field, value, callback) {
+UserSchema.pre('save', function(next) {
+    var user = this;
+
+    if (!user.isModified('password')) return next();
+
+    user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
+    next();
+});
+
+UserSchema.methods.comparePassword = function(candidatePassword) {
+    return bcrypt.compareSync(candidatePassword, this.password);
+};
+
+function _checkUnique(user, field, value, callback) {
     var query = {};
     query[field] = value;
 
@@ -35,7 +49,7 @@ function _checkUnique(self, field, value, callback) {
         }
 
         if (user) {
-            self.invalidate(field, field + ' must be unique');
+            user.invalidate(field, field + ' must be unique');
             callback(new Error(field + ' must be unique'));
         } else {
             callback();

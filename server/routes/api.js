@@ -15,7 +15,5 @@ module.exports = function(app, router) {
 
     // auth
     router.post('/api/auth/signup', authController.signup);
-    router.get('/api/auth/get', function(req, res) {
-        console.log('<<<<<<<< Look', req.user);
-    });
+    router.post('/api/auth/login', authController.login);
 };
