@@ -18,14 +18,14 @@ var nodeUrl = require('url');
 
             metaInspector.on('fetch', function() {
                 console.log('Fetching...', metaInspector.title);
-                var metaData = {
+                var topicData = {
                     title: metaInspector.title,
                     image: metaInspector.image,
                     description: metaInspector.description.substring(0, 75),
                     url: url,
                     user: userId
                 };
-                return next(null, metaData);
+                return next(null, topicData);
             });
 
             metaInspector.on('error', function(err) {
@@ -33,32 +33,13 @@ var nodeUrl = require('url');
             });
 
             metaInspector.fetch();
-        }, function(metaData, next) {
-            Topic.make(metaData, next);
+        }, function(topicData, next) {
+            Topic.make(topicData, next);
         }];
 
         async.waterfall(tasks, function(err, result) {
-            if (err) {
-                return errorhandler(err);
-            }
-
+            if (err) return errorhandler(err);
             callback(result);
         });
     }
 }(exports));
-
-// function(next) {
-//     var metaInspector = new MetaInspector(url, { timeout: 10000 });
-//
-//     metaInspector.on('fetch', function() {
-//         console.log('Fetching...', metaInspector.title);
-//         return next(null, metaInspector.title);
-//     });
-//
-//     metaInspector.on('error', function(err) {
-//         console.log('There was an error', err);
-//         return next(err);
-//     });
-//
-//     metaInspector.fetch();
-// },

@@ -7,6 +7,7 @@ module.exports = function(module) {
 	module.get = get;
 	module.find = find;
 	module.findById = findById;
+	module.findByIdAndRemove = findByIdAndRemove;
 	module.update = update;
 
 	function create(key, payload, callback) {
@@ -30,6 +31,11 @@ module.exports = function(module) {
 	function findById(key, id, callback) {
 		if (!key) return callback({ status: false });
 		mongoose.model(key).findById(id, callback);
+	}
+
+	function findByIdAndRemove(key, id, callback) {
+		if (!key) return callback({ status: false });
+		mongoose.model(key).findByIdAndRemove(id, callback);
 	}
 
 	function update(oldDoc, newDoc, callback) {
