@@ -330,6 +330,7 @@ p {
   right: 0;
   bottom: 0;
   left: 0;
+  z-index: 100;
 }
 .topic {
   box-sizing: border-box;
@@ -378,7 +379,7 @@ p {
   padding: 12.5px;
 }
 .keypoint--contenteditable {
-  position: relative;
+  z-index: 200;
 }
 .kp__meta {
   background: #ffffff;
