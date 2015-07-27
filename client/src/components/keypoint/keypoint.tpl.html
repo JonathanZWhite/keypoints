@@ -2,25 +2,25 @@
     ng-class="{ 'keypoint--contenteditable': vm.keypoint.contenteditable, 'keypoint--preview': vm.keypoint.contentType === 'image' }">
 
     <div class="kp__meta">
-        <span class="caption caption--dark"
+        <span class="caption text-dark--lightest"
             ng-bind="vm.keypoint.created | date:'mediumDate'"></span>
         <ul class="kp__options">
             <li class="kp__option"
                 ng-click="vm.delKeypoint(vm.keypoint)">
-                <i class="caption--dark fa fa-trash-o"></i>
+                <i class="text-dark--lightest fa fa-trash-o"></i>
             </li>
             <li class="kp__option">
-                <i class="caption--dark fa fa-bars"></i>
+                <i class="text-dark--lightest fa fa-bars"></i>
             </li>
             <li class="kp__option"
                 ng-click="vm.enableContenteditable()"
                 ng-if="vm.keypoint.contentType === 'text'">
-                <i class="caption--dark fa fa-pencil"></i>
+                <i class="text-dark--lightest fa fa-pencil"></i>
             </li>
         </ul>
     </div>
 
-    <p class="text--dark"
+    <p class="text-dark--light"
         ng-if="vm.keypoint.contentType === 'text'"
         contenteditable="{{ vm.keypoint.contenteditable }}"
         ng-class="{ 'ui-contenteditabe': vm.keypoint.contenteditable }"

@@ -11,15 +11,11 @@
 			signup: signup
 		};
 
-		function signup() {
+		function signup(user) {
 			return $http({
 				url: base + 'signup',
 				method: 'POST',
-				data: {
-					email: 'jonathanzwhite@gmail.com',
-					password: 'movingcastle',
-					username: 'jonathanzwhite'
-				}
+				data: user
 			});
 		}
 

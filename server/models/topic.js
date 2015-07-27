@@ -6,15 +6,11 @@ var Schema =    mongoose.Schema;
 var Topic;
 
 var TopicSchema = new Schema({
-    url: {
-        type: String,
-        required: true,
-        unique: true,
-        dropDups: true
-    },
+    url: String,
     title: String,
     image: String,
-    description: String
+    description: String,
+    user: { type : mongoose.Schema.ObjectId, ref : 'user' }
 });
 
 TopicSchema.statics.make = make;

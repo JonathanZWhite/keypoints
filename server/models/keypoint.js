@@ -4,6 +4,7 @@
 var Keypoint;
 var async = require('async');
 var errorhandler = require('../utils').errorhandler;
+var db = require('../database');
 var moment = require('moment');
 var mongoose =  require('mongoose');
 var Schema =    mongoose.Schema;
@@ -35,11 +36,15 @@ function del(keypointId, callback) {
     });
 }
 
-function make(payload, callback) {
+function make(userId, payload, callback) {
     console.log('This is the payload', payload);
     var tasks = [function(next) {
         var url = utils.removeUrlIdentifier(payload.url);
-        Topic.findOne({ url: url}, function(err, topic) {
+        var query = {
+            user: userId,
+            url: url
+        };
+        db.get('topic', query, function(err, topic) {
             if (err) {
                 return next(err);
             }
@@ -47,11 +52,25 @@ function make(payload, callback) {
             if (topic) {
                 next(null, topic._id);
             } else {
-                topicService.create(payload.url, function(resp) {
+                topicService.create(userId, payload.url, function(resp) {
                     next(null, resp._id);
                 });
             }
         });
+
+        // Topic.findOne({ url: url }, function(err, topic) {
+        //     if (err) {
+        //         return next(err);
+        //     }
+        //
+        //     if (topic) {
+        //         next(null, topic._id);
+        //     } else {
+        //         topicService.create(payload.url, function(resp) {
+        //             next(null, resp._id);
+        //         });
+        //     }
+        // });
     }, function(topicId, next) {
         var contentType = payload.keypoint ? 'text' : 'image';
         var keypoint = new Keypoint({
@@ -83,27 +102,34 @@ function make(payload, callback) {
     });
 }
 
-function list(url, callback) {
+function list(userId, url, callback) {
     var tasks = [function(next) {
-        Topic.findOne({ url: url }, function(err, topic) {
-            if (err) {
-                return errorhandler(err);
-            }
-
-            if (!topic) {
-                return;
-            }
-
-            next(null, topic._id);
+        var query = {
+            user: userId,
+            url: url
+        };
+        db.setsGet('topic', query, function(err, topics) {
+            console.log('These are the topics', topics);
         });
+        // Topic.findOne({ url: url }, function(err, topic) {
+        //     if (err) {
+        //         return errorhandler(err);
+        //     }
+        //
+        //     if (!topic) {
+        //         return;
+        //     }
+        //
+        //     next(null, topic._id);
+        // });
     }, function(topicId, next) {
-        Keypoint.find({ topic: topicId }, function(err, keypoints) {
-            if (err) {
-                return errorhandler(err);
-            }
-
-            next(null, keypoints);
-        });
+        // Keypoint.find({ topic: topicId }, function(err, keypoints) {
+        //     if (err) {
+        //         return errorhandler(err);
+        //     }
+        //
+        //     next(null, keypoints);
+        // });
     }];
 
     async.waterfall(tasks, function(err, result) {

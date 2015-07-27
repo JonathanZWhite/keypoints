@@ -11,7 +11,7 @@ keypointController.update = update;
 
 function create(req, res) {
     console.log('Creating new keypoint...');
-    Keypoint.make(req.body, function(resp) {
+    Keypoint.make(req.user._id, req.body, function(resp) {
         res.json(resp);
     });
 }
@@ -24,7 +24,7 @@ function del(req, res) {
 
 function list(req, res) {
     console.log('Getting list of keypoints...');
-    Keypoint.list(req.query.url, function(resp) {
+    Keypoint.list(req.user._id, req.query.url, function(resp) {
         res.json(resp);
     });
 }

@@ -15,7 +15,8 @@
 
     angular.module('app.pages', [
         'app.pages.list',
-        'app.pages.topic'
+        'app.pages.topic',
+        'app.pages.signup'
     ]);
 })();
 
@@ -37,6 +38,9 @@ angular
 
 angular
     .module('app.pages.topic', []);
+
+angular
+    .module('app.pages.signup', []);
 
 (function() {
     'use strict';
@@ -102,9 +106,10 @@ angular
 }());
 
 angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("list/list.tpl.html","<section class=list>{{vm.listStore}}</section>");
-$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><div class=edit-overlay ng-show=vm.contenteditable ng-click=vm.disableContenteditable()></div><h5 class=\"topic__head head--dark\" ng-bind=vm.topicStore.topic.title></h5><composer keypoints=vm.keypointStore.keypoints></composer><keypoint ng-repeat=\"keypoint in vm.keypointStore.keypoints track by $index\" keypoint=keypoint keypoints=vm.keypointStore.keypoints is-contenteditable=vm.contenteditable></keypoint></div></section>");
-$templateCache.put("composer/composer.tpl.html","<div class=composer><div class=composer__options><span class=\"composer__option caption caption--dark\" ng-click=\"vm.toggleMode(\'text\')\" ng-class=\"{ \'composer__option--active\': vm.mode === \'text\' }\">TEXT</span> <span class=\"caption caption--dark\">|</span> <span class=\"composer__option caption caption--dark\" ng-click=\"vm.toggleMode(\'image\')\" ng-class=\"{ \'composer__option--active\': vm.mode === \'image\' }\">IMAGE</span></div><textarea placeholder=\"Enter in a keypoint about whatever article you are reading\" ng-show=\"vm.mode === \'text\'\" class=\"ui-textarea ui-textarea--medium ui-textarea--light\" ng-model=vm.keypoint></textarea> <input placeholder=http://imgur.com ng-show=\"vm.mode === \'image\'\" class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.image> <button class=\"composer__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.createKeypoint()>Add keypoint</button></div>");
-$templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\" ng-class=\"{ \'keypoint--contenteditable\': vm.keypoint.contenteditable, \'keypoint--preview\': vm.keypoint.contentType === \'image\' }\"><div class=kp__meta><span class=\"caption caption--dark\" ng-bind=\"vm.keypoint.created | date:\'mediumDate\'\"></span><ul class=kp__options><li class=kp__option ng-click=vm.delKeypoint(vm.keypoint)><i class=\"caption--dark fa fa-trash-o\"></i></li><li class=kp__option><i class=\"caption--dark fa fa-bars\"></i></li><li class=kp__option ng-click=vm.enableContenteditable() ng-if=\"vm.keypoint.contentType === \'text\'\"><i class=\"caption--dark fa fa-pencil\"></i></li></ul></div><p class=text--dark ng-if=\"vm.keypoint.contentType === \'text\'\" contenteditable=\"{{ vm.keypoint.contenteditable }}\" ng-class=\"{ \'ui-contenteditabe\': vm.keypoint.contenteditable }\" ng-model=vm.keypoint.keypoint></p><p><div class=kp__preview ng-if=\"vm.keypoint.contentType === \'image\'\" ng-style=\"{ \'background-image\': \'url(\' + vm.keypoint.image + \')\' }\"></div><button class=\"kp-btn ui-btn ui-btn--medium ui-btn--success\" ng-if=vm.keypoint.contenteditable ng-click=vm.updateKeypoint()>update</button></p></div>");}]);
+$templateCache.put("signup/signup.tpl.html","<section class=signup><div class=ui-container><h3 class=\"signup__head text-dark--dark\">Signup</h3><input placeholder=email class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.email> <input placeholder=username class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.username> <input placeholder=password type=password class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.password> <button class=\"composer__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.signup()>Signup</button></div></section>");
+$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><div class=edit-overlay ng-show=vm.contenteditable ng-click=vm.disableContenteditable()></div><h5 class=\"topic__head text-dark--dark\" ng-bind=vm.topicStore.topic.title></h5><composer keypoints=vm.keypointStore.keypoints></composer><keypoint ng-repeat=\"keypoint in vm.keypointStore.keypoints track by $index\" keypoint=keypoint keypoints=vm.keypointStore.keypoints is-contenteditable=vm.contenteditable></keypoint></div></section>");
+$templateCache.put("composer/composer.tpl.html","<div class=composer><div class=composer__options><span class=\"composer__option caption text-dark--lightest\" ng-click=\"vm.toggleMode(\'text\')\" ng-class=\"{ \'composer__option--active\': vm.mode === \'text\' }\">TEXT</span> <span class=\"caption text-dark--lightest\">|</span> <span class=\"composer__option caption text-dark--lightest\" ng-click=\"vm.toggleMode(\'image\')\" ng-class=\"{ \'composer__option--active\': vm.mode === \'image\' }\">IMAGE</span></div><textarea placeholder=\"Enter in a keypoint about whatever article you are reading\" ng-show=\"vm.mode === \'text\'\" class=\"ui-textarea ui-textarea--medium ui-textarea--light\" ng-model=vm.keypoint></textarea> <input placeholder=http://imgur.com ng-show=\"vm.mode === \'image\'\" class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.image> <button class=\"composer__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.createKeypoint()>Add keypoint</button></div>");
+$templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\" ng-class=\"{ \'keypoint--contenteditable\': vm.keypoint.contenteditable, \'keypoint--preview\': vm.keypoint.contentType === \'image\' }\"><div class=kp__meta><span class=\"caption text-dark--lightest\" ng-bind=\"vm.keypoint.created | date:\'mediumDate\'\"></span><ul class=kp__options><li class=kp__option ng-click=vm.delKeypoint(vm.keypoint)><i class=\"text-dark--lightest fa fa-trash-o\"></i></li><li class=kp__option><i class=\"text-dark--lightest fa fa-bars\"></i></li><li class=kp__option ng-click=vm.enableContenteditable() ng-if=\"vm.keypoint.contentType === \'text\'\"><i class=\"text-dark--lightest fa fa-pencil\"></i></li></ul></div><p class=text-dark--light ng-if=\"vm.keypoint.contentType === \'text\'\" contenteditable=\"{{ vm.keypoint.contenteditable }}\" ng-class=\"{ \'ui-contenteditabe\': vm.keypoint.contenteditable }\" ng-model=vm.keypoint.keypoint></p><p><div class=kp__preview ng-if=\"vm.keypoint.contentType === \'image\'\" ng-style=\"{ \'background-image\': \'url(\' + vm.keypoint.image + \')\' }\"></div><button class=\"kp-btn ui-btn ui-btn--medium ui-btn--success\" ng-if=vm.keypoint.contenteditable ng-click=vm.updateKeypoint()>update</button></p></div>");}]);
 (function() {
     'use strict';
 
@@ -148,8 +153,8 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 (function() {
     'use strict';
 
-    TopicController.$inject = ['$stateParams', 'KeypointStore', 'MesssagesService', 'TopicStore', 'AuthService'];
-    function TopicController($stateParams, KeypointStore, MesssagesService, TopicStore, AuthService) {
+    TopicController.$inject = ['$stateParams', 'KeypointStore', 'MesssagesService', 'TopicStore'];
+    function TopicController($stateParams, KeypointStore, MesssagesService, TopicStore) {
         var vm = this;
         // model
         vm.keypoints = [];
@@ -158,11 +163,6 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 
         vm.keypointStore = KeypointStore.model;
         vm.topicStore = TopicStore.model;
-
-        // AuthService.signup()
-        //     .then(function(resp) {
-                AuthService.get();
-            // });
     }
 
     angular
@@ -202,6 +202,61 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
     }
 
     angular.module('app.pages.topic')
+        .config(['$stateProvider', config]);
+
+}());
+
+(function() {
+    'use strict';
+
+    SignupController.$inject = ['$state', '$stateParams', 'AuthService'];
+    function SignupController($state, $stateParams, AuthService) {
+        var vm = this;
+        // view model
+        vm.user = {
+            email: '',
+            username: '',
+            password: ''
+        };
+        // functions
+        vm.signup = signup;
+
+        function signup() {
+            AuthService.signup(vm.user)
+                .then(function(resp) {
+                    if (resp.data) {
+                        $state.go('topic', { url: $stateParams.url });
+                    }
+                });
+        }
+    }
+
+    angular
+        .module('app.pages.signup')
+        .controller('SignupController', SignupController);
+})();
+
+(function() {
+    'use strict';
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('signup', {
+                url: '/signup?url',
+                views: {
+                    'content@': {
+                        templateUrl: 'signup/signup.tpl.html',
+                        controllerAs: 'vm',
+                        controller: 'SignupController'
+                    }
+                },
+                data: {
+                    pageTitle: 'Signup'
+                }
+            });
+    }
+
+    angular.module('app.pages.signup')
         .config(['$stateProvider', config]);
 
 }());
@@ -252,15 +307,11 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 			signup: signup
 		};
 
-		function signup() {
+		function signup(user) {
 			return $http({
 				url: base + 'signup',
 				method: 'POST',
-				data: {
-					email: 'jonathanzwhite@gmail.com',
-					password: 'movingcastle',
-					username: 'jonathanzwhite'
-				}
+				data: user
 			});
 		}
 

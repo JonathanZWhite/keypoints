@@ -1,8 +1,8 @@
 (function() {
     'use strict';
 
-    TopicController.$inject = ['$stateParams', 'KeypointStore', 'MesssagesService', 'TopicStore', 'AuthService'];
-    function TopicController($stateParams, KeypointStore, MesssagesService, TopicStore, AuthService) {
+    TopicController.$inject = ['$stateParams', 'KeypointStore', 'MesssagesService', 'TopicStore'];
+    function TopicController($stateParams, KeypointStore, MesssagesService, TopicStore) {
         var vm = this;
         // model
         vm.keypoints = [];
@@ -11,11 +11,6 @@
 
         vm.keypointStore = KeypointStore.model;
         vm.topicStore = TopicStore.model;
-
-        // AuthService.signup()
-        //     .then(function(resp) {
-                AuthService.get();
-            // });
     }
 
     angular

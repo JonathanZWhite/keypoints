@@ -3,6 +3,7 @@
 
     angular.module('app.pages', [
         'app.pages.list',
-        'app.pages.topic'
+        'app.pages.topic',
+        'app.pages.signup'
     ]);
 })();

@@ -11,7 +11,7 @@ var nodeUrl = require('url');
 (function(module) {
     module.create = create;
 
-    function create(url, callback) {
+    function create(userId, url, callback) {
         url = utils.removeUrlIdentifier(url);
         var tasks = [function(next) {
             var metaInspector = new MetaInspector(url, { timeout: 10000 });
@@ -22,7 +22,8 @@ var nodeUrl = require('url');
                     title: metaInspector.title,
                     image: metaInspector.image,
                     description: metaInspector.description.substring(0, 75),
-                    url: url
+                    url: url,
+                    user: userId
                 };
                 return next(null, metaData);
             });
