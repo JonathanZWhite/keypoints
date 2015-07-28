@@ -6,16 +6,16 @@
             ng-bind="vm.keypoint.created | date:'mediumDate'"></span>
         <ul class="kp__options">
             <li class="kp__option"
-                ng-click="vm.delKeypoint(vm.keypoint)">
-                <i class="text-dark--lightest fa fa-trash-o"></i>
+                ng-click="vm.enableContenteditable()"
+                ng-if="vm.keypoint.contentType === 'text'">
+                <i class="text-dark--lightest fa fa-pencil"></i>
             </li>
             <li class="kp__option">
                 <i class="text-dark--lightest fa fa-bars"></i>
             </li>
             <li class="kp__option"
-                ng-click="vm.enableContenteditable()"
-                ng-if="vm.keypoint.contentType === 'text'">
-                <i class="text-dark--lightest fa fa-pencil"></i>
+                ng-click="vm.delKeypoint(vm.keypoint)">
+                <i class="text-dark--lightest fa fa-trash-o"></i>
             </li>
         </ul>
     </div>

@@ -13,10 +13,10 @@
 			create: create,
 			del: del,
 			list: list,
+			getAll: getAll,
+			init: init,
 			update: update
 		};
-
-		init();
 
 		function init() {
 			console.log('initializing keypoint store');
@@ -48,6 +48,13 @@
 				params: {
 					keypointId: keypointId
 				}
+			});
+		}
+
+		function getAll() {
+			return $http({
+				url: base + 'all',
+				method: 'GET'
 			});
 		}
 

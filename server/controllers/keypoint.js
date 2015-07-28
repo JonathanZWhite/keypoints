@@ -1,12 +1,16 @@
 /*jslint node: true */
 'use strict';
 
+var errorhandler = require('../utils').errorhandler;
+var db = require('../database');
+
 var keypointController = {};
 var keypoint = require('../keypoint');
 
 keypointController.create = create;
 keypointController.list = list;
 keypointController.del = del;
+keypointController.getAll = getAll;
 keypointController.update = update;
 
 function create(req, res) {
@@ -19,6 +23,25 @@ function create(req, res) {
 function del(req, res) {
     keypoint.del(req.query.keypointId, function(resp) {
         res.json(resp);
+    });
+}
+
+function getAll(req, res) {
+    db.find('keypoint', { user: req.user._id }, function(err, keypoints) {
+        console.log('Yo', keypoints, req.user);
+        if (err) {
+            errorhandler(err);
+            return res.status(400).json({
+                status: 400,
+                data: null,
+                message: 'an unknown error occured'
+            });
+        }
+
+        return res.json({
+            status: 200,
+            data: keypoints
+        });
     });
 }
 

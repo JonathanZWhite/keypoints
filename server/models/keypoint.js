@@ -10,7 +10,8 @@ var KeypointSchema = new Schema({
     topic: { type : mongoose.Schema.ObjectId, ref : 'topic' },
     contentType: String,
     keypoint: String,
-    image: String
+    image: String,
+    user: { type : mongoose.Schema.ObjectId, ref : 'user' },
 });
 
 Keypoint = mongoose.model('keypoint', KeypointSchema);

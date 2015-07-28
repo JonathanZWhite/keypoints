@@ -417,6 +417,16 @@ p {
 .kp__option .fa {
   font-size: 14px;
 }
+.navbar {
+  color: #7c838f;
+  font-size: 12px;
+  margin-bottom: 25px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.navbar--active {
+  color: #4fb9f3;
+}
 .topic__preview {
   background-size: cover;
   border-radius: 100px;

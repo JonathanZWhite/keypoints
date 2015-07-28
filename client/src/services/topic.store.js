@@ -10,10 +10,9 @@
 			model: {
 				topic: {}
 			},
-			create: create
+			create: create,
+			init: init
 		};
-
-		init();
 
 		function init() {
 			console.log('Initializing');

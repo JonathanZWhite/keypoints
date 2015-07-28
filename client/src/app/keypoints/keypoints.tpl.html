@@ -1,0 +1,11 @@
+<section class="list">
+    <div class="ui-container">
+        <navbar></navbar>
+
+        <h3 class="list__head text-dark--dark">All keypoints</h3>
+        <keypoint
+            ng-repeat="keypoint in vm.keypoints track by $index"
+            keypoint="keypoint"
+            keypoints="vm.keypoints"></keypoint>
+    </div>
+</section>

@@ -8,9 +8,16 @@
         vm.keypoints = [];
         // functions
         vm.contenteditable = false;
+        // activation
+        init();
 
         vm.keypointStore = KeypointStore.model;
         vm.topicStore = TopicStore.model;
+
+        function init() {
+            KeypointStore.init();
+            TopicStore.init();
+        }
     }
 
     angular

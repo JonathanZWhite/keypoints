@@ -43,7 +43,8 @@ var topicService = require('./topic');
                 topic: topicId,
                 contentType: contentType,
                 keypoint: payload.keypoint,
-                image: payload.image
+                image: payload.image,
+                user: userId
             };
 
             db.create('keypoint', keypointData, function(err, keypoint) {

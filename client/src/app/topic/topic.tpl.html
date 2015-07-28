@@ -4,6 +4,8 @@
             ng-show="vm.contenteditable"
             ng-click="vm.disableContenteditable()"></div>
 
+        <navbar topic-url="vm.topicStore.topic.url"></navbar>
+
         <h5
             class="tp__head text-dark--dark"
             ng-bind="vm.topicStore.topic.title"></h5>
