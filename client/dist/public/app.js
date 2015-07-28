@@ -37,10 +37,10 @@ angular
     .module('app.pages.list', []);
 
 angular
-    .module('app.pages.topic', []);
+    .module('app.pages.signup', []);
 
 angular
-    .module('app.pages.signup', []);
+    .module('app.pages.topic', []);
 
 (function() {
     'use strict';
@@ -57,9 +57,16 @@ angular
 (function() {
     'use strict';
 
+    angular.module('app.components.topics', []);
+})();
+
+(function() {
+    'use strict';
+
     angular.module('app.components', [
         'app.components.composer',
-        'app.components.keypoint'
+        'app.components.keypoint',
+        'app.components.topics'
     ]);
 })();
 
@@ -105,11 +112,12 @@ angular
 
 }());
 
-angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("list/list.tpl.html","<section class=list>{{vm.listStore}}</section>");
-$templateCache.put("topic/topic.tpl.html","<section class=topic><div class=ui-container><div class=edit-overlay ng-show=vm.contenteditable ng-click=vm.disableContenteditable()></div><h5 class=\"topic__head text-dark--dark\" ng-bind=vm.topicStore.topic.title></h5><composer keypoints=vm.keypointStore.keypoints></composer><keypoint ng-repeat=\"keypoint in vm.keypointStore.keypoints track by $index\" keypoint=keypoint keypoints=vm.keypointStore.keypoints is-contenteditable=vm.contenteditable></keypoint></div></section>");
-$templateCache.put("signup/signup.tpl.html","<section class=signup><div class=ui-container><h3 class=\"signup__head text-dark--dark\">Signup</h3><input placeholder=email class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.email> <input placeholder=username class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.username> <input placeholder=password type=password class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.password> <button class=\"composer__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.signup()>Signup</button></div></section>");
+angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("signup/signup.tpl.html","<section class=signup><div class=ui-container><h3 class=\"signup__head text-dark--dark\">Signup</h3><input placeholder=email class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.email> <input placeholder=username class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.username> <input placeholder=password type=password class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.password> <button class=\"composer__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.signup()>Signup</button></div></section>");
+$templateCache.put("list/list.tpl.html","<section class=list><div class=ui-container><h3 class=\"list__head text-dark--dark\">Highlighted topics</h3><topics topics=vm.listStore.topics></topics></div></section>");
+$templateCache.put("topic/topic.tpl.html","<section class=tp><div class=ui-container><div class=edit-overlay ng-show=vm.contenteditable ng-click=vm.disableContenteditable()></div><h5 class=\"tp__head text-dark--dark\" ng-bind=vm.topicStore.topic.title></h5><composer keypoints=vm.keypointStore.keypoints></composer><keypoint ng-repeat=\"keypoint in vm.keypointStore.keypoints track by $index\" keypoint=keypoint keypoints=vm.keypointStore.keypoints is-contenteditable=vm.contenteditable></keypoint></div></section>");
 $templateCache.put("composer/composer.tpl.html","<div class=composer><div class=composer__options><span class=\"composer__option caption text-dark--lightest\" ng-click=\"vm.toggleMode(\'text\')\" ng-class=\"{ \'composer__option--active\': vm.mode === \'text\' }\">TEXT</span> <span class=\"caption text-dark--lightest\">|</span> <span class=\"composer__option caption text-dark--lightest\" ng-click=\"vm.toggleMode(\'image\')\" ng-class=\"{ \'composer__option--active\': vm.mode === \'image\' }\">IMAGE</span></div><textarea placeholder=\"Enter in a keypoint about whatever article you are reading\" ng-show=\"vm.mode === \'text\'\" class=\"ui-textarea ui-textarea--medium ui-textarea--light\" ng-model=vm.keypoint></textarea> <input placeholder=http://imgur.com ng-show=\"vm.mode === \'image\'\" class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.image> <button class=\"composer__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.createKeypoint()>Add keypoint</button></div>");
-$templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\" ng-class=\"{ \'keypoint--contenteditable\': vm.keypoint.contenteditable, \'keypoint--preview\': vm.keypoint.contentType === \'image\' }\"><div class=kp__meta><span class=\"caption text-dark--lightest\" ng-bind=\"vm.keypoint.created | date:\'mediumDate\'\"></span><ul class=kp__options><li class=kp__option ng-click=vm.delKeypoint(vm.keypoint)><i class=\"text-dark--lightest fa fa-trash-o\"></i></li><li class=kp__option><i class=\"text-dark--lightest fa fa-bars\"></i></li><li class=kp__option ng-click=vm.enableContenteditable() ng-if=\"vm.keypoint.contentType === \'text\'\"><i class=\"text-dark--lightest fa fa-pencil\"></i></li></ul></div><p class=text-dark--light ng-if=\"vm.keypoint.contentType === \'text\'\" contenteditable=\"{{ vm.keypoint.contenteditable }}\" ng-class=\"{ \'ui-contenteditabe\': vm.keypoint.contenteditable }\" ng-model=vm.keypoint.keypoint></p><p><div class=kp__preview ng-if=\"vm.keypoint.contentType === \'image\'\" ng-style=\"{ \'background-image\': \'url(\' + vm.keypoint.image + \')\' }\"></div><button class=\"kp-btn ui-btn ui-btn--medium ui-btn--success\" ng-if=vm.keypoint.contenteditable ng-click=vm.updateKeypoint()>update</button></p></div>");}]);
+$templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\" ng-class=\"{ \'keypoint--contenteditable\': vm.keypoint.contenteditable, \'keypoint--preview\': vm.keypoint.contentType === \'image\' }\"><div class=kp__meta><span class=\"caption text-dark--lightest\" ng-bind=\"vm.keypoint.created | date:\'mediumDate\'\"></span><ul class=kp__options><li class=kp__option ng-click=vm.delKeypoint(vm.keypoint)><i class=\"text-dark--lightest fa fa-trash-o\"></i></li><li class=kp__option><i class=\"text-dark--lightest fa fa-bars\"></i></li><li class=kp__option ng-click=vm.enableContenteditable() ng-if=\"vm.keypoint.contentType === \'text\'\"><i class=\"text-dark--lightest fa fa-pencil\"></i></li></ul></div><p class=text-dark--light ng-if=\"vm.keypoint.contentType === \'text\'\" contenteditable=\"{{ vm.keypoint.contenteditable }}\" ng-class=\"{ \'ui-contenteditabe\': vm.keypoint.contenteditable }\" ng-model=vm.keypoint.keypoint></p><p><div class=kp__preview ng-if=\"vm.keypoint.contentType === \'image\'\" ng-style=\"{ \'background-image\': \'url(\' + vm.keypoint.image + \')\' }\"></div><button class=\"kp-btn ui-btn ui-btn--medium ui-btn--success\" ng-if=vm.keypoint.contenteditable ng-click=vm.updateKeypoint()>update</button></p></div>");
+$templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui-card ng-repeat=\"topic in vm.topics track by $index\"><div class=topic__content><div class=\"ui-column ui-column--one\"><div class=topic__preview ng-style=\"{ \'background-image\': \'url(\' + topic.image + \')\' }\"></div></div><div class=\"ui-column ui-column--eleven\"><span class=\"topic__head text-dark--dark u-reset-lh u-truncate\" ng-bind=topic.title></span></div><p class=\"caption text-dark--light\" ng-bind=topic.description></p></div></div></section>");}]);
 (function() {
     'use strict';
 
@@ -146,6 +154,61 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
     }
 
     angular.module('app.pages.list')
+        .config(['$stateProvider', config]);
+
+}());
+
+(function() {
+    'use strict';
+
+    SignupController.$inject = ['$state', '$stateParams', 'AuthService'];
+    function SignupController($state, $stateParams, AuthService) {
+        var vm = this;
+        // view model
+        vm.user = {
+            email: '',
+            username: '',
+            password: ''
+        };
+        // functions
+        vm.signup = signup;
+
+        function signup() {
+            AuthService.signup(vm.user)
+                .then(function(resp) {
+                    if (resp.data) {
+                        $state.go('topic', { url: $stateParams.url });
+                    }
+                });
+        }
+    }
+
+    angular
+        .module('app.pages.signup')
+        .controller('SignupController', SignupController);
+})();
+
+(function() {
+    'use strict';
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('signup', {
+                url: '/signup?url',
+                views: {
+                    'content@': {
+                        templateUrl: 'signup/signup.tpl.html',
+                        controllerAs: 'vm',
+                        controller: 'SignupController'
+                    }
+                },
+                data: {
+                    pageTitle: 'Signup'
+                }
+            });
+    }
+
+    angular.module('app.pages.signup')
         .config(['$stateProvider', config]);
 
 }());
@@ -202,61 +265,6 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
     }
 
     angular.module('app.pages.topic')
-        .config(['$stateProvider', config]);
-
-}());
-
-(function() {
-    'use strict';
-
-    SignupController.$inject = ['$state', '$stateParams', 'AuthService'];
-    function SignupController($state, $stateParams, AuthService) {
-        var vm = this;
-        // view model
-        vm.user = {
-            email: '',
-            username: '',
-            password: ''
-        };
-        // functions
-        vm.signup = signup;
-
-        function signup() {
-            AuthService.signup(vm.user)
-                .then(function(resp) {
-                    if (resp.data) {
-                        $state.go('topic', { url: $stateParams.url });
-                    }
-                });
-        }
-    }
-
-    angular
-        .module('app.pages.signup')
-        .controller('SignupController', SignupController);
-})();
-
-(function() {
-    'use strict';
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('signup', {
-                url: '/signup?url',
-                views: {
-                    'content@': {
-                        templateUrl: 'signup/signup.tpl.html',
-                        controllerAs: 'vm',
-                        controller: 'SignupController'
-                    }
-                },
-                data: {
-                    pageTitle: 'Signup'
-                }
-            });
-    }
-
-    angular.module('app.pages.signup')
         .config(['$stateProvider', config]);
 
 }());
@@ -369,7 +377,7 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 				}
 			})
 			.success(function(resp) {
-				Keypoint.model.keypoints.unshift(resp);
+				Keypoint.model.keypoints.push(resp);
 			});
 		}
 
@@ -632,7 +640,6 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 
             function handleElemClick() {
                  event.stopPropagation();
-                 console.log('Stopping prop');
             }
         }
     }
@@ -678,5 +685,33 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
     angular
         .module('app.components.keypoint')
         .directive('keypoint', Keypoint);
+
+}());
+
+(function () {
+    'use strict';
+
+    Topics.$inject = [];
+    function Topics() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                topics: '='
+            },
+            templateUrl: 'topics/topics.tpl.html',
+            controllerAs: 'vm',
+            bindToController: true,
+            controller: Controller
+        };
+    }
+
+    function Controller() {
+        var vm = this;
+    }
+
+    angular
+        .module('app.components.topics')
+        .directive('topics', Topics);
 
 }());

@@ -37,7 +37,7 @@
 				}
 			})
 			.success(function(resp) {
-				Keypoint.model.keypoints.unshift(resp);
+				Keypoint.model.keypoints.push(resp);
 			});
 		}
 

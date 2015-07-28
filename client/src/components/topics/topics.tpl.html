@@ -1,0 +1,15 @@
+<section class="topics">
+    <div class="ui-card"
+        ng-repeat="topic in vm.topics track by $index">
+        <div class="topic__content">
+            <div class="ui-column ui-column--one">
+                <div class="topic__preview"
+                    ng-style="{ 'background-image': 'url(' + topic.image + ')' }"></div>
+            </div>
+            <div class="ui-column ui-column--eleven">
+                <span class="topic__head text-dark--dark u-reset-lh u-truncate" ng-bind="topic.title"></span>
+            </div>
+            <p class="caption text-dark--light" ng-bind="topic.description"></p>
+        </div>
+    </div>
+</section>

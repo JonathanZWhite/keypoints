@@ -38,7 +38,6 @@
 
             function handleElemClick() {
                  event.stopPropagation();
-                 console.log('Stopping prop');
             }
         }
     }
