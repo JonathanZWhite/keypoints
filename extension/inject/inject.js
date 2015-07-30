@@ -21,15 +21,18 @@ var Inject = (function() {
         var formattedHref = utils.removeUrlIdentifier(window.location.href);
         self.iframe = document.createElement('iframe');
         self.iframe.src = 'https://localhost:8000/topic?url=' + formattedHref;
-        self.iframe.style.cssText = 'position:fixed; top:0; right:0; display: ' + _getFrameDisplay() + ';' +
-                               'width:350px;height:100%;z-index:1000; border: none;';
+        self.iframe.className = 'frame';
         self.iframe.id = 'keypoints';
         document.body.appendChild(self.iframe);
     }
 
     function _toggleFrame() {
-        self.iframe.style.cssText = 'position:fixed; top:0; right:0; display:' + _getFrameDisplay() + ';' +
-                               'width:350px;height:100%;z-index:1000; border: none;';
+        self.showFrame = !self.showFrame;
+        if (self.showFrame) {
+            self.iframe.className = 'frame frame--active';
+        } else {
+            self.iframe.className = 'frame';
+        }
     }
 
     function _getFrameDisplay() {

@@ -129,9 +129,6 @@ gulp.task('templatecache', ['clean-templatecache'], function() {
         .pipe(gulp.dest('client/tmp/'));
 });
 
-gulp.task('clean-less', function(done) {
-    clean('client/dist/public/*.css', done);
-});
 gulp.task('less', function() {
 	log('Compiling less...');
 
@@ -152,6 +149,18 @@ gulp.task('less', function() {
 		.pipe(gulp.dest('client/dist/public'));
 
 	return merge(main, reset);
+});
+
+gulp.task('less:extension', function() {
+	log('Compiling extension less...');
+
+	gulp
+		.src('extension/less/main.less')
+		.pipe($.less())
+		.pipe($.autoprefixer({
+			browsers: ['last 2 versions']
+		}))
+		.pipe(gulp.dest('extension/dist'));
 });
 
 gulp.task('serve', function() {
@@ -179,6 +188,11 @@ gulp.task('watch', ['vet', 'all'], function() {
 		'client/src/**/**/*.less',
 		'client/src/**/**/**/*.less'
 	], ['less'])
+		.on('change', changeEvent);
+
+	gulp.watch([
+		'extension/less/**.less'
+	], ['less:extension'])
 		.on('change', changeEvent);
 
 	gulp.watch(['client/src/app/index.html','server/views/libs/**.js'], ['copy'])
@@ -263,5 +277,5 @@ function clean(path, done) {
 }
 
 gulp.task('reload', ['bower', 'copy', 'images', 'concat', 'less']);
-gulp.task('all', ['bower', 'copy', 'images', 'concat', 'less', 'serve']);
+gulp.task('all', ['bower', 'copy', 'images', 'concat', 'less', 'less:extension', 'serve']);
 gulp.task('default', ['build']);

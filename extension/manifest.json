@@ -13,7 +13,8 @@
     },
     "content_scripts": [{
         "js": ["dist/inject.bundle.js"],
-        "matches": ["http://*/*", "https://*/*"]
+        "matches": ["http://*/*", "https://*/*"],
+        "css": ["dist/main.css"]
     }],
     "web_accessible_resources": [
         "script.js",
