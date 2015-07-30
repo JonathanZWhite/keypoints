@@ -50,6 +50,7 @@
 	    var inject = {
 	        showFrame: false,
 	        iframe: null,
+	        notification: null,
 	        init: init
 	    };
 	    var self = inject;
@@ -60,20 +61,21 @@
 	    function init() {
 	        console.log('initializing: inject');
 	        _injectIframe();
-	        _injectNotifications();
+	        _injectNotification();
 	        chrome.extension.onMessage.addListener(_messageManager); // listens to background
 	    }
 
-	    function _injectNotifications() {
+	    function _injectNotification() {
 	        var xmlHttp = null;
 
 	        xmlHttp = new XMLHttpRequest();
 	        xmlHttp.open('GET', chrome.extension.getURL ('../templates/notifications.html'), false);
 	        xmlHttp.send(null);
 
-	        var inject  = document.createElement('div');
-	        inject.innerHTML = xmlHttp.responseText;
-	        document.body.insertBefore(inject, document.body.firstChild);
+	        self.notification = document.createElement('div');
+	        self.notification.className = 'notification';
+	        self.notification.innerHTML = xmlHttp.responseText;
+	        document.body.appendChild(self.notification);
 	    }
 
 	    function _injectIframe() {
@@ -104,7 +106,10 @@
 	    }
 
 	    function _message(request) {
-	        console.log('Sending message', request);
+	        self.notification.className = 'notification notification--active';
+	        setTimeout(function() {
+	            self.notification.className = 'notification';
+	        }, 3000);
 	        self.iframe.contentWindow.postMessage(request, '*');
 	    }
 
