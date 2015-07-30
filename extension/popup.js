@@ -8,6 +8,12 @@
  * @param {function(string)} callback - called when the URL of the current tab
  *   is found.
  */
+chrome.browserAction.onClicked.addListener(function (tab) { //Fired when User Clicks ICON
+    alert();
+    console.log('asdlgkjasdlkgj');
+});
+
+
 function getCurrentTabUrl(callback) {
   // Query filter to be passed to chrome.tabs.query - see
   // https://developer.chrome.com/extensions/tabs#method-query
