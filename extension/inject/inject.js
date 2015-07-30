@@ -14,7 +14,20 @@ var Inject = (function() {
     function init() {
         console.log('initializing: inject');
         _injectIframe();
+        _injectNotifications();
         chrome.extension.onMessage.addListener(_messageManager); // listens to background
+    }
+
+    function _injectNotifications() {
+        var xmlHttp = null;
+
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.open('GET', chrome.extension.getURL ('../templates/notifications.html'), false);
+        xmlHttp.send(null);
+
+        var inject  = document.createElement('div');
+        inject.innerHTML = xmlHttp.responseText;
+        document.body.insertBefore(inject, document.body.firstChild);
     }
 
     function _injectIframe() {
@@ -46,7 +59,7 @@ var Inject = (function() {
 
     function _message(request) {
         console.log('Sending message', request);
-        this.iframe.contentWindow.postMessage(request, '*');
+        self.iframe.contentWindow.postMessage(request, '*');
     }
 
     function _messageManager(request, sender, sendResponse) {
