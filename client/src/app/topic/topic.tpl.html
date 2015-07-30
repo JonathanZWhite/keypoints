@@ -6,9 +6,11 @@
 
         <navbar topic-url="vm.topicStore.topic.url"></navbar>
 
-        <h5
-            class="tp__head text-dark--dark"
-            ng-bind="vm.topicStore.topic.title"></h5>
+        <a ng-href="http://{{vm.topicStore.topic.url}}" target="_blank">
+            <h5
+                class="tp__head text-dark--dark"
+                ng-bind="vm.topicStore.topic.title"></h5>
+        </a>
 
         <composer
             keypoints="vm.keypointStore.keypoints"></composer>

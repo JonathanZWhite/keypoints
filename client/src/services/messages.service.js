@@ -1,21 +1,27 @@
 (function() {
 	'use strict';
 
-	MesssagesService.$inject = ['$window', 'KeypointStore'];
+	MesssagesService.$inject = ['$window', 'ClientStore', 'KeypointStore'];
 
-	function MesssagesService($window, KeypointStore) {
+	function MesssagesService($window, ClientStore, KeypointStore) {
 		var Messages = {};
 
 		init();
 
 		function init() {
-			$window.addEventListener('message', handleChange, false);
+			$window.addEventListener('message', handleMessage, false);
 		}
 
-		function handleChange(message) {
-			console.log('Look', message.data);
+		function handleMessage(message) {
 			var payload = message.data;
-			KeypointStore.create(payload.url, payload.keypoint, payload.image);
+			switch(payload.type) {
+				case 'init':
+					ClientStore.model.url = payload.url;
+					break;
+				case 'context':
+					KeypointStore.create(payload.url, payload.keypoint, payload.image);
+					break;
+			}
 		}
 
 

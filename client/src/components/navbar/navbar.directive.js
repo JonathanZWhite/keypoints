@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    Navbar.$inject = ['$state', '$stateParams'];
+    Navbar.$inject = ['$state', '$stateParams', 'ClientStore'];
     function Navbar() {
         return {
             restrict: 'E',
@@ -16,11 +16,11 @@
         };
     }
 
-    function Controller($state, $stateParams) {
+    function Controller($state, $stateParams, ClientStore) {
         var vm = this;
         vm.$state = $state;
         vm.$stateParams = $stateParams;
-        
+        vm.clientStore = ClientStore.model;
         vm.isCurrentPage = isCurrentPage;
 
         function isCurrentPage() {

@@ -1,5 +1,6 @@
 <nav class="navbar">
-    <a ng-class="{ 'navbar--active': vm.isCurrentPage() }">current page</a>
+    <a ui-sref="topic({ url: vm.clientStore.url })"
+        ng-class="{ 'navbar--active': vm.isCurrentPage() }">current page</a>
     <span> | </span>
     <a ui-sref="list"
         ng-class="{ 'navbar--active': vm.$state.current.name === 'list' }">all pages</a>

@@ -2,6 +2,7 @@ var utils = require('../../shared/utils');
 
 var Inject = (function() {
     var inject = {
+        frameIsLoaded: false,
         showFrame: false,
         iframe: null,
         notification: null,
@@ -16,7 +17,7 @@ var Inject = (function() {
         console.log('initializing: inject');
         _injectIframe();
         _injectNotification();
-        chrome.extension.onMessage.addListener(_messageManager); // listens to background
+        chrome.extension.onMessage.addListener(_handleMessage); // listens to background
     }
 
     function _injectNotification() {
@@ -39,6 +40,15 @@ var Inject = (function() {
         self.iframe.className = 'frame';
         self.iframe.id = 'keypoints';
         document.body.appendChild(self.iframe);
+        self.iframe.onload = _sendUrl;
+    }
+
+    // pings iframe till loaded
+    function _sendUrl() {
+        _message({
+            type: 'init',
+            url: utils.removeUrlIdentifier(window.location.href)
+        });
     }
 
     function _toggleFrame() {
@@ -60,16 +70,16 @@ var Inject = (function() {
     }
 
     function _message(request) {
-        self.notification.className = 'notification notification--active';
-        setTimeout(function() {
-            self.notification.className = 'notification';
-        }, 3000);
         self.iframe.contentWindow.postMessage(request, '*');
     }
 
-    function _messageManager(request, sender, sendResponse) {
+    function _handleMessage(request, sender, sendResponse) {
         switch(request.type) {
             case 'context':
+                self.notification.className = 'notification notification--active';
+                setTimeout(function() {
+                    self.notification.className = 'notification';
+                }, 6000);
                 _message(request);
                 break;
             case 'browserAction':
