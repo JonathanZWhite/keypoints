@@ -15,17 +15,6 @@ var UserSchema = new Schema({
     password: String
 });
 
-UserSchema.pre('save',function(next) {
-    var user = this;
-    var tasks = [function(callback) {
-        _checkUnique(user, 'email', user.email, callback);
-    }, function(callback) {
-        _checkUnique(user, 'username', user.username, callback);
-    }];
-
-    async.parallel(tasks, next);
-});
-
 UserSchema.pre('save', function(next) {
     var user = this;
 
@@ -38,24 +27,6 @@ UserSchema.pre('save', function(next) {
 UserSchema.methods.comparePassword = function(candidatePassword) {
     return bcrypt.compareSync(candidatePassword, this.password);
 };
-
-function _checkUnique(user, field, value, callback) {
-    var query = {};
-    query[field] = value;
-
-    db.get('user', query, function(err, user) {
-        if(err) {
-            return callback(err);
-        }
-
-        if (user) {
-            user.invalidate(field, field + ' must be unique');
-            callback(new Error(field + ' must be unique'));
-        } else {
-            callback();
-        }
-    });
-}
 
 User = mongoose.model('user', UserSchema);
 

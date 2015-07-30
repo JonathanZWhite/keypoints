@@ -348,6 +348,18 @@ p {
 .list__head {
   margin-bottom: 25px;
 }
+.login {
+  box-sizing: border-box;
+  height: 100%;
+  padding: 25px 0;
+}
+.login__head {
+  text-align: center;
+  margin-bottom: 25px;
+}
+.login__btn {
+  margin-bottom: 6.25px;
+}
 .signup {
   box-sizing: border-box;
   height: 100%;
@@ -356,6 +368,9 @@ p {
 .signup__head {
   text-align: center;
   margin-bottom: 25px;
+}
+.signup__btn {
+  margin-bottom: 6.25px;
 }
 .composer {
   position: relative;

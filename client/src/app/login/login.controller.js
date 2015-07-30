@@ -1,20 +1,19 @@
 (function() {
     'use strict';
 
-    SignupController.$inject = ['$state', '$stateParams', 'AuthService'];
-    function SignupController($state, $stateParams, AuthService) {
+    LoginController.$inject = ['$state', '$stateParams', 'AuthService'];
+    function LoginController($state, $stateParams, AuthService) {
         var vm = this;
         // view model
         vm.user = {
             email: '',
-            username: '',
             password: ''
         };
         // functions
-        vm.signup = signup;
+        vm.login = login;
 
-        function signup() {
-            AuthService.signup(vm.user)
+        function login() {
+            AuthService.login(vm.user)
                 .then(function(resp) {
                     if (resp.data) {
                         console.log('This is the response', resp.data);
@@ -25,6 +24,6 @@
     }
 
     angular
-        .module('app.pages.signup')
-        .controller('SignupController', SignupController);
+        .module('app.pages.login')
+        .controller('LoginController', LoginController);
 })();

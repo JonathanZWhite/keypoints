@@ -15,6 +15,7 @@ module.exports = function(app, router) {
     router.get('/api/topic/all', topicController.getAll);
 
     // auth
+    router.get('/api/auth/is-authenticated', authController.isAuthenticated);
     router.post('/api/auth/signup', authController.signup);
     router.post('/api/auth/login', authController.login);
 };

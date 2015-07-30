@@ -8,8 +8,25 @@
 
 		var Auth = {
 			get: get,
+			isAuthenticated: isAuthenticated,
+			login: login,
 			signup: signup
 		};
+
+		function isAuthenticated() {
+			return $http({
+				url: base + 'is-authenticated',
+				method: 'GET'
+			});
+		}
+
+		function login(user) {
+			return $http({
+				url: base + 'signup',
+				method: 'POST',
+				data: user
+			});
+		}
 
 		function signup(user) {
 			return $http({
