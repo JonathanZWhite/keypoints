@@ -2,11 +2,11 @@ var utils = require('../../shared/utils');
 
 var Inject = (function() {
     var inject = {
-        frameIsLoaded: false,
         showFrame: false,
         iframe: null,
         notification: null,
-        init: init
+        init: init,
+        toggleFrame: toggleFrame
     };
     var self = inject;
 
@@ -51,8 +51,8 @@ var Inject = (function() {
         });
     }
 
-    function _toggleFrame() {
-        self.showFrame = !self.showFrame;
+    function toggleFrame(toggle) {
+        self.showFrame = toggle ? toggle : !self.showFrame;
         if (self.showFrame) {
             self.iframe.className = 'frame frame--active';
         } else {
@@ -76,16 +76,26 @@ var Inject = (function() {
     function _handleMessage(request, sender, sendResponse) {
         switch(request.type) {
             case 'context':
-                self.notification.className = 'notification notification--active';
-                setTimeout(function() {
-                    self.notification.className = 'notification';
-                }, 6000);
+                _showNotification();
                 _message(request);
                 break;
             case 'browserAction':
-                _toggleFrame();
+                self.toggleFrame();
                 break;
         }
+    }
+
+    function _showNotification() {
+        var baseClasses = 'notification notification--active';
+        var classes = self.showFrame ? baseClasses + ' notification--offset' :
+            baseClasses;
+        self.notification.className = classes;
+
+        setTimeout(function() {
+            baseClasses = 'notification';
+            self.notification.className = self.showFrame ? baseClasses +
+                ' notification--offset' : baseClasses;
+        }, 5000);
     }
 }());
 
