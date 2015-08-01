@@ -3,10 +3,7 @@
 
 var Keypoint;
 var KeypointSchema;
-var db = require('../database');
-var errorhandler = require('../utils').errorhandler;
-var utils = require('../../shared/utils');
-var topicService = require('../topic');
+var _ = require('lodash-node');
 var mongoose =  require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -21,11 +18,16 @@ KeypointSchema = new Schema({
 });
 
 KeypointSchema.statics.add = add;
-KeypointSchema.statics.make = add;
+KeypointSchema.statics.edit = edit;
 Keypoint = mongoose.model('keypoint', KeypointSchema);
 
 function add(data, callback) {
     Keypoint.create(data, callback);
+}
+
+function edit(oldData, newData, callback) {
+    var updated = _.extend(oldData, newData);
+    updated.save(callback);
 }
 
 KeypointSchema.pre('save', function(next){

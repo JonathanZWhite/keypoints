@@ -10,9 +10,9 @@
 			model: {
 				keypoints: []
 			},
-			create: create,
+			add: add,
 			del: del,
-			list: list,
+			getTopicKeypoints: getTopicKeypoints,
 			getAll: getAll,
 			init: init,
 			update: update
@@ -20,15 +20,15 @@
 
 		function init() {
 			console.log('initializing keypoint store');
-			list($stateParams.url)
+			getTopicKeypoints($stateParams.url)
 				.then(function(resp) {
 					Keypoint.model.keypoints = resp.data;
 				});
 		}
 
-		function create(url, keypoint, image) {
+		function add(url, keypoint, image) {
 			return $http({
-				url: base + 'create',
+				url: base + 'add',
 				method: 'POST',
 				data: {
 					url: url,
@@ -58,9 +58,9 @@
 			});
 		}
 
-		function list(url) {
+		function getTopicKeypoints(url) {
 			return $http({
-				url: base + 'list',
+				url: base + 'topic-keypoints',
 				method: 'GET',
 				params: { url: url }
 			});

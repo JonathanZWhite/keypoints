@@ -39,17 +39,7 @@ keypoint = {
                 user: userId
             };
 
-            var yo = require('../models/keypoint');
-
-            // console.log('Yo', require('../models/keypoint'));
-            // console.log('Yo', dataProvider.keypoint);
-
-            // dataProvider.keypoint.add(keypointData, function(err, keypoint) {
-            //     if (err) return errorhandler(err);
-            //     next(null, keypoint);
-            // });
-
-            yo.make(keypointData, function(err, keypoint) {
+            dataProvider.keypoint.add(keypointData, function(err, keypoint) {
                 if (err) return errorhandler(err);
                 next(null, keypoint);
             });
@@ -63,6 +53,74 @@ keypoint = {
         async.waterfall(tasks, function(err, results) {
             if (err) return errorhandler(err);
             callback(results);
+        });
+    },
+    del: function(keypointId, callback) {
+        dataProvider.keypoint.findByIdAndRemove(keypointId, function(err) {
+            if (err) return errorhandler(err);
+            callback({ status: true });
+        });
+    },
+    getAll: function(userId, callback) {
+        dataProvider.keypoint.find({ user: userId }, function(err, keypoints) {
+            if (err) return errorhandler(err);
+
+            callback({
+                status: 200,
+                data: keypoints
+            });
+        });
+    },
+    getTopicKeypoints: function(userId, url, callback) {
+        var tasks;
+
+        function getTopic(next) {
+            dataProvider.topic.findOne({ user: userId, url: url}, function(err, topic) {
+                if (err) return errorhandler(err);
+                if (!topic) return;
+                next(null, topic._id);
+            });
+        }
+
+        function getKeypoints(topicId, next) {
+            dataProvider.keypoint.find({ topic: topicId }, function(err, keypoints) {
+                if (err) return errorhandler(err);
+                next(null, keypoints);
+            });
+        }
+
+        tasks = [
+            getTopic,
+            getKeypoints
+        ];
+
+        async.waterfall(tasks, function(err, result) {
+            if (err) return errorhandler(err);
+            callback(result);
+        });
+    },
+    update: function(keypoint, callback) {
+        var tasks;
+
+        function get(next) {
+            dataProvider.keypoint.findById('keypoint', keypoint._id, function(err, oldKeypoint) {
+                if (err) return errorhandler(err);
+                next(null, oldKeypoint);
+            });
+        }
+
+        function update(oldKeypoint, next) {
+            dataProvider.keypoint.edit(oldKeypoint, keypoint, next);
+        }
+
+        tasks = [
+            get,
+            update
+        ];
+
+        async.waterfall(tasks, function(err, result) {
+            if (err) return errorhandler(err);
+            callback({ status: true });
         });
     }
 };

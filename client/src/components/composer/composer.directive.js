@@ -36,7 +36,7 @@
         function createKeypoint() {
             if (!vm.keypoint && !vm.image) return;
 
-            KeypointStore.create($stateParams.url, vm.keypoint, vm.image);
+            KeypointStore.add($stateParams.url, vm.keypoint, vm.image);
         }
     }
 
