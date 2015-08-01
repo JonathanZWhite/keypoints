@@ -19,7 +19,7 @@
 					ClientStore.model.url = payload.url;
 					break;
 				case 'context':
-					KeypointStore.create(payload.url, payload.keypoint, payload.image);
+					KeypointStore.add(payload.url, payload.keypoint, payload.image);
 					break;
 			}
 		}

@@ -655,7 +655,7 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 					ClientStore.model.url = payload.url;
 					break;
 				case 'context':
-					KeypointStore.create(payload.url, payload.keypoint, payload.image);
+					KeypointStore.add(payload.url, payload.keypoint, payload.image);
 					break;
 			}
 		}
