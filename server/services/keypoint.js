@@ -1,5 +1,7 @@
-var async = require('async');
 var keypoint;
+var async = require('async');
+var dataProvider = require('../models');
+
 var topicService = require('../topic');
 var db = require('../database');
 var errorhandler = require('../utils').errorhandler;
@@ -37,7 +39,17 @@ keypoint = {
                 user: userId
             };
 
-            db.create('keypoint', keypointData, function(err, keypoint) {
+            var yo = require('../models/keypoint');
+
+            // console.log('Yo', require('../models/keypoint'));
+            // console.log('Yo', dataProvider.keypoint);
+
+            // dataProvider.keypoint.add(keypointData, function(err, keypoint) {
+            //     if (err) return errorhandler(err);
+            //     next(null, keypoint);
+            // });
+
+            yo.make(keypointData, function(err, keypoint) {
                 if (err) return errorhandler(err);
                 next(null, keypoint);
             });
