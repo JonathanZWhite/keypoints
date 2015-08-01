@@ -6,6 +6,7 @@ var db = require('../database');
 
 var keypointController = {};
 var keypoint = require('../keypoint');
+var keypointService = require('../services').keypoint;
 
 keypointController.create = create;
 keypointController.list = list;
@@ -15,9 +16,12 @@ keypointController.update = update;
 
 function create(req, res) {
     console.log('Creating new keypoint...');
-    keypoint.create(req.user._id, req.body, function(resp) {
+    keypointService.add(req.user._id, req.body, function(resp) {
         res.json(resp);
     });
+    // keypoint.create(req.user._id, req.body, function(resp) {
+    //     res.json(resp);
+    // });
 }
 
 function del(req, res) {

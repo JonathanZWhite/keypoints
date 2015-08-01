@@ -1,7 +1,11 @@
 /*jslint node: true */
 'use strict';
 
+var db = require('../database');
+var errorhandler = require('../utils').errorhandler;
+var utils = require('../../shared/utils');
 var Keypoint;
+var topicService = require('../topic');
 var mongoose =  require('mongoose');
 var Schema =    mongoose.Schema;
 
