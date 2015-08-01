@@ -2,9 +2,14 @@
     ng-class="{ 'keypoint--contenteditable': vm.keypoint.contenteditable, 'keypoint--preview': vm.keypoint.contentType === 'image' }">
 
     <div class="kp__meta">
-        <span class="caption text-dark--lightest"
-            ng-bind="vm.keypoint.created | date:'mediumDate'"></span>
-        <ul class="kp__options">
+        <a
+            ng-href="http://{{vm.keypoint.topic.url}}"
+            target="_blank">
+            <span
+                class="kp__head text text-dark--dark u-truncate"
+                ng-bind="vm.keypoint.topic.title"></span>
+        </a>
+        <!-- <ul class="kp__options">
             <li class="kp__option"
                 ng-click="vm.enableContenteditable()"
                 ng-if="vm.keypoint.contentType === 'text'">
@@ -17,14 +22,15 @@
                 ng-click="vm.delKeypoint(vm.keypoint)">
                 <i class="text-dark--lightest fa fa-trash-o"></i>
             </li>
-        </ul>
+        </ul> -->
     </div>
 
     <p class="text-dark--light"
         ng-if="vm.keypoint.contentType === 'text'"
         contenteditable="{{ vm.keypoint.contenteditable }}"
         ng-class="{ 'ui-contenteditabe': vm.keypoint.contenteditable }"
-        ng-model="vm.keypoint.keypoint"><p>
+        ng-model="vm.keypoint.keypoint"
+        ng-click="vm.enableContenteditable()"><p>
 
     <div class="kp__preview"
         ng-if="vm.keypoint.contentType === 'image'"

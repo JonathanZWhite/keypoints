@@ -19,6 +19,7 @@ KeypointSchema = new Schema({
 
 KeypointSchema.statics.add = add;
 KeypointSchema.statics.edit = edit;
+KeypointSchema.statics.get = get;
 Keypoint = mongoose.model('keypoint', KeypointSchema);
 
 function add(data, callback) {
@@ -28,6 +29,14 @@ function add(data, callback) {
 function edit(oldData, newData, callback) {
     var updated = _.extend(oldData, newData);
     updated.save(callback);
+}
+
+function get(data, callback) {
+    Keypoint
+        .find(data)
+        .sort('created')
+        .populate('topic')
+        .exec(callback);
 }
 
 KeypointSchema.pre('save', function(next){

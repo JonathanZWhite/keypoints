@@ -302,7 +302,8 @@ h4 {
 h5 {
   font-size: 16px;
 }
-p {
+p,
+.text {
   font-size: 14px;
   line-height: 21px;
 }
@@ -407,6 +408,10 @@ p {
 }
 .keypoint--contenteditable {
   z-index: 200;
+}
+.kp__head {
+  width: 100%;
+  display: inline-block;
 }
 .kp__meta {
   background: #ffffff;

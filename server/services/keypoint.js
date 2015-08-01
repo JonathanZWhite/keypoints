@@ -62,7 +62,7 @@ keypoint = {
         });
     },
     getAll: function(userId, callback) {
-        dataProvider.keypoint.find({ user: userId }, function(err, keypoints) {
+        dataProvider.keypoint.get({ user: userId }, function(err, keypoints) {
             if (err) return errorhandler(err);
 
             callback({

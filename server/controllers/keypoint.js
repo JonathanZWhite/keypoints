@@ -1,16 +1,11 @@
 /*jslint node: true */
 'use strict';
 
-var errorhandler = require('../utils').errorhandler;
-var db = require('../database');
-
 var keypointController = {};
-var keypoint = require('../keypoint');
 var services = require('../services');
 
 keypointController.add = add;
 keypointController.getTopicKeypoints = getTopicKeypoints;
-
 keypointController.del = del;
 keypointController.getAll = getAll;
 keypointController.update = update;

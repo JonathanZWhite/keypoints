@@ -12,7 +12,8 @@
             scope: {
                 keypoint: '=',
                 keypoints: '=',
-                isContenteditable: '='
+                isContenteditable: '=',
+                showDetail: '@'
             },
             templateUrl: 'keypoint/keypoint.tpl.html',
             controllerAs: 'vm',
