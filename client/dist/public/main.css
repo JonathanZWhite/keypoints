@@ -460,12 +460,10 @@ p,
 .navbar--active {
   color: #4fb9f3;
 }
-.tags__list,
-.tags__icon {
+.tags__list {
   display: inline-block;
 }
-.tag,
-.tags__icon {
+.tags__list li {
   color: #848c99;
   margin-right: 6.25px;
 }

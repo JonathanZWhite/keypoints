@@ -1,14 +1,10 @@
 <div class="tags">
-    <i class="caption tags__icon fa fa-tag"></i>
     <ul class="tags__list ui-list ui-list--di">
         <li>
-            <span class="caption tag">science</span>
+            <i class="caption fa fa-tag"></i>
         </li>
-        <li>
-            <span class="caption tag">science</span>
-        </li>
-        <li>
-            <span class="caption tag">science</span>
+        <li ng-repeat="tag in vm.tags">
+            <span class="caption" ng-bind="tag.name"></span>
         </li>
     </ul>
 </div>

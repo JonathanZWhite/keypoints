@@ -6,7 +6,9 @@
         return {
             restrict: 'E',
             replace: true,
-            scope: {},
+            scope: {
+                tags: '='
+            },
             templateUrl: 'tags/tags.tpl.html',
             controllerAs: 'vm',
             bindToController: true,
