@@ -5,6 +5,7 @@
     function KeypointsController(KeypointStore) {
         var vm = this;
         vm.keypoints = [];
+        vm.isContenteditable = false;
 
         init();
 

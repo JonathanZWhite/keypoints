@@ -48,7 +48,7 @@ body {
 }
 .ui-textarea {
   border: none;
-  font-size: 14px;
+  font-size: 15px;
   padding: 12.5px;
   resize: none;
   width: 100%;
@@ -62,7 +62,7 @@ body {
 }
 .ui-input {
   border: none;
-  font-size: 14px;
+  font-size: 15px;
   padding: 12.5px;
 }
 .ui-input--medium {
@@ -304,11 +304,11 @@ h5 {
 }
 p,
 .text {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 21px;
 }
 .caption {
-  font-size: 12px;
+  font-size: 13px;
 }
 .text-dark--dark {
   color: #44484f;
@@ -325,15 +325,6 @@ p,
  * Variables should be defined here, doing so should help keep
  * the styling uniform across Inventive
  */
-.edit-overlay {
-  background: rgba(0, 0, 0, 0.4);
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-}
 .tp {
   box-sizing: border-box;
   height: 100%;
@@ -391,9 +382,17 @@ p,
 .composer__option--active {
   color: #4fb9f3;
 }
+.edit-overlay {
+  background: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+}
 .keypoint {
   position: relative;
-  padding-top: 0;
   margin-bottom: 12.5px;
 }
 .keypoint--preview {
@@ -412,6 +411,7 @@ p,
 .kp__head {
   width: 100%;
   display: inline-block;
+  margin-bottom: 3.125px;
 }
 .kp__meta {
   background: #ffffff;
@@ -438,11 +438,11 @@ p,
   margin-left: 12.5px;
 }
 .kp__option .fa {
-  font-size: 14px;
+  font-size: 15px;
 }
 .navbar {
   color: #7c838f;
-  font-size: 12px;
+  font-size: 13px;
   margin-bottom: 25px;
   text-align: center;
   text-transform: uppercase;

@@ -7,7 +7,7 @@
         // model
         vm.keypoints = [];
         // functions
-        vm.contenteditable = false;
+        vm.isContenteditable = false;
         // activation
         init();
 

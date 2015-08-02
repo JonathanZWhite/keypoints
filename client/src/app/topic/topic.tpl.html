@@ -1,8 +1,8 @@
 <section class="tp">
     <div class="ui-container">
-        <div class="edit-overlay"
-            ng-show="vm.contenteditable"
-            ng-click="vm.disableContenteditable()"></div>
+        <edit-overlay
+            is-contenteditable="vm.isContenteditable"
+            keypoints="vm.keypointStore.keypoints"></edit-overlay>
 
         <navbar topic-url="vm.topicStore.topic.url"></navbar>
 
@@ -18,6 +18,6 @@
             ng-repeat="keypoint in vm.keypointStore.keypoints track by $index"
             keypoint="keypoint"
             keypoints="vm.keypointStore.keypoints"
-            is-contenteditable="vm.contenteditable"></keypoint>
+            is-contenteditable="vm.isContenteditable"></keypoint>
     </div>
 </section>

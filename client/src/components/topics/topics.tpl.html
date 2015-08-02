@@ -3,7 +3,8 @@
         ng-repeat="topic in vm.topics track by $index"
         ui-sref="topic({ url: topic.url })">
         <div class="topic__content">
-            <div class="ui-column ui-column--one">
+            <div class="ui-column ui-column--one"
+                ng-if="topic.image">
                 <div class="topic__preview"
                     ng-style="{ 'background-image': 'url(' + topic.image + ')' }"></div>
             </div>

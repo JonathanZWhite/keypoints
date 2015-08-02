@@ -28,9 +28,11 @@
                     return;
                 }
 
+                console.log('toggline...');
+
                 vm.keypoint.keypoint = vm.keypointOldValue;
                 vm.isContenteditable = false;
-                vm.keypoint.contenteditable = false;
+                vm.keypoint.isContenteditable = false;
                 scope.$apply();
             }
 
@@ -53,19 +55,19 @@
         vm.updateKeypoint = updateKeypoint;
 
         function disableContenteditable() {
-            vm.keypoint = keypointOldValue;
-            vm.keypoint.contenteditable = false;
-            vm.isContenteditable = false;
+            // vm.keypoint = keypointOldValue;
+            // vm.keypoint.isContenteditable = false;
+            // vm.isContenteditable = false;
         }
 
         function enableContenteditable() {
             vm.keypointOldValue = angular.copy(vm.keypoint.keypoint);
-            vm.keypoint.contenteditable = true;
+            vm.keypoint.isContenteditable = true;
             vm.isContenteditable = true;
         }
 
         function updateKeypoint() {
-            vm.keypoint.contenteditable = false;
+            vm.keypoint.isContenteditable = false;
             KeypointStore.update(vm.keypoint);
             vm.isContenteditable = false;
         }

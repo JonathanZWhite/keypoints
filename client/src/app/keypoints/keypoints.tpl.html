@@ -1,5 +1,8 @@
 <section class="list">
     <div class="ui-container">
+        <edit-overlay
+            is-contenteditable="vm.isContenteditable"
+            keypoints="vm.keypoints"></edit-overlay>
         <navbar></navbar>
 
         <h3 class="list__head text-dark--dark">All keypoints</h3>
@@ -7,6 +10,7 @@
             ng-repeat="keypoint in vm.keypoints track by $index"
             keypoint="keypoint"
             keypoints="vm.keypoints"
-            show-detail="false"></keypoint>
+            is-contenteditable="vm.isContenteditable"
+            show-detail="{{true}}"></keypoint>
     </div>
 </section>
