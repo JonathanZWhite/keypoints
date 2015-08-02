@@ -84,6 +84,9 @@ body {
   list-style: none;
   overflow: auto;
 }
+.ui-list--di li {
+  display: inline-block;
+}
 .ui-btn--medium {
   border-radius: 2px;
   font-weight: 700;
@@ -109,6 +112,11 @@ body {
   border-radius: 3px;
   padding: 12.5px;
   margin-bottom: 12.5px;
+}
+.ui-page {
+  box-sizing: border-box;
+  height: 100%;
+  padding-bottom: 25px;
 }
 .u-truncate {
   white-space: nowrap;
@@ -325,17 +333,9 @@ p,
  * Variables should be defined here, doing so should help keep
  * the styling uniform across Inventive
  */
-.tp {
-  box-sizing: border-box;
-  height: 100%;
-  padding: 25px 0;
-}
 .tp__head {
   font-weight: 700;
   margin-bottom: 12.5px;
-}
-.list {
-  padding: 25px 0;
 }
 .list__head {
   margin-bottom: 25px;
@@ -370,11 +370,14 @@ p,
 .composer__btn {
   margin-bottom: 25px;
 }
+.composer__content {
+  position: relative;
+}
 .composer__options {
   background: #ffffff;
   position: absolute;
   right: 12.5px;
-  bottom: 88.5px;
+  bottom: 23.5px;
 }
 .composer__option {
   cursor: pointer;
@@ -408,10 +411,13 @@ p,
 .keypoint--contenteditable {
   z-index: 200;
 }
+.kp__content {
+  margin-bottom: 12.5px;
+}
 .kp__head {
   width: 100%;
   display: inline-block;
-  margin-bottom: 3.125px;
+  margin-bottom: 12.5px;
 }
 .kp__meta {
   background: #ffffff;
@@ -441,14 +447,27 @@ p,
   font-size: 15px;
 }
 .navbar {
+  background: #ffffff;
   color: #7c838f;
   font-size: 13px;
   margin-bottom: 25px;
   text-align: center;
   text-transform: uppercase;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 25px;
 }
 .navbar--active {
   color: #4fb9f3;
+}
+.tags__list,
+.tags__icon {
+  display: inline-block;
+}
+.tag,
+.tags__icon {
+  color: #848c99;
+  margin-right: 6.25px;
 }
 .topic__preview {
   background-size: cover;

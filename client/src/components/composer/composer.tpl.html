@@ -1,23 +1,32 @@
 <div class="composer">
-    <div class="composer__options">
-        <span class="composer__option caption text-dark--lightest"
-            ng-click="vm.toggleMode('text')"
-            ng-class="{ 'composer__option--active': vm.mode === 'text' }">TEXT</span>
-        <span class="caption text-dark--lightest">|</span>
-        <span class="composer__option caption text-dark--lightest"
-            ng-click="vm.toggleMode('image')"
-            ng-class="{ 'composer__option--active': vm.mode === 'image' }">IMAGE</span>
+    <div class="composer__content">
+        <div class="composer__options">
+            <span class="composer__option caption text-dark--lightest"
+                ng-click="vm.toggleMode('text')"
+                ng-class="{ 'composer__option--active': vm.mode === 'text' }">TEXT</span>
+            <span class="caption text-dark--lightest">|</span>
+            <span class="composer__option caption text-dark--lightest"
+                ng-click="vm.toggleMode('image')"
+                ng-class="{ 'composer__option--active': vm.mode === 'image' }">IMAGE</span>
+        </div>
+        <textarea
+            placeholder="Enter in a keypoint about whatever article you are reading"
+            ng-show="vm.mode === 'text'"
+            class="ui-textarea ui-textarea--medium ui-textarea--light"
+            ng-model="vm.keypoint"></textarea>
+        <input
+            placeholder="http://imgur.com"
+            ng-show="vm.mode === 'image'"
+            class="ui-input ui-input--medium ui-input--light"
+            ng-model="vm.image"
+        />
     </div>
-    <textarea
-        placeholder="Enter in a keypoint about whatever article you are reading"
-        ng-show="vm.mode === 'text'"
-        class="ui-textarea ui-textarea--medium ui-textarea--light"
-        ng-model="vm.keypoint"></textarea>
+
     <input
-        placeholder="http://imgur.com"
-        ng-show="vm.mode === 'image'"
+        placeholder="adds tags, separated by a comma"
+        ng-list
         class="ui-input ui-input--medium ui-input--light"
-        ng-model="vm.image"
+        ng-model="vm.tags"
     />
     <button
         class="composer__btn ui-btn ui-btn--medium ui-btn--highlight"

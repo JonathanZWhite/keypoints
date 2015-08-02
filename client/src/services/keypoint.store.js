@@ -26,15 +26,11 @@
 				});
 		}
 
-		function add(url, keypoint, image) {
+		function add(data) {
 			return $http({
 				url: base + 'add',
 				method: 'POST',
-				data: {
-					url: url,
-					keypoint: keypoint,
-					image: image
-				}
+				data: data
 			})
 			.success(function(resp) {
 				Keypoint.model.keypoints.push(resp);

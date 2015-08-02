@@ -30,18 +30,26 @@ keypoint = {
 
         function createKeypoint(topicId, next) {
             var contentType = payload.keypoint ? 'text' : 'image';
+            var formattedTags = _formatTags(payload.tags);
 
             var keypointData = {
                 topic: topicId,
                 contentType: contentType,
                 keypoint: payload.keypoint,
                 image: payload.image,
+                tags: formattedTags,
                 user: userId
             };
 
             dataProvider.keypoint.add(keypointData, function(err, keypoint) {
                 if (err) return errorhandler(err);
                 next(null, keypoint);
+            });
+        }
+
+        function _formatTags(tags) {
+            return tags.map(function(tag) {
+                return { name: tag };
             });
         }
 

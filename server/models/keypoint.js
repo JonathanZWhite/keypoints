@@ -3,9 +3,14 @@
 
 var Keypoint;
 var KeypointSchema;
+var TagSchema;
 var _ = require('lodash-node');
 var mongoose =  require('mongoose');
 var Schema = mongoose.Schema;
+
+TagSchema = new Schema({
+    name: String
+});
 
 KeypointSchema = new Schema({
     created: { type : Date, default: Date.now },
@@ -15,6 +20,7 @@ KeypointSchema = new Schema({
     keypoint: String,
     image: String,
     user: { type : mongoose.Schema.ObjectId, ref : 'user' },
+    tags: [TagSchema]
 });
 
 KeypointSchema.statics.add = add;

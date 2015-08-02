@@ -39,11 +39,14 @@ var topicService = require('./topic');
         }, function(topicId, next) {
             var contentType = payload.keypoint ? 'text' : 'image';
 
+            console.log('Look', payload.tags);
+
             var keypointData = {
                 topic: topicId,
                 contentType: contentType,
                 keypoint: payload.keypoint,
                 image: payload.image,
+                tags: payload.tags,
                 user: userId
             };
 

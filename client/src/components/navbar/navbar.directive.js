@@ -6,9 +6,7 @@
         return {
             restrict: 'E',
             replace: true,
-            scope: {
-                topicUrl: '='
-            },
+            scope: {},
             templateUrl: 'navbar/navbar.tpl.html',
             controllerAs: 'vm',
             bindToController: true,
@@ -24,7 +22,7 @@
         vm.isCurrentPage = isCurrentPage;
 
         function isCurrentPage() {
-            return (($stateParams.url === vm.topicUrl) && ($state.current.name === 'topic'));
+            return (($stateParams.url === vm.clientStore.url) && ($state.current.name === 'topic'));
         }
     }
 

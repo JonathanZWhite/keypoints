@@ -25,6 +25,7 @@
         vm.keypoint = '';
         vm.image = '';
         vm.mode = 'text';
+        vm.tags = [];
         // function
         vm.createKeypoint = createKeypoint;
         vm.toggleMode = toggleMode;
@@ -36,7 +37,12 @@
         function createKeypoint() {
             if (!vm.keypoint && !vm.image) return;
 
-            KeypointStore.add($stateParams.url, vm.keypoint, vm.image);
+            KeypointStore.add({
+                url: $stateParams.url,
+                keypoint: vm.keypoint,
+                image: vm.image,
+                tags: vm.tags
+            });
         }
     }
 

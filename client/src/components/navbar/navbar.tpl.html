@@ -1,10 +1,12 @@
 <nav class="navbar">
-    <a ui-sref="topic({ url: vm.clientStore.url })"
+    <a
+        class="u-float-l"
+        ui-sref="topic({ url: vm.clientStore.url })"
         ng-class="{ 'navbar--active': vm.isCurrentPage() }">current page</a>
-    <span> | </span>
     <a ui-sref="list"
         ng-class="{ 'navbar--active': vm.$state.current.name === 'list' }">all pages</a>
-    <span> | </span>
-    <a ui-sref="keypoints"
+    <a
+        class="u-float-r"
+        ui-sref="keypoints"
         ng-class="{ 'navbar--active': vm.$state.current.name === 'keypoints' }">all keypoints</a>
 </nav>

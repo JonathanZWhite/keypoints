@@ -1,10 +1,9 @@
-<section class="tp">
+<section class="ui-page">
+    <navbar></navbar>
     <div class="ui-container">
         <edit-overlay
             is-contenteditable="vm.isContenteditable"
             keypoints="vm.keypointStore.keypoints"></edit-overlay>
-
-        <navbar topic-url="vm.topicStore.topic.url"></navbar>
 
         <a ng-href="http://{{vm.topicStore.topic.url}}" target="_blank">
             <h5
