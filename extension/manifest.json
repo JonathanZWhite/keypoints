@@ -29,6 +29,7 @@
         "activeTab",
         "contextMenus",
         "https://localhost:8000/",
+        "webNavigation",
         "tabs"
     ]
 }

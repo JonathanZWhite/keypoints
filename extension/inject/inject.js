@@ -17,7 +17,14 @@ var Inject = (function() {
         console.log('initializing: inject');
         _injectIframe();
         _injectNotification();
+        document.addEventListener('mouseup', self._handleMouseUp);
         chrome.extension.onMessage.addListener(_handleMessage); // listens to background
+    }
+
+    function _handleMouseUp() {
+        var selected = window.getSelection();
+        alert();
+        console.log('<<<<<<<<<<<< Look', selected);
     }
 
     function _injectNotification() {
@@ -79,6 +86,10 @@ var Inject = (function() {
                 _showNotification();
                 _message(request);
                 break;
+            case 'navigate':
+                console.log('yo', request);
+                _message(request);
+                break;
             case 'browserAction':
                 self.toggleFrame();
                 break;
@@ -98,5 +109,53 @@ var Inject = (function() {
         }, 5000);
     }
 }());
+
+document.addEventListener('mouseup', function() {
+    var nodes = [];
+    var tree = traverse(window.getSelection().anchorNode, nodes);
+    console.log('<<<<<<<<<<<<', tree);
+});
+
+function traverse(node, nodes) {
+    while(node.parentNode) {
+        nodes.unshift({
+            name: node.nodeName,
+            position: _getNodePosition(node)
+        });
+        return traverse(node.parentNode, nodes);
+    }
+
+    return nodes;
+}
+
+function _getNodePosition(child) {
+    var parent = child.parentNode;
+    var index = 0;
+
+    console.log('<<<<', child.nodeName);
+
+    while(child.previousSibling !== null) {
+        if ((child.nodeName === child.previousSibling.nodeName) && child.nodeName === 'ARTICLE') {
+            console.log('Identified article', index);
+        }
+
+        if (child.nodeName === child.previousSibling.nodeName) {
+            if (child.nodeName === 'ARTICLE') {
+                index = 0;
+            } else {
+                if (child.nodeName === 'ARTICLE') {
+                    console.log('ASDLKGJASKGJASDKLGJSD');
+                }
+                index++;
+            }
+        }
+
+        child = child.previousSibling;
+    }
+
+    console.log('<<<<', index);
+
+    return index;
+}
 
 window.addEventListener('load', Inject.init());

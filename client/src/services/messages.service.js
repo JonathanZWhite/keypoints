@@ -18,6 +18,9 @@
 				case 'init':
 					ClientStore.model.url = payload.url;
 					break;
+				case 'navigate':
+					console.log('This is the payload', payload);
+					break;
 				case 'context':
 					KeypointStore.add({
 						url: payload.url,

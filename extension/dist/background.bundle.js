@@ -77,6 +77,15 @@
 	    });
 	}
 
+	function _onBeforeNavigate(detail, test) {
+	    _message({
+	        type: 'navigate',
+	        detail: detail,
+	        test: test
+	    });
+	}
+
+	chrome.webNavigation.onBeforeNavigate.addListener(_onBeforeNavigate);
 	chrome.browserAction.onClicked.addListener(_onClick);
 
 
