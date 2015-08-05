@@ -1,17 +1,11 @@
 .keypoint {
 	position: relative;
 	margin-bottom: @space-small;
+	padding: 0;
+	overflow: auto;
 }
 	.keypoint--preview {
 		padding: 0;
-	}
-
-	.keypoint--preview .kp__meta {
-		position: absolute;
-		top: 0;
-		right: 0;
-		left: 0;
-		padding: @space-small;
 	}
 
 	.keypoint--contenteditable {
@@ -19,7 +13,8 @@
 	}
 
 	.kp__content {
-		margin-bottom: @space-small;
+		padding: 0 @space-small;
+		margin-top: @space-small;
 	}
 
 	.kp__head {
@@ -29,8 +24,9 @@
 	}
 
 	.kp__meta {
-		background: @color-brand-white;
-	    padding: @space-small 0;
+	    padding: @space-small;
+		padding-bottom: 0;
+		margin-bottom: @space-small;
 	}
 
 	.kp-btn {

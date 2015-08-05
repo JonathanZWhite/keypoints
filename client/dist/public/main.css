@@ -397,22 +397,18 @@ p,
 .keypoint {
   position: relative;
   margin-bottom: 12.5px;
+  padding: 0;
+  overflow: auto;
 }
 .keypoint--preview {
   padding: 0;
-}
-.keypoint--preview .kp__meta {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  padding: 12.5px;
 }
 .keypoint--contenteditable {
   z-index: 200;
 }
 .kp__content {
-  margin-bottom: 12.5px;
+  padding: 0 12.5px;
+  margin-top: 12.5px;
 }
 .kp__head {
   width: 100%;
@@ -420,8 +416,9 @@ p,
   margin-bottom: 12.5px;
 }
 .kp__meta {
-  background: #ffffff;
-  padding: 12.5px 0;
+  padding: 12.5px;
+  padding-bottom: 0;
+  margin-bottom: 12.5px;
 }
 .kp-btn {
   position: absolute;

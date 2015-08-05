@@ -19,30 +19,38 @@
         </ul>
     </div> -->
 
-    <a
-        class="kp__head text text-dark--dark u-truncate"
-        ng-bind="vm.keypoint.topic.title"
-        ng-if="vm.showDetail"
-        ng-href="http://{{vm.keypoint.topic.url}}"
-        target="_blank">
-    </a>
+    <div
+        class="kp__meta"
+        ng-if="vm.showDetail">
+        <a
+            class="kp__head text text-dark--dark u-truncate"
+            ng-bind="vm.keypoint.topic.title"
+            ng-href="http://{{vm.keypoint.topic.url}}"
+            target="_blank">
+        </a>
+    </div>
 
-    <div class="kp__content">
+    <div
+        class="kp__content"
+        ng-if="vm.keypoint.contentType === 'text'">
         <p
             class="text-dark--light"
-            ng-if="vm.keypoint.contentType === 'text'"
             contenteditable="{{ vm.keypoint.isContenteditable }}"
             ng-class="{ 'ui-contenteditabe': vm.keypoint.isContenteditable }"
             ng-model="vm.keypoint.keypoint"
             ng-click="vm.enableContenteditable()"><p>
-
-        <div
-            class="kp__preview"
-            ng-if="vm.keypoint.contentType === 'image'"
-            ng-style="{ 'background-image': 'url(' + vm.keypoint.image + ')' }"></div>
     </div>
 
-    <tags tags="vm.keypoint.tags"></tags>
+    <div
+        class="kp__preview"
+        ng-if="vm.keypoint.contentType === 'image'"
+        ng-style="{ 'background-image': 'url(' + vm.keypoint.image + ')' }"></div>
+
+    <div
+        class="kp__meta"
+        ng-if="vm.keypoint.tags.length !== 0">
+        <tags tags="vm.keypoint.tags"></tags>
+    </div>
 
     <button
         class="kp-btn ui-btn ui-btn--medium ui-btn--success"
