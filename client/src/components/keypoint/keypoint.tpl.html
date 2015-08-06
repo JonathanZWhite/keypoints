@@ -2,6 +2,8 @@
     class="keypoint ui-card"
     ng-class="{ 'keypoint--contenteditable': vm.keypoint.isContenteditable, 'keypoint--preview': vm.keypoint.contentType === 'image' }">
 
+    <delete-button delete="vm.delKeypoint()"></delete-button>
+
     <!-- <div class="kp__meta">
         <ul class="kp__options">
             <li class="kp__option"

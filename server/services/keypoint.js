@@ -85,13 +85,12 @@ keypoint = {
         function getTopic(next) {
             url = utils.removeUrlIdentifier(url);
             dataProvider.topic.findOne({ user: userId, url: url}, function(err, topic) {
-                console.log('This is the url and user', userId, url, topic);
-
                 if (err) return errorhandler(err);
                 if (!topic) {
                     return next({
                         status: false,
-                        message: 'topic has not been saved yet'
+                        message: 'topic has not been saved yet',
+                        data: []
                     });
                 }
                 next(null, topic._id);
