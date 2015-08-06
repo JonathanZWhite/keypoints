@@ -556,11 +556,12 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 		};
 		// TODO: allow reinitialization cal
 
-		function init() {
-			console.log('initializing keypoint store');
-			getTopicKeypoints($stateParams.url)
+		function init(url) {
+			url = url ? url : $stateParams.url;
+			getTopicKeypoints(url)
 				.then(function(resp) {
-					Keypoint.model.keypoints = resp.data;
+					console.log('This is the resp', resp);
+					Keypoint.model.keypoints = resp.data.data;
 				});
 		}
 
@@ -736,7 +737,7 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 		};
 
 		function init() {
-			console.log('Initializing');
+			console.log('Initializing topic store');
 			get($stateParams.url)
 				.then(function(resp) {
 					Topic.model.topic = resp.data;

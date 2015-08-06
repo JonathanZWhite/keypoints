@@ -83,9 +83,17 @@ keypoint = {
         var tasks;
 
         function getTopic(next) {
+            url = utils.removeUrlIdentifier(url);
             dataProvider.topic.findOne({ user: userId, url: url}, function(err, topic) {
+                console.log('This is the url and user', userId, url, topic);
+
                 if (err) return errorhandler(err);
-                if (!topic) return;
+                if (!topic) {
+                    return next({
+                        status: false,
+                        message: 'topic has not been saved yet'
+                    });
+                }
                 next(null, topic._id);
             });
         }
@@ -93,7 +101,10 @@ keypoint = {
         function getKeypoints(topicId, next) {
             dataProvider.keypoint.find({ topic: topicId }, function(err, keypoints) {
                 if (err) return errorhandler(err);
-                next(null, keypoints);
+                next(null, {
+                    status: true,
+                    data: keypoints
+                });
             });
         }
 
@@ -103,7 +114,7 @@ keypoint = {
         ];
 
         async.waterfall(tasks, function(err, result) {
-            if (err) return errorhandler(err);
+            if (err) return callback(err);
             callback(result);
         });
     },

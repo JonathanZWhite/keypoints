@@ -15,7 +15,7 @@
 		};
 
 		function init() {
-			console.log('Initializing');
+			console.log('Initializing topic store');
 			get($stateParams.url)
 				.then(function(resp) {
 					Topic.model.topic = resp.data;

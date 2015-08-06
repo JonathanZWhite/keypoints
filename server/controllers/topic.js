@@ -13,7 +13,6 @@ function get(req, res) {
     var url = utils.removeUrlIdentifier(req.query.url);
     console.log('Getting topic...', req.query.url);
     Topic.findOne({ url: url }, function(err, topic) {
-        console.log('<<<<<<<< Look', err, topic);
         res.json(topic);
     });
 }

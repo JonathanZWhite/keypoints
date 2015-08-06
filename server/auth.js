@@ -148,8 +148,6 @@ var errorhandler = require('./utils').errorhandler;
 
             // TODO: fix this
             async.waterfall(tasks, function(err, results) {
-                console.log('HEREERE 4');
-                console.log('<<<<<<<<', err, results);
                 return done(null, {
                     status: 200,
                     data: results

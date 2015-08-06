@@ -19,11 +19,12 @@
 		};
 		// TODO: allow reinitialization cal
 
-		function init() {
-			console.log('initializing keypoint store');
-			getTopicKeypoints($stateParams.url)
+		function init(url) {
+			url = url ? url : $stateParams.url;
+			getTopicKeypoints(url)
 				.then(function(resp) {
-					Keypoint.model.keypoints = resp.data;
+					console.log('This is the resp', resp);
+					Keypoint.model.keypoints = resp.data.data;
 				});
 		}
 
