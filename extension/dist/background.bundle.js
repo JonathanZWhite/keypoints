@@ -79,13 +79,13 @@
 
 	function _onUpdated(tabId, changeInfo, tab) {
 	    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-	        if (tabs[0].id === tabId) {
-	            if (changeInfo.status === 'loading' && changeInfo.url) {
-	                _message({
-	                    type: 'navigate',
-	                    url: changeInfo.url
-	                });
-	            }
+	        if (tabs[0].id !== tabId) return;
+	        
+	        if (changeInfo.status === 'loading' && changeInfo.url) {
+	            _message({
+	                type: 'navigate',
+	                url: changeInfo.url
+	            });
 	        }
 	    });
 	}

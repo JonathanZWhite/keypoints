@@ -59,6 +59,7 @@ body {
 }
 .ui-textarea--light {
   border: 1px solid #e9edf2;
+  color: #7c838f;
 }
 .ui-input {
   border: none;
