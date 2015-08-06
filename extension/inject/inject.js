@@ -80,7 +80,6 @@ var Inject = (function() {
                 _message(request);
                 break;
             case 'navigate':
-                console.log('yo', request);
                 _message(request);
                 break;
             case 'browserAction':

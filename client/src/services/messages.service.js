@@ -1,9 +1,9 @@
 (function() {
 	'use strict';
 
-	MesssagesService.$inject = ['$window', 'ClientStore', 'KeypointStore'];
+	MesssagesService.$inject = ['$state', '$window', 'ClientStore', 'KeypointStore'];
 
-	function MesssagesService($window, ClientStore, KeypointStore) {
+	function MesssagesService($state, $window, ClientStore, KeypointStore) {
 		var Messages = {};
 
 		init();
@@ -19,7 +19,8 @@
 					ClientStore.model.url = payload.url;
 					break;
 				case 'navigate':
-					console.log('This is the payload', payload);
+					ClientStore.model.url = payload.url;
+					$state.go('topic', { url: payload.url });
 					break;
 				case 'context':
 					KeypointStore.add({

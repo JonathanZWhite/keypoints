@@ -17,6 +17,7 @@
 			init: init,
 			update: update
 		};
+		// TODO: allow reinitialization cal
 
 		function init() {
 			console.log('initializing keypoint store');

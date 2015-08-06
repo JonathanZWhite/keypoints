@@ -408,17 +408,15 @@ p,
 }
 .kp__content {
   padding: 0 12.5px;
-  margin-top: 12.5px;
+  margin: 12.5px 0;
 }
 .kp__head {
   width: 100%;
   display: inline-block;
-  margin-bottom: 12.5px;
 }
 .kp__meta {
-  padding: 12.5px;
-  padding-bottom: 0;
-  margin-bottom: 12.5px;
+  padding: 0 12.5px;
+  margin: 12.5px 0;
 }
 .kp-btn {
   position: absolute;

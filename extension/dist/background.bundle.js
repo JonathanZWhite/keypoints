@@ -77,15 +77,16 @@
 	    });
 	}
 
-	function _onBeforeNavigate(detail, test) {
-	    _message({
-	        type: 'navigate',
-	        detail: detail,
-	        test: test
-	    });
+	function _onUpdated(tabId, changeInfo, tab) {
+	    if (changeInfo.status === 'loading') {
+	        _message({
+	            type: 'navigate',
+	            url: changeInfo.url
+	        });
+	    }
 	}
 
-	chrome.webNavigation.onBeforeNavigate.addListener(_onBeforeNavigate);
+	chrome.tabs.onUpdated.addListener(_onUpdated);
 	chrome.browserAction.onClicked.addListener(_onClick);
 
 
