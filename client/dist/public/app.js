@@ -554,6 +554,7 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 			init: init,
 			update: update
 		};
+		// TODO: allow reinitialization cal
 
 		function init() {
 			console.log('initializing keypoint store');
@@ -650,9 +651,9 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 (function() {
 	'use strict';
 
-	MesssagesService.$inject = ['$window', 'ClientStore', 'KeypointStore'];
+	MesssagesService.$inject = ['$state', '$window', 'ClientStore', 'KeypointStore'];
 
-	function MesssagesService($window, ClientStore, KeypointStore) {
+	function MesssagesService($state, $window, ClientStore, KeypointStore) {
 		var Messages = {};
 
 		init();
@@ -668,7 +669,8 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 					ClientStore.model.url = payload.url;
 					break;
 				case 'navigate':
-					console.log('This is the payload', payload);
+					ClientStore.model.url = payload.url;
+					$state.go('topic', { url: payload.url });
 					break;
 				case 'context':
 					KeypointStore.add({

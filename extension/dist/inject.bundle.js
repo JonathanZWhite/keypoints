@@ -126,6 +126,7 @@
 	                _message(request);
 	                break;
 	            case 'navigate':
+	                console.log('<<<<<<<< navigating...', request);
 	                _message(request);
 	                break;
 	            case 'browserAction':

@@ -32,12 +32,16 @@ function _message(payload) {
 }
 
 function _onUpdated(tabId, changeInfo, tab) {
-    if (changeInfo.status === 'loading') {
-        _message({
-            type: 'navigate',
-            url: changeInfo.url
-        });
-    }
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (tabs[0].id === tabId) {
+            if (changeInfo.status === 'loading' && changeInfo.url) {
+                _message({
+                    type: 'navigate',
+                    url: changeInfo.url
+                });
+            }
+        }
+    });
 }
 
 chrome.tabs.onUpdated.addListener(_onUpdated);
