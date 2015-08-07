@@ -29,6 +29,8 @@
         "activeTab",
         "contextMenus",
         "https://localhost:8000/",
+        "http://fonts.googleapis.com/",
+        "https://fonts.googleapis.com/",
         "webNavigation",
         "tabs"
     ]

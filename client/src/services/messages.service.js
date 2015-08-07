@@ -28,11 +28,22 @@
 						keypoint: payload.keypoint,
 						image: payload.image,
 						tags: []
+					})
+					.then(function(resp) {
+						_sendMessage({
+							type: 'success',
+							data: resp.data // keypoint
+						});
 					});
 					break;
+				case 'tag':
+					KeypointStore.addTag(payload.data);
 			}
 		}
 
+		function _sendMessage(payload) {
+			$window.parent.postMessage(payload, '*');
+		}
 
 		return Messages;
 	}

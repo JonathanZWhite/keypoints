@@ -63,6 +63,11 @@ keypoint = {
             callback(results);
         });
     },
+    addTags: function(keypointId, tags, callback) {
+        dataProvider.keypoint.updateField(keypointId, tags, 'tags', function(err, updatedKeypoint) {
+            console.log('This is the updatedKeypoint', updatedKeypoint);
+        });
+    },
     del: function(keypointId, callback) {
         dataProvider.keypoint.findByIdAndRemove(keypointId, function(err) {
             if (err) return errorhandler(err);

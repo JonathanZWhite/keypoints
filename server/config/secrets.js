@@ -1,6 +1,6 @@
 module.exports = {
 	local: {
-		port: process.env.PORT || 3000,
+		port: process.env.PORT || 5000,
 		mongoDB: process.env.MONGODB || 'mongodb://localhost:27017/keypoints'
 	},
 	staging: {

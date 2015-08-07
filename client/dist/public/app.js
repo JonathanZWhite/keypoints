@@ -39,10 +39,10 @@ angular
     .module('app.pages.keypoints', []);
 
 angular
-    .module('app.pages.list', []);
+    .module('app.pages.login', []);
 
 angular
-    .module('app.pages.login', []);
+    .module('app.pages.list', []);
 
 angular
     .module('app.pages.signup', []);
@@ -227,46 +227,6 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 (function() {
     'use strict';
 
-    ListController.$inject = ['ListStore'];
-    function ListController(ListStore) {
-        var vm = this;
-
-        vm.listStore = ListStore.model;
-    }
-
-    angular
-        .module('app.pages.list')
-        .controller('ListController', ListController);
-})();
-
-(function() {
-    'use strict';
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('list', {
-                url: '/list',
-                views: {
-                    'content@': {
-                        templateUrl: 'list/list.tpl.html',
-                        controllerAs: 'vm',
-                        controller: 'ListController'
-                    }
-                },
-                data: {
-                    pageTitle: 'List'
-                }
-            });
-    }
-
-    angular.module('app.pages.list')
-        .config(['$stateProvider', config]);
-
-}());
-
-(function() {
-    'use strict';
-
     LoginController.$inject = ['$state', '$stateParams', 'AuthService'];
     function LoginController($state, $stateParams, AuthService) {
         var vm = this;
@@ -315,6 +275,46 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
     }
 
     angular.module('app.pages.login')
+        .config(['$stateProvider', config]);
+
+}());
+
+(function() {
+    'use strict';
+
+    ListController.$inject = ['ListStore'];
+    function ListController(ListStore) {
+        var vm = this;
+
+        vm.listStore = ListStore.model;
+    }
+
+    angular
+        .module('app.pages.list')
+        .controller('ListController', ListController);
+})();
+
+(function() {
+    'use strict';
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('list', {
+                url: '/list',
+                views: {
+                    'content@': {
+                        templateUrl: 'list/list.tpl.html',
+                        controllerAs: 'vm',
+                        controller: 'ListController'
+                    }
+                },
+                data: {
+                    pageTitle: 'List'
+                }
+            });
+    }
+
+    angular.module('app.pages.list')
         .config(['$stateProvider', config]);
 
 }());
@@ -556,6 +556,7 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 				keypoints: []
 			},
 			add: add,
+			addTags: addTags,
 			del: del,
 			getTopicKeypoints: getTopicKeypoints,
 			getAll: getAll,
@@ -581,6 +582,16 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 			})
 			.success(function(resp) {
 				Keypoint.model.keypoints.push(resp);
+			});
+		}
+
+		function addTags(data) {
+			// do validation on BE
+			var tags = data.split(',');
+			return $http({
+				url: base + 'add-tags',
+				method: 'PUT',
+				data: data
 			});
 		}
 
@@ -687,11 +698,22 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 						keypoint: payload.keypoint,
 						image: payload.image,
 						tags: []
+					})
+					.then(function(resp) {
+						_sendMessage({
+							type: 'success',
+							data: resp.data // keypoint
+						});
 					});
 					break;
+				case 'tag':
+					KeypointStore.addTag(payload.data);
 			}
 		}
 
+		function _sendMessage(payload) {
+			$window.parent.postMessage(payload, '*');
+		}
 
 		return Messages;
 	}
@@ -849,7 +871,6 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
         };
 
         function link(scope, elem, attrs, vm) {
-            console.log('Look this the parent', elem.parent()[0]);
             var parent = elem.parent()[0];
             angular.element(parent).on('mouseenter', function() { _handleMouseEvent(true); });
             angular.element(parent).on('mouseleave', function() { _handleMouseEvent(false); });

@@ -5,6 +5,7 @@ var keypointController = {};
 var services = require('../services');
 
 keypointController.add = add;
+keypointController.addTags = addTags;
 keypointController.getTopicKeypoints = getTopicKeypoints;
 keypointController.del = del;
 keypointController.getAll = getAll;
@@ -13,6 +14,13 @@ keypointController.update = update;
 function add(req, res) {
     console.log('Creating new keypoint...');
     services.keypoint.add(req.user._id, req.body, function(resp) {
+        res.json(resp);
+    });
+}
+
+function addTags(req, res) {
+    console.log('Adding tags to keypoint...');
+    services.keypoint.addTags(req.body.keypointId, req.body.tags, function(resp) {
         res.json(resp);
     });
 }

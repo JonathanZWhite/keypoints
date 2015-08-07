@@ -11,6 +11,7 @@
 				keypoints: []
 			},
 			add: add,
+			addTags: addTags,
 			del: del,
 			getTopicKeypoints: getTopicKeypoints,
 			getAll: getAll,
@@ -36,6 +37,16 @@
 			})
 			.success(function(resp) {
 				Keypoint.model.keypoints.push(resp);
+			});
+		}
+
+		function addTags(data) {
+			// do validation on BE
+			var tags = data.split(',');
+			return $http({
+				url: base + 'add-tags',
+				method: 'PUT',
+				data: data
 			});
 		}
 

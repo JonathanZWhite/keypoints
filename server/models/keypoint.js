@@ -1,11 +1,13 @@
 /*jslint node: true */
 'use strict';
 
+var async = require('async');
 var Keypoint;
 var KeypointSchema;
 var TagSchema;
 var _ = require('lodash-node');
 var mongoose =  require('mongoose');
+var errorhandler = require('../utils').errorhandler;
 var Schema = mongoose.Schema;
 
 TagSchema = new Schema({
@@ -26,6 +28,7 @@ KeypointSchema = new Schema({
 KeypointSchema.statics.add = add;
 KeypointSchema.statics.edit = edit;
 KeypointSchema.statics.get = get;
+KeypointSchema.statics.updateField = updateField;
 Keypoint = mongoose.model('keypoint', KeypointSchema);
 
 function add(data, callback) {
@@ -43,6 +46,29 @@ function get(data, callback) {
         .sort('created')
         .populate('topic')
         .exec(callback);
+}
+
+function updateField(keypointId, data, field, callback) {
+    var tasks = [
+        function getKeypoint(next) {
+            Keypoint.findById(keypointId, function(err, keypoint) {
+                if (err) return errorhandler(err);
+                next(null, keypoint);
+            });
+        },
+        function updateKeypoint(keypoint, next) {
+            keypoint[field] = data;
+            keypoint.save(function(err, updatedKeypoint) {
+                if (err) return errorhandler(err);
+                next(null, updatedKeypoint);
+            });
+        }
+    ];
+
+    async.waterfall(tasks, function(err, results) {
+        if (err) return errorhandler(err);
+        callback(results);
+    });
 }
 
 KeypointSchema.pre('save', function(next){

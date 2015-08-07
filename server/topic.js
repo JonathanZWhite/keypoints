@@ -17,11 +17,17 @@ var nodeUrl = require('url');
             var metaInspector = new MetaInspector(url, { timeout: 10000 });
 
             metaInspector.on('fetch', function() {
-                console.log('Fetching...', metaInspector.title);
+                console.log('Fetching...', metaInspector);
+                // TODO: send from FE
+                var title = metaInspector.title ? metaInspector.title : '';
+                var image = metaInspector.image ? metaInspector.image : '';
+                var description = metaInspector.description ?
+                    metaInspector.description.substring(0, 75) : '';
+                    
                 var topicData = {
-                    title: metaInspector.title,
-                    image: metaInspector.image,
-                    description: metaInspector.description.substring(0, 75),
+                    title: title,
+                    image: image,
+                    description: description,
                     url: url,
                     user: userId
                 };

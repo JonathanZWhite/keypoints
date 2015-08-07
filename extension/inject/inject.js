@@ -10,12 +10,12 @@ var Inject = (function() {
     };
     var self = inject;
 
-    inject.init = init;
     return inject;
 
     function init() {
         console.log('initializing: inject');
         _injectIframe();
+        _injectStyle();
         _injectNotification();
         chrome.extension.onMessage.addListener(_handleMessage); // listens to background
     }
@@ -43,9 +43,19 @@ var Inject = (function() {
         self.iframe.onload = _sendUrl;
     }
 
+    function _injectStyle() {
+        var link = document.createElement('link');
+        var head = document.head || document.getElementsByTagName('head')[0];
+        link.href = '//fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic';
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+
+        head.appendChild(link);
+    }
+
     // pings iframe till loaded
     function _sendUrl() {
-        _message({
+        IframeMessagesManager.sendMessage({
             type: 'init',
             url: utils.removeUrlIdentifier(window.location.href)
         });
@@ -69,19 +79,14 @@ var Inject = (function() {
         }
     }
 
-    function _message(request) {
-        self.iframe.contentWindow.postMessage(request, '*');
-    }
-
     function _handleMessage(request, sender, sendResponse) {
         switch(request.type) {
             case 'context':
                 _showNotification();
-                _message(request);
+                IframeMessagesManager.sendMessage(request);
                 break;
             case 'navigate':
-                console.log('<<<<<<<< navigating...', request);
-                _message(request);
+                IframeMessagesManager.sendMessage(request);
                 break;
             case 'browserAction':
                 self.toggleFrame();
@@ -95,12 +100,79 @@ var Inject = (function() {
             baseClasses;
         self.notification.className = classes;
 
+        _toggleKeyListener(true);
+
         setTimeout(function() {
             baseClasses = 'notification';
             self.notification.className = self.showFrame ? baseClasses +
                 ' notification--offset' : baseClasses;
-        }, 5000);
+            _toggleKeyListener(false);
+        }, 10000);
+    }
+
+    function _toggleKeyListener(toggle) {
+        var input = document.getElementById('notification__input');
+        if (toggle) {
+            input.addEventListener('keypress', _onEnter);
+        } else {
+            input.removeEventListener('keypress', _onEnter);
+        }
+    }
+
+    function _onEnter(event) {
+        var key = event.which || event.keyCode;
+        if (key !== 13) return;
+
+        IframeMessagesManager.sendMessage({
+            type: 'tag',
+            data: {
+                tags: event.target.value,
+                keypointId: Store.getKeypoint()._id
+            }
+        });
     }
 }());
 
+var IframeMessagesManager = (function() {
+    var iframeMessagesManager = {
+        handleMessage: handleMessage,
+        sendMessage: sendMessage
+    };
+
+    return iframeMessagesManager;
+
+    function handleMessage(request) {
+        var payload = request.data;
+        switch(payload.type) {
+            case 'success':
+                Store.setKeypoint(payload.data);
+        }
+    }
+
+    function sendMessage(payload) {
+        Inject.iframe.contentWindow.postMessage(payload, '*');
+    }
+}());
+
+// revealing module see:
+// http://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-singleton-in-javascript
+var Store = (function() {
+    var store = {
+        getKeypoint: getKeypoint,
+        setKeypoint: setKeypoint
+    };
+    var _keypoint = null;
+
+    return store;
+
+    function getKeypoint() {
+        return _keypoint;
+    }
+
+    function setKeypoint(keypoint) {
+        _keypoint = keypoint;
+    }
+}());
+
+window.addEventListener('message', IframeMessagesManager.handleMessage, false);
 window.addEventListener('load', Inject.init());
