@@ -42,10 +42,10 @@ angular
     .module('app.pages.list', []);
 
 angular
-    .module('app.pages.signup', []);
+    .module('app.pages.login', []);
 
 angular
-    .module('app.pages.login', []);
+    .module('app.pages.signup', []);
 
 angular
     .module('app.pages.topic', []);
@@ -267,6 +267,61 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 (function() {
     'use strict';
 
+    LoginController.$inject = ['$state', '$stateParams', 'AuthService'];
+    function LoginController($state, $stateParams, AuthService) {
+        var vm = this;
+        // view model
+        vm.user = {
+            email: '',
+            password: ''
+        };
+        // functions
+        vm.login = login;
+
+        function login() {
+            AuthService.login(vm.user)
+                .then(function(resp) {
+                    if (resp.data) {
+                        console.log('This is the response', resp.data);
+                        $state.go('topic', { url: $stateParams.url });
+                    }
+                });
+        }
+    }
+
+    angular
+        .module('app.pages.login')
+        .controller('LoginController', LoginController);
+})();
+
+(function() {
+    'use strict';
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('login', {
+                url: '/login?url',
+                views: {
+                    'content@': {
+                        templateUrl: 'login/login.tpl.html',
+                        controllerAs: 'vm',
+                        controller: 'LoginController'
+                    }
+                },
+                data: {
+                    pageTitle: 'Login'
+                }
+            });
+    }
+
+    angular.module('app.pages.login')
+        .config(['$stateProvider', config]);
+
+}());
+
+(function() {
+    'use strict';
+
     SignupController.$inject = ['$state', '$stateParams', 'AuthService'];
     function SignupController($state, $stateParams, AuthService) {
         var vm = this;
@@ -316,61 +371,6 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
     }
 
     angular.module('app.pages.signup')
-        .config(['$stateProvider', config]);
-
-}());
-
-(function() {
-    'use strict';
-
-    LoginController.$inject = ['$state', '$stateParams', 'AuthService'];
-    function LoginController($state, $stateParams, AuthService) {
-        var vm = this;
-        // view model
-        vm.user = {
-            email: '',
-            password: ''
-        };
-        // functions
-        vm.login = login;
-
-        function login() {
-            AuthService.login(vm.user)
-                .then(function(resp) {
-                    if (resp.data) {
-                        console.log('This is the response', resp.data);
-                        $state.go('topic', { url: $stateParams.url });
-                    }
-                });
-        }
-    }
-
-    angular
-        .module('app.pages.login')
-        .controller('LoginController', LoginController);
-})();
-
-(function() {
-    'use strict';
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('login', {
-                url: '/login?url',
-                views: {
-                    'content@': {
-                        templateUrl: 'login/login.tpl.html',
-                        controllerAs: 'vm',
-                        controller: 'LoginController'
-                    }
-                },
-                data: {
-                    pageTitle: 'Login'
-                }
-            });
-    }
-
-    angular.module('app.pages.login')
         .config(['$stateProvider', config]);
 
 }());
@@ -849,6 +849,10 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
                 image: vm.image,
                 tags: vm.tags
             });
+
+            vm.keypoint = '';
+            vm.image = '';
+            vm.tags = [];
         }
     }
 

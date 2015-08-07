@@ -176,6 +176,8 @@
 	                keypointId: Store.getKeypoint()._id
 	            }
 	        });
+
+	        event.target.value = '';
 	    }
 	}());
 

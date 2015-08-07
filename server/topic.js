@@ -17,13 +17,13 @@ var nodeUrl = require('url');
             var metaInspector = new MetaInspector(url, { timeout: 10000 });
 
             metaInspector.on('fetch', function() {
-                console.log('Fetching...', metaInspector);
+                console.log('Fetching...', metaInspector.title);
                 // TODO: send from FE
                 var title = metaInspector.title ? metaInspector.title : '';
                 var image = metaInspector.image ? metaInspector.image : '';
                 var description = metaInspector.description ?
                     metaInspector.description.substring(0, 75) : '';
-                    
+
                 var topicData = {
                     title: title,
                     image: image,

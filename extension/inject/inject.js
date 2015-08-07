@@ -130,6 +130,8 @@ var Inject = (function() {
                 keypointId: Store.getKeypoint()._id
             }
         });
+
+        event.target.value = '';
     }
 }());
 

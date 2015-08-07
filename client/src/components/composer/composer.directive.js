@@ -43,6 +43,10 @@
                 image: vm.image,
                 tags: vm.tags
             });
+
+            vm.keypoint = '';
+            vm.image = '';
+            vm.tags = [];
         }
     }
 
