@@ -37,7 +37,7 @@
 					});
 					break;
 				case 'tag':
-					KeypointStore.addTag(payload.data);
+					KeypointStore.addTags(payload.data);
 			}
 		}
 

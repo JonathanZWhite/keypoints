@@ -41,12 +41,18 @@
 		}
 
 		function addTags(data) {
-			// do validation on BE
-			var tags = data.split(',');
 			return $http({
 				url: base + 'add-tags',
 				method: 'PUT',
 				data: data
+			})
+			.success(function(resp) {
+				var updatedKeypoint = resp.data.updatedKeypoint;
+				Keypoint.model.keypoints.forEach(function(keypoint, index) {
+					if (keypoint._id === updatedKeypoint._id) {
+						Keypoint.model.keypoints[index].tags = updatedKeypoint.tags;
+					}
+				});
 			});
 		}
 

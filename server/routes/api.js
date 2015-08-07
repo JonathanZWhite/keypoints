@@ -5,7 +5,7 @@ var topicController = require('../controllers/topic');
 module.exports = function(app, router) {
     // keypoint
     router.post('/api/keypoint/add', keypointController.add);
-    router.post('/api/keypoint/add-tags', keypointController.addTags);
+    router.put('/api/keypoint/add-tags', keypointController.addTags);
     router.delete('/api/keypoint/del', keypointController.del);
     router.get('/api/keypoint/all', keypointController.getAll);
     router.get('/api/keypoint/topic-keypoints', keypointController.getTopicKeypoints);

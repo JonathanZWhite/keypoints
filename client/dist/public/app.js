@@ -39,13 +39,13 @@ angular
     .module('app.pages.keypoints', []);
 
 angular
-    .module('app.pages.login', []);
-
-angular
     .module('app.pages.list', []);
 
 angular
     .module('app.pages.signup', []);
+
+angular
+    .module('app.pages.login', []);
 
 angular
     .module('app.pages.topic', []);
@@ -227,61 +227,6 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 (function() {
     'use strict';
 
-    LoginController.$inject = ['$state', '$stateParams', 'AuthService'];
-    function LoginController($state, $stateParams, AuthService) {
-        var vm = this;
-        // view model
-        vm.user = {
-            email: '',
-            password: ''
-        };
-        // functions
-        vm.login = login;
-
-        function login() {
-            AuthService.login(vm.user)
-                .then(function(resp) {
-                    if (resp.data) {
-                        console.log('This is the response', resp.data);
-                        $state.go('topic', { url: $stateParams.url });
-                    }
-                });
-        }
-    }
-
-    angular
-        .module('app.pages.login')
-        .controller('LoginController', LoginController);
-})();
-
-(function() {
-    'use strict';
-
-    function config($stateProvider) {
-        $stateProvider
-            .state('login', {
-                url: '/login?url',
-                views: {
-                    'content@': {
-                        templateUrl: 'login/login.tpl.html',
-                        controllerAs: 'vm',
-                        controller: 'LoginController'
-                    }
-                },
-                data: {
-                    pageTitle: 'Login'
-                }
-            });
-    }
-
-    angular.module('app.pages.login')
-        .config(['$stateProvider', config]);
-
-}());
-
-(function() {
-    'use strict';
-
     ListController.$inject = ['ListStore'];
     function ListController(ListStore) {
         var vm = this;
@@ -371,6 +316,61 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
     }
 
     angular.module('app.pages.signup')
+        .config(['$stateProvider', config]);
+
+}());
+
+(function() {
+    'use strict';
+
+    LoginController.$inject = ['$state', '$stateParams', 'AuthService'];
+    function LoginController($state, $stateParams, AuthService) {
+        var vm = this;
+        // view model
+        vm.user = {
+            email: '',
+            password: ''
+        };
+        // functions
+        vm.login = login;
+
+        function login() {
+            AuthService.login(vm.user)
+                .then(function(resp) {
+                    if (resp.data) {
+                        console.log('This is the response', resp.data);
+                        $state.go('topic', { url: $stateParams.url });
+                    }
+                });
+        }
+    }
+
+    angular
+        .module('app.pages.login')
+        .controller('LoginController', LoginController);
+})();
+
+(function() {
+    'use strict';
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('login', {
+                url: '/login?url',
+                views: {
+                    'content@': {
+                        templateUrl: 'login/login.tpl.html',
+                        controllerAs: 'vm',
+                        controller: 'LoginController'
+                    }
+                },
+                data: {
+                    pageTitle: 'Login'
+                }
+            });
+    }
+
+    angular.module('app.pages.login')
         .config(['$stateProvider', config]);
 
 }());
@@ -586,12 +586,18 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 		}
 
 		function addTags(data) {
-			// do validation on BE
-			var tags = data.split(',');
 			return $http({
 				url: base + 'add-tags',
 				method: 'PUT',
 				data: data
+			})
+			.success(function(resp) {
+				var updatedKeypoint = resp.data.updatedKeypoint;
+				Keypoint.model.keypoints.forEach(function(keypoint, index) {
+					if (keypoint._id === updatedKeypoint._id) {
+						Keypoint.model.keypoints[index].tags = updatedKeypoint.tags;
+					}
+				});
 			});
 		}
 
@@ -707,7 +713,7 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 					});
 					break;
 				case 'tag':
-					KeypointStore.addTag(payload.data);
+					KeypointStore.addTags(payload.data);
 			}
 		}
 

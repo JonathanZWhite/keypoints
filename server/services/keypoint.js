@@ -10,6 +10,7 @@ var utils = require('../../shared/utils');
 keypoint = {
     add: function(userId, payload, callback) {
         var tasks;
+        var self = this;
 
         function createTopic(next) {
             var url = utils.removeUrlIdentifier(payload.url);
@@ -30,7 +31,7 @@ keypoint = {
 
         function createKeypoint(topicId, next) {
             var contentType = payload.keypoint ? 'text' : 'image';
-            var formattedTags = _formatTags(payload.tags);
+            var formattedTags = self._formatTags(payload.tags);
 
             var keypointData = {
                 topic: topicId,
@@ -47,12 +48,6 @@ keypoint = {
             });
         }
 
-        function _formatTags(tags) {
-            return tags.map(function(tag) {
-                return { name: tag };
-            });
-        }
-
         tasks = [
             createTopic,
             createKeypoint
@@ -64,8 +59,19 @@ keypoint = {
         });
     },
     addTags: function(keypointId, tags, callback) {
-        dataProvider.keypoint.updateField(keypointId, tags, 'tags', function(err, updatedKeypoint) {
-            console.log('This is the updatedKeypoint', updatedKeypoint);
+        if (typeof tags === 'string') {
+            tags = tags.split(',');
+        }
+
+        var formattedTags = this._formatTags(tags);
+
+        dataProvider.keypoint.updateField(keypointId, formattedTags, 'tags', function(updatedKeypoint) {
+            callback({
+                status: true,
+                data: {
+                    updatedKeypoint: updatedKeypoint
+                }
+            });
         });
     },
     del: function(keypointId, callback) {
@@ -145,7 +151,12 @@ keypoint = {
             if (err) return errorhandler(err);
             callback({ status: true });
         });
-    }
+    },
+    _formatTags: function (tags) {
+        return tags.map(function(tag) {
+            return { name: tag };
+        });
+    },
 };
 
 module.exports = keypoint;

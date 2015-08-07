@@ -49,20 +49,26 @@ function get(data, callback) {
 }
 
 function updateField(keypointId, data, field, callback) {
-    var tasks = [
-        function getKeypoint(next) {
-            Keypoint.findById(keypointId, function(err, keypoint) {
-                if (err) return errorhandler(err);
-                next(null, keypoint);
-            });
-        },
-        function updateKeypoint(keypoint, next) {
-            keypoint[field] = data;
-            keypoint.save(function(err, updatedKeypoint) {
-                if (err) return errorhandler(err);
-                next(null, updatedKeypoint);
-            });
-        }
+    var tasks;
+
+    function getKeypoint(next) {
+        Keypoint.findById(keypointId, function(err, keypoint) {
+            if (err) return errorhandler(err);
+            next(null, keypoint);
+        });
+    }
+
+    function updateKeypoint(keypoint, next) {
+        keypoint[field] = data;
+        keypoint.save(function(err, updatedKeypoint) {
+            if (err) return errorhandler(err);
+            next(null, updatedKeypoint);
+        });
+    }
+
+    tasks = [
+        getKeypoint,
+        updateKeypoint
     ];
 
     async.waterfall(tasks, function(err, results) {
