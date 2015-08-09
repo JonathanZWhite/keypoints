@@ -45,48 +45,24 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var utils = __webpack_require__(1);
+	var Iframe = __webpack_require__(2);
+	var IframeMessagesManager = __webpack_require__(3);
+	var BackgroundMessagesManager = __webpack_require__(4);
+	var Notification = __webpack_require__(5);
 
 	var Inject = (function() {
 	    var inject = {
-	        showFrame: false,
-	        iframe: null,
-	        notification: null,
-	        init: init,
-	        toggleFrame: toggleFrame
+	        init: init
 	    };
-	    var self = inject;
 
 	    return inject;
 
 	    function init() {
 	        console.log('initializing: inject');
-	        _injectIframe();
+	        Iframe.inject();
+	        Notification.inject();
 	        _injectStyle();
-	        _injectNotification();
-	        chrome.extension.onMessage.addListener(_handleMessage); // listens to background
-	    }
-
-	    function _injectNotification() {
-	        var xmlHttp = null;
-
-	        xmlHttp = new XMLHttpRequest();
-	        xmlHttp.open('GET', chrome.extension.getURL ('../templates/notifications.html'), false);
-	        xmlHttp.send(null);
-
-	        self.notification = document.createElement('div');
-	        self.notification.className = 'notification';
-	        self.notification.innerHTML = xmlHttp.responseText;
-	        document.body.appendChild(self.notification);
-	    }
-
-	    function _injectIframe() {
-	        var formattedHref = utils.removeUrlIdentifier(window.location.href);
-	        self.iframe = document.createElement('iframe');
-	        self.iframe.src = 'https://localhost:8000/topic?url=' + formattedHref;
-	        self.iframe.className = 'frame';
-	        self.iframe.id = 'keypoints';
-	        document.body.appendChild(self.iframe);
-	        self.iframe.onload = _sendUrl;
+	        chrome.extension.onMessage.addListener(BackgroundMessagesManager.handleMessage); // listens to background
 	    }
 
 	    function _injectStyle() {
@@ -98,6 +74,73 @@
 
 	        head.appendChild(link);
 	    }
+	}());
+
+	window.addEventListener('message', IframeMessagesManager.handleMessage, false);
+	window.addEventListener('load', Inject.init());
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
+	var utils = {
+	    removeUrlIdentifier: removeUrlIdentifier
+	};
+
+	function removeUrlIdentifier(url) {
+	    return url.replace('http://', '').replace('https://', '').replace('www.', '');
+	}
+
+	module.exports = utils;
+
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var utils = __webpack_require__(1);
+	var IframeMessagesManager = __webpack_require__(3);
+
+	var Iframe = (function() {
+	    var iframe = {
+	        inject: inject,
+	        getElement: getElement,
+	        getVisibility: getVisibility,
+	        toggle: toggle
+	    };
+	    var _elem = null;
+	    var _showFrame = false;
+
+	    return iframe;
+
+	    function inject() {
+	        console.log('injecting==========');
+	        var formattedHref = utils.removeUrlIdentifier(window.location.href);
+	        _elem = document.createElement('iframe');
+	        _elem.src = 'https://localhost:8000/topic?url=' + formattedHref;
+	        _elem.className = 'frame';
+	        _elem.id = 'keypoints';
+	        document.body.appendChild(_elem);
+	        _elem.onload = _sendUrl;
+	    }
+
+	    function getVisibility() {
+	        return _showFrame;
+	    }
+
+	    function getElement() {
+	        return _elem;
+	    }
+
+	    function toggle(show) {
+	        _showFrame = show ? show : !_showFrame;
+	        if (_showFrame) {
+	            _elem.className = 'frame frame--active';
+	        } else {
+	            _elem.className = 'frame';
+	        }
+	    }
 
 	    // pings iframe till loaded
 	    function _sendUrl() {
@@ -106,51 +149,116 @@
 	            url: utils.removeUrlIdentifier(window.location.href)
 	        });
 	    }
+	}());
 
-	    function toggleFrame(toggle) {
-	        self.showFrame = toggle ? toggle : !self.showFrame;
-	        if (self.showFrame) {
-	            self.iframe.className = 'frame frame--active';
-	        } else {
-	            self.iframe.className = 'frame';
+	module.exports = Iframe;
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Iframe = __webpack_require__(2);
+
+	var IframeMessagesManager = (function() {
+	    var iframeMessagesManager = {
+	        handleMessage: handleMessage,
+	        sendMessage: sendMessage
+	    };
+
+	    return iframeMessagesManager;
+
+	    function handleMessage(request) {
+	        var payload = request.data;
+	        switch(payload.type) {
+	            case 'success':
+	                Notification.show();
+	                Store.setKeypoint(payload.data);
 	        }
 	    }
 
-	    function _getFrameDisplay() {
-	        self.showFrame = !self.showFrame;
-	        if (self.showFrame) {
-	            return 'block';
-	        } else {
-	            return 'none';
-	        }
+	    function sendMessage(payload) {
+	        console.log('<<<<<<<<<<<<<<', __webpack_require__(2));
+	        __webpack_require__(2).getElement().contentWindow.postMessage(payload, '*');
 	    }
+	}());
 
-	    function _handleMessage(request, sender, sendResponse) {
+	module.exports = IframeMessagesManager;
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Iframe = __webpack_require__(2);
+	var IframeMessagesManager = __webpack_require__(3);
+
+	var BackgroundMessagesManager = (function() {
+	    var backgroundMessagesManager = {
+	        handleMessage: handleMessage
+	    };
+
+	    return backgroundMessagesManager;
+
+	    function handleMessage(request, sender, sendResponse) {
 	        switch(request.type) {
 	            case 'context':
-	                _showNotification();
 	                IframeMessagesManager.sendMessage(request);
 	                break;
 	            case 'navigate':
 	                IframeMessagesManager.sendMessage(request);
 	                break;
 	            case 'browserAction':
-	                self.toggleFrame();
+	                Iframe.toggle();
 	                break;
 	        }
 	    }
+	}());
 
-	    function _showNotification() {
+	module.exports = BackgroundMessagesManager;
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Iframe = __webpack_require__(2);
+	var IframeMessagesManager = __webpack_require__(3);
+	var Store = __webpack_require__(6);
+
+	var Notification = (function() {
+	    var notification = {
+	        inject: inject,
+	        show: show
+	    };
+	    var _elem = null;
+
+	    return notification;
+
+	    function inject() {
+	        var xmlHttp = null;
+
+	        xmlHttp = new XMLHttpRequest();
+	        xmlHttp.open('GET', chrome.extension.getURL ('../templates/notifications.html'), false);
+	        xmlHttp.send(null);
+
+	        _elem = document.createElement('div');
+	        _elem.className = 'notification';
+	        _elem.innerHTML = xmlHttp.responseText;
+	        document.body.appendChild(_elem);
+	    }
+
+	    function show() {
 	        var baseClasses = 'notification notification--active';
-	        var classes = self.showFrame ? baseClasses + ' notification--offset' :
+	        var classes = Iframe.getVisibility() ? baseClasses + ' notification--offset' :
 	            baseClasses;
-	        self.notification.className = classes;
+	        _elem.className = classes;
 
 	        _toggleKeyListener(true);
 
 	        setTimeout(function() {
 	            baseClasses = 'notification';
-	            self.notification.className = self.showFrame ? baseClasses +
+	            _elem.className = Iframe.getVisibility() ? baseClasses +
 	                ' notification--offset' : baseClasses;
 	            _toggleKeyListener(false);
 	        }, 10000);
@@ -181,26 +289,12 @@
 	    }
 	}());
 
-	var IframeMessagesManager = (function() {
-	    var iframeMessagesManager = {
-	        handleMessage: handleMessage,
-	        sendMessage: sendMessage
-	    };
+	module.exports = Notification;
 
-	    return iframeMessagesManager;
 
-	    function handleMessage(request) {
-	        var payload = request.data;
-	        switch(payload.type) {
-	            case 'success':
-	                Store.setKeypoint(payload.data);
-	        }
-	    }
-
-	    function sendMessage(payload) {
-	        Inject.iframe.contentWindow.postMessage(payload, '*');
-	    }
-	}());
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
 
 	// revealing module see:
 	// http://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-singleton-in-javascript
@@ -222,23 +316,7 @@
 	    }
 	}());
 
-	window.addEventListener('message', IframeMessagesManager.handleMessage, false);
-	window.addEventListener('load', Inject.init());
-
-
-/***/ },
-/* 1 */
-/***/ function(module, exports) {
-
-	var utils = {
-	    removeUrlIdentifier: removeUrlIdentifier
-	};
-
-	function removeUrlIdentifier(url) {
-	    return url.replace('http://', '').replace('https://', '').replace('www.', '');
-	}
-
-	module.exports = utils;
+	module.exports = Store;
 
 
 /***/ }
