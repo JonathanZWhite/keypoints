@@ -7,7 +7,8 @@
             restrict: 'E',
             replace: true,
             scope: {
-                topics: '='
+                topics: '=',
+                query: '='
             },
             templateUrl: 'topics/topics.tpl.html',
             controllerAs: 'vm',

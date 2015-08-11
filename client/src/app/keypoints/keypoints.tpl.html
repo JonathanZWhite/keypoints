@@ -6,9 +6,11 @@
             keypoints="vm.keypoints"></edit-overlay>
 
         <h3 class="list__head text-dark--dark">All keypoints</h3>
+
         <search query="vm.query"></search>
+        
         <keypoint
-            ng-repeat="keypoint in vm.keypoints track by $index | filter:vm.query"
+            ng-repeat="keypoint in vm.keypoints | filter: vm.query track by $index"
             keypoint="keypoint"
             keypoints="vm.keypoints"
             is-contenteditable="vm.isContenteditable"

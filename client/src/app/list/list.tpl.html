@@ -2,6 +2,11 @@
     <navbar></navbar>
     <div class="ui-container">
         <h3 class="list__head text-dark--dark">Highlighted pages</h3>
-        <topics topics="vm.listStore.topics"></topics>
+
+        <search query="vm.query"></search>
+
+        <topics
+            topics="vm.listStore.topics"
+            query="vm.query"></topics>
     </div>
 </section>
