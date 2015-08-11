@@ -9,17 +9,30 @@
             email: '',
             password: ''
         };
+        vm.message = {
+            type: null,
+            text: ''
+        };
         // functions
         vm.login = login;
 
         function login() {
+            if (!vm.user.email || !vm.user.password) {
+                _fillMessage('error', 'Please fill out all fields');
+                return;
+            }
+
             AuthService.login(vm.user)
                 .then(function(resp) {
-                    if (resp.data) {
-                        console.log('This is the response', resp.data);
-                        $state.go('topic', { url: $stateParams.url });
-                    }
+                    console.log('<<<<<<', resp);
+                    if (!resp.data.status) return _fillMessage('error', resp.data.message);
+                    if (resp.data) $state.go('topic', { url: $stateParams.url });
                 });
+        }
+
+        function _fillMessage(status, text) {
+            vm.message.type = status;
+            vm.message.text = text;
         }
     }
 

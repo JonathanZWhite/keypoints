@@ -26,7 +26,8 @@ var Notification = (function() {
 
     function show() {
         var baseClasses = 'notification notification--active';
-        var classes = Iframe.getVisibility() ? baseClasses + ' notification--offset' :
+        console.log('============', require('./iframe'));
+        var classes = require('./iframe').getVisibility() ? baseClasses + ' notification--offset' :
             baseClasses;
         _elem.className = classes;
 
@@ -34,7 +35,7 @@ var Notification = (function() {
 
         setTimeout(function() {
             baseClasses = 'notification';
-            _elem.className = Iframe.getVisibility() ? baseClasses +
+            _elem.className = require('./iframe').getVisibility() ? baseClasses +
                 ' notification--offset' : baseClasses;
             _toggleKeyListener(false);
         }, 10000);
@@ -53,7 +54,7 @@ var Notification = (function() {
         var key = event.which || event.keyCode;
         if (key !== 13) return;
 
-        IframeMessagesManager.sendMessage({
+        require('./iframeMessagesManager').sendMessage({
             type: 'tag',
             data: {
                 tags: event.target.value,

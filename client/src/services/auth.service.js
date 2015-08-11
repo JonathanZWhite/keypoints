@@ -22,7 +22,7 @@
 
 		function login(user) {
 			return $http({
-				url: base + 'signup',
+				url: base + 'login',
 				method: 'POST',
 				data: user
 			});

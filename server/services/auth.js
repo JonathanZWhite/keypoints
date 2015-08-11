@@ -1,13 +1,18 @@
 /*jslint node: true */
 'use strict';
 
+var auth;
 var _ = require('lodash-node');
 var async = require('async');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User =     require('./models/user');
-var db = require('./database');
-var errorhandler = require('./utils').errorhandler;
+var db = require('../database');
+var errorhandler = require('../utils').errorhandler;
+
+auth = {
+
+};
 
 (function(Auth) {
     Auth.signup = signup;
@@ -24,15 +29,10 @@ var errorhandler = require('./utils').errorhandler;
 	});
 
     function login(req, res, callback) {
-        console.log('============= yo');
+        console.log('+========');
         passport.authenticate('login', function(err, resp, info) {
-            console.log('=======', err);
-            if (err) {
-                errorhandler(err);
-                return callback(err);
-            }
-
             var user = resp.data;
+            console.log('============');
             if (!user) return callback(resp);
 
             req.logIn(user, function(err) {
@@ -82,12 +82,8 @@ var errorhandler = require('./utils').errorhandler;
 
     function signup(req, res, callback) {
         passport.authenticate('signup', function(err, resp) {
-            if (err) {
-                errorhandler(err);
-                return callback(err);
-            }
-
             var user = resp.data;
+            console.log('Trying to serialize', user);
             req.logIn(user, function(err) { // serializes user
                 if (err) {
                     errorhandler(err);
@@ -108,13 +104,12 @@ var errorhandler = require('./utils').errorhandler;
         query[field] = value;
 
         db.get('user', query, function(err, user) {
-            if(err) return callback(err);
+            if(err) {
+                return callback(err);
+            }
 
             if (user) {
-                callback({
-                    status: false,
-                    message: field + ' is already being used'
-                });
+                callback(new Error(field + ' must be unique'));
             } else {
                 callback();
             }
@@ -135,16 +130,18 @@ var errorhandler = require('./utils').errorhandler;
 
                 async.parallel(parallelTasks, next);
             }, function(next) {
+                console.log('HEREERE');
                 db.create('user', req.body, function(err, user) {
                     if (err) {
                         errorhandler(err);
-                        return done({
+                        return done(null, {
                             status: 400,
                             data: null,
                             message: 'Uh oh! An unknown error occurred, please try again later'
                         });
                     }
 
+                    console.log('HEREERE 4');
                     return done(null, {
                         status: 200,
                         data: user
@@ -155,10 +152,8 @@ var errorhandler = require('./utils').errorhandler;
 
             // TODO: fix this
             async.waterfall(tasks, function(err, results) {
-                if (err) return done(err);
-
                 return done(null, {
-                    status: true,
+                    status: 200,
                     data: results
                 });
             });

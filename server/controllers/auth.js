@@ -20,7 +20,7 @@ function signup(req, res) {
 
 function login(req, res) {
     auth.login(req, res, function(resp) {
-        res.status(resp.status).json(resp);
+        res.json(resp);
     });
 }
 

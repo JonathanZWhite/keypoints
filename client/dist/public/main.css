@@ -459,6 +459,12 @@ p,
 .kp__option .fa {
   font-size: 15px;
 }
+.message {
+  background-color: #E76D6D;
+  color: white;
+  padding: 12.5px;
+  margin-top: 25px;
+}
 .navbar {
   background: #ffffff;
   color: #7c838f;

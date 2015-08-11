@@ -89,6 +89,7 @@
 	};
 
 	function removeUrlIdentifier(url) {
+	    if (!url) return;
 	    return url.replace('http://', '').replace('https://', '').replace('www.', '');
 	}
 
@@ -159,6 +160,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Iframe = __webpack_require__(2);
+	var Notification = __webpack_require__(5);
+	var Store = __webpack_require__(6);
 
 	var IframeMessagesManager = (function() {
 	    var iframeMessagesManager = {
@@ -178,7 +181,6 @@
 	    }
 
 	    function sendMessage(payload) {
-	        console.log('<<<<<<<<<<<<<<', __webpack_require__(2));
 	        __webpack_require__(2).getElement().contentWindow.postMessage(payload, '*');
 	    }
 	}());
@@ -250,7 +252,8 @@
 
 	    function show() {
 	        var baseClasses = 'notification notification--active';
-	        var classes = Iframe.getVisibility() ? baseClasses + ' notification--offset' :
+	        console.log('============', __webpack_require__(2));
+	        var classes = __webpack_require__(2).getVisibility() ? baseClasses + ' notification--offset' :
 	            baseClasses;
 	        _elem.className = classes;
 
@@ -258,7 +261,7 @@
 
 	        setTimeout(function() {
 	            baseClasses = 'notification';
-	            _elem.className = Iframe.getVisibility() ? baseClasses +
+	            _elem.className = __webpack_require__(2).getVisibility() ? baseClasses +
 	                ' notification--offset' : baseClasses;
 	            _toggleKeyListener(false);
 	        }, 10000);
@@ -277,7 +280,7 @@
 	        var key = event.which || event.keyCode;
 	        if (key !== 13) return;
 
-	        IframeMessagesManager.sendMessage({
+	        __webpack_require__(3).sendMessage({
 	            type: 'tag',
 	            data: {
 	                tags: event.target.value,

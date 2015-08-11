@@ -38,6 +38,7 @@ function getAll(req, res) {
 }
 
 function getTopicKeypoints(req, res) {
+    if (!req.user) return;
     console.log('Getting list of keypoints...');
     services.keypoint.getTopicKeypoints(req.user._id, req.query.url, function(resp) {
         res.json(resp);

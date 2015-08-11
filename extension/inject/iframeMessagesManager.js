@@ -1,4 +1,6 @@
 var Iframe = require('./iframe');
+var Notification = require('./notification');
+var Store = require('./store');
 
 var IframeMessagesManager = (function() {
     var iframeMessagesManager = {
@@ -18,7 +20,6 @@ var IframeMessagesManager = (function() {
     }
 
     function sendMessage(payload) {
-        console.log('<<<<<<<<<<<<<<', require('./iframe'));
         require('./iframe').getElement().contentWindow.postMessage(payload, '*');
     }
 }());
