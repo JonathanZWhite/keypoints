@@ -31,8 +31,8 @@ var options = {
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(options, app);
 
-httpServer.listen(config.ports.http);
-httpsServer.listen(config.ports.https);
+httpServer.listen(config.port.http);
+httpsServer.listen(config.port.https);
 
 // app.listen(app.get('port'), config.domain, function() {
 // 	console.log('Express listening to port', app.get('port'));
