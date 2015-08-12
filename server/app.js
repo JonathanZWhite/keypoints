@@ -9,6 +9,8 @@ var http = 			require('http');
 var https = 		require('https');
 var fs = 			require('fs');
 var database = 		require('./database');
+var path = 			require('path');
+var CERT_PATH = 	'../certs/';
 
 var app = express();
 
@@ -18,12 +20,18 @@ database.init();
 middleware = middleware(app);
 routes(app, middleware);
 
+var certPaths = {
+	key: path.join(__dirname, CERT_PATH + config.cert.key),
+	ca: path.join(__dirname, CERT_PATH + config.cert.ca),
+	cert: path.join(__dirname, CERT_PATH + config.cert.cert)
+};
+
 var options = {
 	// key: fs.readFileSync('key.pem'),
 	// cert: fs.readFileSync('server.crt'),
-	key: fs.readFileSync('../certs/myserver.key.pem'),
-	ca: fs.readFileSync('../certs/intermediate.crt.pem'),
-	cert: fs.readFileSync('../certs/myserver.crt.pem'),
+	key: fs.readFileSync(certPaths.key),
+	ca: fs.readFileSync(certPaths.ca),
+	cert: fs.readFileSync(certPaths.cert),
 	requestCert: false,
     rejectUnauthorized: false
 };
