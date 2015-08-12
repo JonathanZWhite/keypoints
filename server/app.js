@@ -19,8 +19,11 @@ middleware = middleware(app);
 routes(app, middleware);
 
 var options = {
-	key: fs.readFileSync('key.pem'),
-	cert: fs.readFileSync('server.crt'),
+	// key: fs.readFileSync('key.pem'),
+	// cert: fs.readFileSync('server.crt'),
+	key: fs.readFileSync('../certs/myserver.key.pem'),
+	ca: fs.readFileSync('../certs/intermediate.crt.pem'),
+	cert: fs.readFileSync('../certs/myserver.crt.pem'),
 	requestCert: false,
     rejectUnauthorized: false
 };
