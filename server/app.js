@@ -2,7 +2,7 @@
 'use strict';
 
 var express = 		require('express');
-var config = 		require('./config/secrets');
+var config = 		require('../config');
 var middleware = 	require('./middleware');
 var routes = 		require('./routes');
 var http = 			require('http');
@@ -31,8 +31,8 @@ var options = {
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(options, app);
 
-httpServer.listen(3000);
-httpsServer.listen(8000);
+httpServer.listen(config.ports.http);
+httpsServer.listen(config.ports.https);
 
 // app.listen(app.get('port'), config.domain, function() {
 // 	console.log('Express listening to port', app.get('port'));

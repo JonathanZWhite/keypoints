@@ -17,7 +17,7 @@ var Iframe = (function() {
     function inject() {
         var formattedHref = utils.removeUrlIdentifier(window.location.href);
         _elem = document.createElement('iframe');
-        _elem.src = config.urls.https + '/topic?url=' + formattedHref;
+        _elem.src = config.url.https + '/topic?url=' + formattedHref;
         _elem.className = 'frame';
         _elem.id = 'keypoints';
         document.body.appendChild(_elem);

@@ -1,11 +1,11 @@
 module.exports = {
     development: {
-        ports: {
+        port: {
             http: 3000,
             https: 8000
         },
-        urls: {
-            http: 'https://localhost:3000',
+        url: {
+            http: 'http://localhost:3000',
             https: 'https://localhost:8000'
         }
     },
@@ -14,8 +14,8 @@ module.exports = {
             http: 3000,
             https: 80
         },
-        urls: {
-            http: 'https://keypointsapp.com:3000',
+        url: {
+            http: 'http://keypointsapp.com:3000',
             https: 'https://keypointsapp.com'
         }
     }
