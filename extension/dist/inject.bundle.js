@@ -334,8 +334,8 @@
 	            https: 8000
 	        },
 	        url: {
-	            http: 'http://localhost:3000',
-	            https: 'https://localhost:8000'
+	            http: 'http://www.localhost:3000',
+	            https: 'https://www.localhost:8000'
 	        }
 	    },
 	    production: {
@@ -344,8 +344,8 @@
 	            https: 80
 	        },
 	        url: {
-	            http: 'http://keypointsapp.com:3000',
-	            https: 'https://keypointsapp.com'
+	            http: 'http://www.keypointsapp.com:3000',
+	            https: 'https://www.keypointsapp.com:80'
 	        }
 	    }
 	}[process.env.NODE_ENV || 'development'];
