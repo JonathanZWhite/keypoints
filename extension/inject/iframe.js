@@ -1,3 +1,4 @@
+var config = require('../../config');
 var utils = require('../../shared/utils');
 var IframeMessagesManager = require('./iframeMessagesManager');
 
@@ -14,10 +15,9 @@ var Iframe = (function() {
     return iframe;
 
     function inject() {
-        console.log('injecting==========');
         var formattedHref = utils.removeUrlIdentifier(window.location.href);
         _elem = document.createElement('iframe');
-        _elem.src = 'https://localhost:8000/topic?url=' + formattedHref;
+        _elem.src = config.urls.https + '/topic?url=' + formattedHref;
         _elem.className = 'frame';
         _elem.id = 'keypoints';
         document.body.appendChild(_elem);

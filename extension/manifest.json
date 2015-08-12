@@ -24,11 +24,12 @@
     "icons": {
       "16": "icon.png"
     },
-    "content_security_policy": "script-src 'self' 'unsafe-eval' https://localhost:8000;",
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://keypointsapp.com;",
     "permissions": [
         "activeTab",
         "contextMenus",
         "https://localhost:8000/",
+        "https://keypointsapp.com",
         "http://fonts.googleapis.com/",
         "https://fonts.googleapis.com/",
         "webNavigation",

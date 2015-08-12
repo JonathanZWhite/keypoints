@@ -46,9 +46,9 @@
 
 	var utils = __webpack_require__(1);
 	var Iframe = __webpack_require__(2);
-	var IframeMessagesManager = __webpack_require__(3);
-	var BackgroundMessagesManager = __webpack_require__(4);
-	var Notification = __webpack_require__(5);
+	var IframeMessagesManager = __webpack_require__(5);
+	var BackgroundMessagesManager = __webpack_require__(8);
+	var Notification = __webpack_require__(6);
 
 	var Inject = (function() {
 	    var inject = {
@@ -100,8 +100,9 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var config = __webpack_require__(3);
 	var utils = __webpack_require__(1);
-	var IframeMessagesManager = __webpack_require__(3);
+	var IframeMessagesManager = __webpack_require__(5);
 
 	var Iframe = (function() {
 	    var iframe = {
@@ -116,10 +117,9 @@
 	    return iframe;
 
 	    function inject() {
-	        console.log('injecting==========');
 	        var formattedHref = utils.removeUrlIdentifier(window.location.href);
 	        _elem = document.createElement('iframe');
-	        _elem.src = 'https://localhost:8000/topic?url=' + formattedHref;
+	        _elem.src = config.urls.https + '/topic?url=' + formattedHref;
 	        _elem.className = 'frame';
 	        _elem.id = 'keypoints';
 	        document.body.appendChild(_elem);
@@ -159,9 +159,134 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/* WEBPACK VAR INJECTION */(function(process) {module.exports = {
+	    development: {
+	        ports: {
+	            http: 3000,
+	            https: 8000
+	        },
+	        urls: {
+	            http: 'https://localhost:3000',
+	            https: 'https://localhost:8000'
+	        }
+	    },
+	    production: {
+	        port: {
+	            http: 3000,
+	            https: 80
+	        },
+	        urls: {
+	            http: 'https://keypointsapp.com:3000',
+	            https: 'https://keypointsapp.com'
+	        }
+	    }
+	}[process.env.NODE_ENV || 'development'];
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	// shim for using process in browser
+
+	var process = module.exports = {};
+	var queue = [];
+	var draining = false;
+	var currentQueue;
+	var queueIndex = -1;
+
+	function cleanUpNextTick() {
+	    draining = false;
+	    if (currentQueue.length) {
+	        queue = currentQueue.concat(queue);
+	    } else {
+	        queueIndex = -1;
+	    }
+	    if (queue.length) {
+	        drainQueue();
+	    }
+	}
+
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    var timeout = setTimeout(cleanUpNextTick);
+	    draining = true;
+
+	    var len = queue.length;
+	    while(len) {
+	        currentQueue = queue;
+	        queue = [];
+	        while (++queueIndex < len) {
+	            currentQueue[queueIndex].run();
+	        }
+	        queueIndex = -1;
+	        len = queue.length;
+	    }
+	    currentQueue = null;
+	    draining = false;
+	    clearTimeout(timeout);
+	}
+
+	process.nextTick = function (fun) {
+	    var args = new Array(arguments.length - 1);
+	    if (arguments.length > 1) {
+	        for (var i = 1; i < arguments.length; i++) {
+	            args[i - 1] = arguments[i];
+	        }
+	    }
+	    queue.push(new Item(fun, args));
+	    if (queue.length === 1 && !draining) {
+	        setTimeout(drainQueue, 0);
+	    }
+	};
+
+	// v8 likes predictible objects
+	function Item(fun, array) {
+	    this.fun = fun;
+	    this.array = array;
+	}
+	Item.prototype.run = function () {
+	    this.fun.apply(null, this.array);
+	};
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+
+	function noop() {}
+
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+
+	// TODO(shtylman)
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function() { return 0; };
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var Iframe = __webpack_require__(2);
-	var Notification = __webpack_require__(5);
-	var Store = __webpack_require__(6);
+	var Notification = __webpack_require__(6);
+	var Store = __webpack_require__(7);
 
 	var IframeMessagesManager = (function() {
 	    var iframeMessagesManager = {
@@ -189,44 +314,12 @@
 
 
 /***/ },
-/* 4 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Iframe = __webpack_require__(2);
-	var IframeMessagesManager = __webpack_require__(3);
-
-	var BackgroundMessagesManager = (function() {
-	    var backgroundMessagesManager = {
-	        handleMessage: handleMessage
-	    };
-
-	    return backgroundMessagesManager;
-
-	    function handleMessage(request, sender, sendResponse) {
-	        switch(request.type) {
-	            case 'context':
-	                IframeMessagesManager.sendMessage(request);
-	                break;
-	            case 'navigate':
-	                IframeMessagesManager.sendMessage(request);
-	                break;
-	            case 'browserAction':
-	                Iframe.toggle();
-	                break;
-	        }
-	    }
-	}());
-
-	module.exports = BackgroundMessagesManager;
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Iframe = __webpack_require__(2);
-	var IframeMessagesManager = __webpack_require__(3);
-	var Store = __webpack_require__(6);
+	var IframeMessagesManager = __webpack_require__(5);
+	var Store = __webpack_require__(7);
 
 	var Notification = (function() {
 	    var notification = {
@@ -280,7 +373,7 @@
 	        var key = event.which || event.keyCode;
 	        if (key !== 13) return;
 
-	        __webpack_require__(3).sendMessage({
+	        __webpack_require__(5).sendMessage({
 	            type: 'tag',
 	            data: {
 	                tags: event.target.value,
@@ -296,7 +389,7 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	// revealing module see:
@@ -320,6 +413,38 @@
 	}());
 
 	module.exports = Store;
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Iframe = __webpack_require__(2);
+	var IframeMessagesManager = __webpack_require__(5);
+
+	var BackgroundMessagesManager = (function() {
+	    var backgroundMessagesManager = {
+	        handleMessage: handleMessage
+	    };
+
+	    return backgroundMessagesManager;
+
+	    function handleMessage(request, sender, sendResponse) {
+	        switch(request.type) {
+	            case 'context':
+	                IframeMessagesManager.sendMessage(request);
+	                break;
+	            case 'navigate':
+	                IframeMessagesManager.sendMessage(request);
+	                break;
+	            case 'browserAction':
+	                Iframe.toggle();
+	                break;
+	        }
+	    }
+	}());
+
+	module.exports = BackgroundMessagesManager;
 
 
 /***/ }
