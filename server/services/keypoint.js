@@ -132,7 +132,7 @@ keypoint = {
         var tasks;
 
         function get(next) {
-            dataProvider.keypoint.findById('keypoint', keypoint._id, function(err, oldKeypoint) {
+            dataProvider.keypoint.findById(keypoint._id, function(err, oldKeypoint) {
                 if (err) return errorhandler(err);
                 next(null, oldKeypoint);
             });

@@ -475,9 +475,19 @@ p,
   height: 40px;
   line-height: 40px;
   padding: 0 25px;
+  text-align: justify;
+  -ms-text-justify: distribute-all-lines;
+  text-justify: distribute-all-lines;
+}
+.navbar > a {
+  display: inline-block;
 }
 .navbar--active {
   color: #4fb9f3;
+}
+.navbar__stretcher {
+  width: 100%;
+  display: inline-block;
 }
 .tags__list {
   display: inline-block;
