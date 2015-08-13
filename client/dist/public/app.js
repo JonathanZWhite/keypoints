@@ -189,8 +189,8 @@ $templateCache.put("keypoint/keypoint.tpl.html","<div class=\"keypoint ui-card\"
 $templateCache.put("message/message.tpl.html","<div class=message ng-if=vm.message.text ng-bind=vm.message.text></div>");
 $templateCache.put("navbar/navbar.tpl.html","<nav class=navbar><a class=u-float-l ui-sref=\"topic({ url: vm.clientStore.url })\" ng-class=\"{ \'navbar--active\': vm.isCurrentPage() }\">current page</a> <a ui-sref=list ng-class=\"{ \'navbar--active\': vm.$state.current.name === \'list\' }\">all pages</a> <a class=u-float-r ui-sref=keypoints ng-class=\"{ \'navbar--active\': vm.$state.current.name === \'keypoints\' }\">all keypoints</a></nav>");
 $templateCache.put("search/search.tpl.html","<input class=\"ui-input ui-input--medium ui-input--light\" placeholder=search ng-model=vm.query>");
-$templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui-card ng-repeat=\"topic in vm.topics | filter: vm.query track by $index\" ui-sref=\"topic({ url: topic.url })\"><div class=topic__content><div class=\"ui-column ui-column--one\" ng-if=topic.image><div class=topic__preview ng-style=\"{ \'background-image\': \'url(\' + topic.image + \')\' }\"></div></div><div class=\"ui-column ui-column--eleven\"><span class=\"topic__head text-dark--dark u-reset-lh u-truncate\" ng-bind=topic.title></span></div><p class=\"caption text-dark--light\" ng-bind=topic.description></p></div></div></section>");
-$templateCache.put("tags/tags.tpl.html","<div class=tags><ul class=\"tags__list ui-list ui-list--di\"><li><i class=\"caption fa fa-tag\"></i></li><li ng-repeat=\"tag in vm.tags\"><span class=caption ng-bind=tag.name></span></li></ul></div>");}]);
+$templateCache.put("tags/tags.tpl.html","<div class=tags><ul class=\"tags__list ui-list ui-list--di\"><li><i class=\"caption fa fa-tag\"></i></li><li ng-repeat=\"tag in vm.tags\"><span class=caption ng-bind=tag.name></span></li></ul></div>");
+$templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui-card ng-repeat=\"topic in vm.topics | filter: vm.query track by $index\" ui-sref=\"topic({ url: topic.url })\"><div class=topic__content><div class=\"ui-column ui-column--one\" ng-if=topic.image><div class=topic__preview ng-style=\"{ \'background-image\': \'url(\' + topic.image + \')\' }\"></div></div><div class=\"ui-column ui-column--eleven\"><span class=\"topic__head text-dark--dark u-reset-lh u-truncate\" ng-bind=topic.title></span></div><p class=\"caption text-dark--light\" ng-bind=topic.description></p></div></div></section>");}]);
 (function() {
     'use strict';
 
@@ -283,8 +283,8 @@ $templateCache.put("tags/tags.tpl.html","<div class=tags><ul class=\"tags__list 
 (function() {
     'use strict';
 
-    LoginController.$inject = ['$state', '$stateParams', 'AuthService'];
-    function LoginController($state, $stateParams, AuthService) {
+    LoginController.$inject = ['$state', '$stateParams', 'AnalyticsService', 'AuthService'];
+    function LoginController($state, $stateParams, AnalyticsService, AuthService) {
         var vm = this;
         // view model
         vm.user = {
@@ -306,9 +306,11 @@ $templateCache.put("tags/tags.tpl.html","<div class=tags><ul class=\"tags__list 
 
             AuthService.login(vm.user)
                 .then(function(resp) {
-                    console.log('<<<<<<', resp);
                     if (!resp.data.status) return _fillMessage('error', resp.data.message);
-                    if (resp.data) $state.go('topic', { url: $stateParams.url });
+                    if (resp.data) {
+                        AnalyticsService.trackLogin(resp.data);
+                        $state.go('topic', { url: $stateParams.url });
+                    }
                 });
         }
 
@@ -351,8 +353,8 @@ $templateCache.put("tags/tags.tpl.html","<div class=tags><ul class=\"tags__list 
 (function() {
     'use strict';
 
-    SignupController.$inject = ['$state', '$stateParams', 'AuthService'];
-    function SignupController($state, $stateParams, AuthService) {
+    SignupController.$inject = ['$state', '$stateParams', 'AnalyticsService', 'AuthService'];
+    function SignupController($state, $stateParams, AnalyticsService, AuthService) {
         var vm = this;
         // view model
         vm.user = {
@@ -376,7 +378,10 @@ $templateCache.put("tags/tags.tpl.html","<div class=tags><ul class=\"tags__list 
             AuthService.signup(vm.user)
                 .then(function(resp) {
                     if (!resp.data.status) return _fillMessage('error', resp.data.message);
-                    if (resp.data) $state.go('topic', { url: $stateParams.url });
+                    if (resp.data) {
+                        AnalyticsService.trackSignup(resp.data);
+                        $state.go('topic', { url: $stateParams.url });
+                    }
                 });
         }
 
@@ -515,6 +520,63 @@ $templateCache.put("tags/tags.tpl.html","<div class=tags><ul class=\"tags__list 
 (function() {
 	'use strict';
 
+	AnalyticsService.$inject = ['$http', 'AuthService'];
+
+	function AnalyticsService($http, AuthService) {
+		var events = {
+			// keypoints
+			KEYPOINT_ADDED: 'Keypoint Added',
+			// auth
+			LOGIN: 'User Logged In',
+			SIGNUP: 'User Signup Up'
+		};
+
+		var Analytics = {
+			track: track,
+			trackLogin: trackLogin,
+			trackSignup: trackSignup
+		};
+
+		function track(event) {
+			AuthService.get()
+				.then(function(resp) {
+					var user = resp.data.data;
+					mixpanel.identify(user._id);
+					mixpanel.track(events[event]);
+				});
+		}
+
+		function trackSignup(user) {
+			mixpanel.identify(user._id);
+			mixpanel.people.set_once({
+				'userId': user._id,
+				'username': user.username,
+				'$email': user.email,
+				'$created': new Date(),
+				'lastActivity': new Date(),
+				'topics': 0,
+				'keypoints': 0
+			});
+			mixpanel.track(events.SIGNUP);
+		}
+
+		function trackLogin(user) {
+			mixpanel.identify(user._id);
+			mixpanel.people.set({ 'lastActivity': new Date() });
+			mixpanel.track(events.LOGIN);
+		}
+
+		return Analytics;
+	}
+
+	angular
+	    .module('app.services')
+	    .factory('AnalyticsService', AnalyticsService);
+})();
+
+(function() {
+	'use strict';
+
 	AuthService.$inject = ['$http'];
 
 	function AuthService($http) {
@@ -587,9 +649,9 @@ $templateCache.put("tags/tags.tpl.html","<div class=tags><ul class=\"tags__list 
 (function() {
 	'use strict';
 
-	KeypointStore.$inject = ['$http', '$stateParams'];
+	KeypointStore.$inject = ['$http', '$stateParams', 'AnalyticsService'];
 
-	function KeypointStore($http, $stateParams) {
+	function KeypointStore($http, $stateParams, AnalyticsService) {
 		var base = 'api/keypoint/';
 
 		var Keypoint = {
@@ -610,7 +672,6 @@ $templateCache.put("tags/tags.tpl.html","<div class=tags><ul class=\"tags__list 
 			url = url ? url : $stateParams.url;
 			getTopicKeypoints(url)
 				.then(function(resp) {
-					console.log('This is the resp', resp);
 					Keypoint.model.keypoints = resp.data.data;
 				});
 		}
@@ -622,6 +683,7 @@ $templateCache.put("tags/tags.tpl.html","<div class=tags><ul class=\"tags__list 
 				data: data
 			})
 			.success(function(resp) {
+				AnalyticsService.track('KEYPOINT_ADDED');
 				Keypoint.model.keypoints.push(resp);
 			});
 		}
@@ -1052,6 +1114,7 @@ $templateCache.put("tags/tags.tpl.html","<div class=tags><ul class=\"tags__list 
         }
 
         function updateKeypoint() {
+            console.log('Updating keypoint....', vm.keypoint);
             vm.keypoint.isContenteditable = false;
             KeypointStore.update(vm.keypoint);
             vm.isContenteditable = false;

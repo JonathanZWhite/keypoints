@@ -1,9 +1,9 @@
 (function() {
 	'use strict';
 
-	KeypointStore.$inject = ['$http', '$stateParams'];
+	KeypointStore.$inject = ['$http', '$stateParams', 'AnalyticsService'];
 
-	function KeypointStore($http, $stateParams) {
+	function KeypointStore($http, $stateParams, AnalyticsService) {
 		var base = 'api/keypoint/';
 
 		var Keypoint = {
@@ -24,7 +24,6 @@
 			url = url ? url : $stateParams.url;
 			getTopicKeypoints(url)
 				.then(function(resp) {
-					console.log('This is the resp', resp);
 					Keypoint.model.keypoints = resp.data.data;
 				});
 		}
@@ -36,6 +35,7 @@
 				data: data
 			})
 			.success(function(resp) {
+				AnalyticsService.track('KEYPOINT_ADDED');
 				Keypoint.model.keypoints.push(resp);
 			});
 		}

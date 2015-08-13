@@ -67,6 +67,7 @@
         }
 
         function updateKeypoint() {
+            console.log('Updating keypoint....', vm.keypoint);
             vm.keypoint.isContenteditable = false;
             KeypointStore.update(vm.keypoint);
             vm.isContenteditable = false;

@@ -46,7 +46,6 @@ function getTopicKeypoints(req, res) {
 }
 
 function update(req, res) {
-    console.log('Updating keypoint...');
     services.keypoint.update(req.body.keypoint, function(resp) {
         res.json(resp);
     });

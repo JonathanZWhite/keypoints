@@ -6,10 +6,18 @@ var auth = require('../auth');
 
 authController.isAuthenticated = isAuthenticated;
 authController.signup = signup;
-authController.login = login;
+authController.login = login
+authController.get = get;
 
 function isAuthenticated(req, res) {
     res.json({ isAuthenticated: req.isAuthenticated() });
+}
+
+function get(req, res) {
+    res.json({
+        status: true,
+        data: req.user
+    });
 }
 
 function signup(req, res) {
