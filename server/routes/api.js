@@ -1,5 +1,6 @@
 var authController = require('../controllers/auth');
 var keypointController = require('../controllers/keypoint');
+var tagsController = require('../controllers/tags');
 var topicController = require('../controllers/topic');
 
 module.exports = function(app, router) {
@@ -20,4 +21,7 @@ module.exports = function(app, router) {
     router.get('/api/auth/get', authController.get);
     router.post('/api/auth/signup', authController.signup);
     router.post('/api/auth/login', authController.login);
+
+    // tags
+    router.get('/api/tags/all', tagsController.getAll);
 };

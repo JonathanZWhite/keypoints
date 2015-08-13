@@ -1,3 +1,4 @@
 module.exports = {
-    keypoint: require('./keypoint')
+    keypoint: require('./keypoint'),
+    tags: require('./tags')
 };

@@ -46,9 +46,9 @@
 
 	var utils = __webpack_require__(1);
 	var Iframe = __webpack_require__(2);
-	var IframeMessagesManager = __webpack_require__(3);
-	var BackgroundMessagesManager = __webpack_require__(4);
-	var Notification = __webpack_require__(5);
+	var IframeMessagesManager = __webpack_require__(5);
+	var BackgroundMessagesManager = __webpack_require__(8);
+	var Notification = __webpack_require__(6);
 
 	var Inject = (function() {
 	    var inject = {
@@ -100,9 +100,9 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var config = __webpack_require__(7);
+	var config = __webpack_require__(3);
 	var utils = __webpack_require__(1);
-	var IframeMessagesManager = __webpack_require__(3);
+	var IframeMessagesManager = __webpack_require__(5);
 
 	var Iframe = (function() {
 	    var iframe = {
@@ -159,173 +159,6 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Iframe = __webpack_require__(2);
-	var Notification = __webpack_require__(5);
-	var Store = __webpack_require__(6);
-
-	var IframeMessagesManager = (function() {
-	    var iframeMessagesManager = {
-	        handleMessage: handleMessage,
-	        sendMessage: sendMessage
-	    };
-
-	    return iframeMessagesManager;
-
-	    function handleMessage(request) {
-	        var payload = request.data;
-	        switch(payload.type) {
-	            case 'success':
-	                Notification.show();
-	                Store.setKeypoint(payload.data);
-	        }
-	    }
-
-	    function sendMessage(payload) {
-	        __webpack_require__(2).getElement().contentWindow.postMessage(payload, '*');
-	    }
-	}());
-
-	module.exports = IframeMessagesManager;
-
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Iframe = __webpack_require__(2);
-	var IframeMessagesManager = __webpack_require__(3);
-
-	var BackgroundMessagesManager = (function() {
-	    var backgroundMessagesManager = {
-	        handleMessage: handleMessage
-	    };
-
-	    return backgroundMessagesManager;
-
-	    function handleMessage(request, sender, sendResponse) {
-	        switch(request.type) {
-	            case 'context':
-	                IframeMessagesManager.sendMessage(request);
-	                break;
-	            case 'navigate':
-	                IframeMessagesManager.sendMessage(request);
-	                break;
-	            case 'browserAction':
-	                Iframe.toggle();
-	                break;
-	        }
-	    }
-	}());
-
-	module.exports = BackgroundMessagesManager;
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Iframe = __webpack_require__(2);
-	var IframeMessagesManager = __webpack_require__(3);
-	var Store = __webpack_require__(6);
-
-	var Notification = (function() {
-	    var notification = {
-	        inject: inject,
-	        show: show
-	    };
-	    var _elem = null;
-
-	    return notification;
-
-	    function inject() {
-	        var xmlHttp = null;
-
-	        xmlHttp = new XMLHttpRequest();
-	        xmlHttp.open('GET', chrome.extension.getURL ('../templates/notifications.html'), false);
-	        xmlHttp.send(null);
-
-	        _elem = document.createElement('div');
-	        _elem.className = 'notification';
-	        _elem.innerHTML = xmlHttp.responseText;
-	        document.body.appendChild(_elem);
-	    }
-
-	    function show() {
-	        var baseClasses = 'notification notification--active';
-	        console.log('============', __webpack_require__(2));
-	        var classes = __webpack_require__(2).getVisibility() ? baseClasses + ' notification--offset' :
-	            baseClasses;
-	        _elem.className = classes;
-
-	        _toggleKeyListener(true);
-
-	        setTimeout(function() {
-	            baseClasses = 'notification';
-	            _elem.className = __webpack_require__(2).getVisibility() ? baseClasses +
-	                ' notification--offset' : baseClasses;
-	            _toggleKeyListener(false);
-	        }, 10000);
-	    }
-
-	    function _toggleKeyListener(toggle) {
-	        var input = document.getElementById('notification__input');
-	        if (toggle) {
-	            input.addEventListener('keypress', _onEnter);
-	        } else {
-	            input.removeEventListener('keypress', _onEnter);
-	        }
-	    }
-
-	    function _onEnter(event) {
-	        var key = event.which || event.keyCode;
-	        if (key !== 13) return;
-
-	        __webpack_require__(3).sendMessage({
-	            type: 'tag',
-	            data: {
-	                tags: event.target.value,
-	                keypointId: Store.getKeypoint()._id
-	            }
-	        });
-
-	        event.target.value = '';
-	    }
-	}());
-
-	module.exports = Notification;
-
-
-/***/ },
-/* 6 */
-/***/ function(module, exports) {
-
-	// revealing module see:
-	// http://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-singleton-in-javascript
-	var Store = (function() {
-	    var store = {
-	        getKeypoint: getKeypoint,
-	        setKeypoint: setKeypoint
-	    };
-	    var _keypoint = null;
-
-	    return store;
-
-	    function getKeypoint() {
-	        return _keypoint;
-	    }
-
-	    function setKeypoint(keypoint) {
-	        _keypoint = keypoint;
-	    }
-	}());
-
-	module.exports = Store;
-
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
 	/* WEBPACK VAR INJECTION */(function(process) {module.exports = {
 	    development: {
 	        port: {
@@ -359,10 +192,10 @@
 	    }
 	}[process.env.NODE_ENV || 'development'];
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 8 */
+/* 4 */
 /***/ function(module, exports) {
 
 	// shim for using process in browser
@@ -455,6 +288,173 @@
 	    throw new Error('process.chdir is not supported');
 	};
 	process.umask = function() { return 0; };
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Iframe = __webpack_require__(2);
+	var Notification = __webpack_require__(6);
+	var Store = __webpack_require__(7);
+
+	var IframeMessagesManager = (function() {
+	    var iframeMessagesManager = {
+	        handleMessage: handleMessage,
+	        sendMessage: sendMessage
+	    };
+
+	    return iframeMessagesManager;
+
+	    function handleMessage(request) {
+	        var payload = request.data;
+	        switch(payload.type) {
+	            case 'success':
+	                Notification.show();
+	                Store.setKeypoint(payload.data);
+	        }
+	    }
+
+	    function sendMessage(payload) {
+	        __webpack_require__(2).getElement().contentWindow.postMessage(payload, '*');
+	    }
+	}());
+
+	module.exports = IframeMessagesManager;
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Iframe = __webpack_require__(2);
+	var IframeMessagesManager = __webpack_require__(5);
+	var Store = __webpack_require__(7);
+
+	var Notification = (function() {
+	    var notification = {
+	        inject: inject,
+	        show: show
+	    };
+	    var _elem = null;
+
+	    return notification;
+
+	    function inject() {
+	        var xmlHttp = null;
+
+	        xmlHttp = new XMLHttpRequest();
+	        xmlHttp.open('GET', chrome.extension.getURL ('../templates/notifications.html'), false);
+	        xmlHttp.send(null);
+
+	        _elem = document.createElement('div');
+	        _elem.className = 'notification';
+	        _elem.innerHTML = xmlHttp.responseText;
+	        document.body.appendChild(_elem);
+	    }
+
+	    function show() {
+	        var baseClasses = 'notification notification--active';
+	        console.log('============', __webpack_require__(2));
+	        var classes = __webpack_require__(2).getVisibility() ? baseClasses + ' notification--offset' :
+	            baseClasses;
+	        _elem.className = classes;
+
+	        _toggleKeyListener(true);
+
+	        setTimeout(function() {
+	            baseClasses = 'notification';
+	            _elem.className = __webpack_require__(2).getVisibility() ? baseClasses +
+	                ' notification--offset' : baseClasses;
+	            _toggleKeyListener(false);
+	        }, 10000);
+	    }
+
+	    function _toggleKeyListener(toggle) {
+	        var input = document.getElementById('notification__input');
+	        if (toggle) {
+	            input.addEventListener('keypress', _onEnter);
+	        } else {
+	            input.removeEventListener('keypress', _onEnter);
+	        }
+	    }
+
+	    function _onEnter(event) {
+	        var key = event.which || event.keyCode;
+	        if (key !== 13) return;
+
+	        __webpack_require__(5).sendMessage({
+	            type: 'tag',
+	            data: {
+	                tags: event.target.value,
+	                keypointId: Store.getKeypoint()._id
+	            }
+	        });
+
+	        event.target.value = '';
+	    }
+	}());
+
+	module.exports = Notification;
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	// revealing module see:
+	// http://stackoverflow.com/questions/1479319/simplest-cleanest-way-to-implement-singleton-in-javascript
+	var Store = (function() {
+	    var store = {
+	        getKeypoint: getKeypoint,
+	        setKeypoint: setKeypoint
+	    };
+	    var _keypoint = null;
+
+	    return store;
+
+	    function getKeypoint() {
+	        return _keypoint;
+	    }
+
+	    function setKeypoint(keypoint) {
+	        _keypoint = keypoint;
+	    }
+	}());
+
+	module.exports = Store;
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Iframe = __webpack_require__(2);
+	var IframeMessagesManager = __webpack_require__(5);
+
+	var BackgroundMessagesManager = (function() {
+	    var backgroundMessagesManager = {
+	        handleMessage: handleMessage
+	    };
+
+	    return backgroundMessagesManager;
+
+	    function handleMessage(request, sender, sendResponse) {
+	        switch(request.type) {
+	            case 'context':
+	                IframeMessagesManager.sendMessage(request);
+	                break;
+	            case 'navigate':
+	                IframeMessagesManager.sendMessage(request);
+	                break;
+	            case 'browserAction':
+	                Iframe.toggle();
+	                break;
+	        }
+	    }
+	}());
+
+	module.exports = BackgroundMessagesManager;
 
 
 /***/ }
