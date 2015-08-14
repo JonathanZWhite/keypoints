@@ -7,7 +7,7 @@
                 url: '/tags',
                 views: {
                     'content@': {
-                        templateUrl: 'tags/tagsyo.tpl.html',
+                        templateUrl: 'tags/tags.tpl.html',
                         controllerAs: 'vm',
                         controller: 'TagsController'
                     }

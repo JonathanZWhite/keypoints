@@ -337,6 +337,16 @@ p,
  * Variables should be defined here, doing so should help keep
  * the styling uniform across Inventive
  */
+.tags__item {
+  color: #7c838f;
+  padding: 6.25px;
+  border: 1px solid #7c838f;
+  display: inline-block;
+  border-radius: 100px;
+  margin-right: 12.5px;
+  margin-bottom: 12.5px;
+  line-height: 1;
+}
 .tp__head {
   font-weight: 700;
   margin-bottom: 12.5px;
@@ -459,6 +469,13 @@ p,
 .kp__option .fa {
   font-size: 15px;
 }
+.kp-tags__list {
+  display: inline-block;
+}
+.kp-tags__list li {
+  color: #848c99;
+  margin-right: 6.25px;
+}
 .message {
   background-color: #E76D6D;
   color: white;
@@ -488,13 +505,6 @@ p,
 .navbar__stretcher {
   width: 100%;
   display: inline-block;
-}
-.tags__list {
-  display: inline-block;
-}
-.tags__list li {
-  color: #848c99;
-  margin-right: 6.25px;
 }
 .topic__preview {
   background-size: cover;

@@ -3,7 +3,7 @@
     ng-class="{ 'keypoint--contenteditable': vm.keypoint.isContenteditable, 'keypoint--preview': vm.keypoint.contentType === 'image' }">
 
     <delete-button delete="vm.delKeypoint()"></delete-button>
-    
+
     <div
         class="kp__meta"
         ng-if="vm.showDetail">
@@ -34,7 +34,7 @@
     <div
         class="kp__meta"
         ng-if="vm.keypoint.tags.length !== 0">
-        <tags tags="vm.keypoint.tags"></tags>
+        <keypoint-tags tags="vm.keypoint.tags"></keypoint-tags>
     </div>
 
     <button

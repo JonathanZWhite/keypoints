@@ -8,7 +8,6 @@
         'app.components.keypoint',
         'app.components.message',
         'app.components.navbar',
-        'app.components.tags',
         'app.components.topics',
         'app.components.search'
     ]);
