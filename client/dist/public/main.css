@@ -91,6 +91,9 @@ body {
 .ui-list--di li {
   display: inline-block;
 }
+.inline {
+  display: inline;
+}
 .ui-btn--medium {
   border-radius: 2px;
   font-weight: 700;
@@ -437,6 +440,9 @@ p,
 .kp__content {
   padding: 0 12.5px;
   margin: 12.5px 0;
+}
+.kp__content--link a {
+  margin-left: 3.125px;
 }
 .kp__head {
   width: 100%;

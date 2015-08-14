@@ -27,6 +27,7 @@
 						url: payload.url,
 						keypoint: payload.keypoint,
 						image: payload.image,
+						linkUrl: payload.linkUrl,
 						tags: []
 					})
 					.then(function(resp) {

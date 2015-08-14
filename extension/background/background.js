@@ -11,8 +11,10 @@ function contextMenuClickHandler(event) {
     var payload = {
         type: 'context',
         url: url,
+        linkUrl: event.linkUrl,
         keypoint: keypoint,
-        image: image
+        image: image,
+        event: event
     };
 
     _message(payload);
@@ -34,7 +36,7 @@ function _message(payload) {
 function _onUpdated(tabId, changeInfo, tab) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         if (tabs[0].id !== tabId) return;
-        
+
         if (changeInfo.status === 'loading' && changeInfo.url) {
             _message({
                 type: 'navigate',

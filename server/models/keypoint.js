@@ -21,6 +21,7 @@ KeypointSchema = new Schema({
     contentType: String,
     keypoint: String,
     image: String,
+    linkUrl: String,
     user: { type : mongoose.Schema.ObjectId, ref : 'user' },
     tags: [TagSchema]
 });

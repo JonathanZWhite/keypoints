@@ -27,6 +27,20 @@
     </div>
 
     <div
+        class="kp__content kp__content--link"
+        ng-if="vm.keypoint.contentType === 'link'">
+        <i class="text-dark--light inline fa fa-link"></i>
+        <a
+            ng-href="{{ vm.keypoint.linkUrl }}"
+            target="_blank">
+            <p
+            class="text-dark--light inline"
+            ng-bind="vm.keypoint.keypoint"><p>
+        </a>
+    </div>
+
+
+    <div
         class="kp__preview"
         ng-if="vm.keypoint.contentType === 'image'"
         ng-style="{ 'background-image': 'url(' + vm.keypoint.image + ')' }"></div>
