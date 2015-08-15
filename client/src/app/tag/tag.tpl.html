@@ -8,8 +8,10 @@
         <h5
             class="tp__head text-dark--dark">Tag: {{vm.tagName}}</h5>
 
+        <search query="vm.query"></search>
+
         <keypoint
-            ng-repeat="keypoint in vm.keypoints track by $index"
+            ng-repeat="keypoint in vm.keypoints | filter: vm.query track by $index"
             keypoint="keypoint"
             keypoints="vm.keypoints"
             is-contenteditable="vm.isContenteditable"></keypoint>
