@@ -342,6 +342,7 @@ p,
  */
 .tags__item {
   color: #7c838f;
+  cursor: pointer;
   padding: 6.25px;
   border: 1px solid #7c838f;
   display: inline-block;

@@ -13,6 +13,7 @@
 			add: add,
 			addTags: addTags,
 			del: del,
+			getTagKeypoints: getTagKeypoints,
 			getTopicKeypoints: getTopicKeypoints,
 			getAll: getAll,
 			init: init,
@@ -70,6 +71,14 @@
 			return $http({
 				url: base + 'all',
 				method: 'GET'
+			});
+		}
+
+		function getTagKeypoints(tagName) {
+			return $http({
+				url: base + 'tag-keypoints',
+				method: 'GET',
+				params: { tagName: tagName }
 			});
 		}
 

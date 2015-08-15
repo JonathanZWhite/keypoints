@@ -6,6 +6,7 @@ var services = require('../services');
 
 keypointController.add = add;
 keypointController.addTags = addTags;
+keypointController.getTagKeypoints = getTagKeypoints;
 keypointController.getTopicKeypoints = getTopicKeypoints;
 keypointController.del = del;
 keypointController.getAll = getAll;
@@ -37,9 +38,16 @@ function getAll(req, res) {
     });
 }
 
+function getTagKeypoints(req, res) {
+    console.log('Getting list of keypoints by tag...');
+    services.keypoint.getTagKeypoints(req.user._id, req.query.tagName, function(resp) {
+        res.json(resp);
+    });
+}
+
 function getTopicKeypoints(req, res) {
     if (!req.user) return;
-    console.log('Getting list of keypoints...');
+    console.log('Getting list of keypoints by topic...');
     services.keypoint.getTopicKeypoints(req.user._id, req.query.url, function(resp) {
         res.json(resp);
     });

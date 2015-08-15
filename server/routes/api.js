@@ -9,6 +9,7 @@ module.exports = function(app, router) {
     router.put('/api/keypoint/add-tags', keypointController.addTags);
     router.delete('/api/keypoint/del', keypointController.del);
     router.get('/api/keypoint/all', keypointController.getAll);
+    router.get('/api/keypoint/tag-keypoints', keypointController.getTagKeypoints);
     router.get('/api/keypoint/topic-keypoints', keypointController.getTopicKeypoints);
     router.put('/api/keypoint/update', keypointController.update);
 

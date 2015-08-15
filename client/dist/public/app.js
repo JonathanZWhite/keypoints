@@ -17,6 +17,7 @@
         'app.pages.list',
         'app.pages.login',
         'app.pages.keypoints',
+        'app.pages.tag',
         'app.pages.tags',
         'app.pages.topic',
         'app.pages.signup'
@@ -47,6 +48,9 @@ angular
 
 angular
     .module('app.pages.signup', []);
+
+angular
+    .module('app.pages.tag', []);
 
 angular
     .module('app.pages.tags', []);
@@ -177,8 +181,9 @@ angular
 angular.module("app.core").run(["$templateCache", function($templateCache) {$templateCache.put("keypoints/keypoints.tpl.html","<section class=ui-page><navbar></navbar><div class=ui-container><edit-overlay is-contenteditable=vm.isContenteditable keypoints=vm.keypoints></edit-overlay><h3 class=\"list__head text-dark--dark\">All keypoints</h3><search query=vm.query></search><keypoint ng-repeat=\"keypoint in vm.keypoints | filter: vm.query track by $index\" keypoint=keypoint keypoints=vm.keypoints is-contenteditable=vm.isContenteditable show-detail={{true}}></keypoint></div></section>");
 $templateCache.put("list/list.tpl.html","<section class=ui-page><navbar></navbar><div class=ui-container><h3 class=\"list__head text-dark--dark\">Highlighted pages</h3><search query=vm.query></search><topics topics=vm.listStore.topics query=vm.query></topics></div></section>");
 $templateCache.put("login/login.tpl.html","<section class=login><div class=ui-container><h3 class=\"login__head text-dark--dark\">Login</h3><input placeholder=email class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.email> <input placeholder=password type=password class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.password> <button class=\"login__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.login()>login</button> <span class=\"caption text-dark--lightest u-float-r\" ui-sref=signup>Create an account</span><message message=vm.message></message></div></section>");
+$templateCache.put("tag/tag.tpl.html","<section class=ui-page><navbar></navbar><div class=ui-container><edit-overlay is-contenteditable=vm.isContenteditable keypoints=vm.keypointStore.keypoints></edit-overlay><h5 class=\"tp__head text-dark--dark\">Tag: {{vm.tagName}}</h5><keypoint ng-repeat=\"keypoint in vm.keypoints track by $index\" keypoint=keypoint keypoints=vm.keypoints is-contenteditable=vm.isContenteditable></keypoint></div></section>");
 $templateCache.put("signup/signup.tpl.html","<section class=signup><div class=ui-container><h3 class=\"signup__head text-dark--dark\">Signup</h3><input placeholder=email class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.email> <input placeholder=username class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.username> <input placeholder=password type=password class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.user.password> <button class=\"signup__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.signup()>Signup</button> <span class=\"caption text-dark--lightest u-float-r\" ui-sref=login>Have an account?</span><message message=vm.message></message></div></section>");
-$templateCache.put("tags/tags.tpl.html","<section class=ui-page><navbar></navbar><div class=ui-container><div class=tags__item ng-repeat=\"tag in vm.tags\" ng-bind=tag.name></div></div></section>");
+$templateCache.put("tags/tags.tpl.html","<section class=ui-page><navbar></navbar><div class=ui-container><div class=tags__item ng-repeat=\"tag in vm.tags\" ng-bind=tag.name ui-sref=\"tag({ tagName: tag.name })\"></div></div></section>");
 $templateCache.put("topic/topic.tpl.html","<section class=ui-page><navbar></navbar><div class=ui-container><edit-overlay is-contenteditable=vm.isContenteditable keypoints=vm.keypointStore.keypoints></edit-overlay><a ng-href=http://{{vm.topicStore.topic.url}} target=_blank><h5 class=\"tp__head text-dark--dark\" ng-bind=vm.topicStore.topic.title></h5></a><composer keypoints=vm.keypointStore.keypoints></composer><keypoint ng-repeat=\"keypoint in vm.keypointStore.keypoints track by $index\" keypoint=keypoint keypoints=vm.keypointStore.keypoints is-contenteditable=vm.isContenteditable></keypoint></div></section>");
 $templateCache.put("composer/composer.tpl.html","<div class=composer><div class=composer__content><div class=composer__options><span class=\"composer__option caption text-dark--lightest\" ng-click=\"vm.toggleMode(\'text\')\" ng-class=\"{ \'composer__option--active\': vm.mode === \'text\' }\">TEXT</span> <span class=\"caption text-dark--lightest\">|</span> <span class=\"composer__option caption text-dark--lightest\" ng-click=\"vm.toggleMode(\'image\')\" ng-class=\"{ \'composer__option--active\': vm.mode === \'image\' }\">IMAGE</span></div><textarea placeholder=\"Enter in a keypoint about whatever article you are reading\" ng-show=\"vm.mode === \'text\'\" class=\"ui-textarea ui-textarea--medium ui-textarea--light\" ng-model=vm.keypoint></textarea> <input placeholder=http://imgur.com ng-show=\"vm.mode === \'image\'\" class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.image></div><input placeholder=\"adds tags, separated by a comma\" ng-list=\"\" class=\"ui-input ui-input--medium ui-input--light\" ng-model=vm.tags> <button class=\"composer__btn ui-btn ui-btn--medium ui-btn--highlight\" ng-click=vm.createKeypoint()>Add keypoint</button></div>");
 $templateCache.put("delete-button/delete-button.tpl.html","<div class=db ng-click=vm.delete() ng-show=vm.show><i class=\"text-dark--light fa fa-times\"></i></div>");
@@ -415,6 +420,59 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
     }
 
     angular.module('app.pages.signup')
+        .config(['$stateProvider', config]);
+
+}());
+
+(function() {
+    'use strict';
+
+    TagController.$inject = ['$stateParams', 'KeypointStore'];
+    function TagController($stateParams, KeypointStore) {
+        var vm = this;
+        // model
+        vm.keypoints = [];
+        vm.tagName = $stateParams.tagName;
+        // functions
+        vm.isContenteditable = false;
+        // activation
+        init();
+
+        function init() {
+            console.log('This is the tagName', $stateParams.tagName);
+            KeypointStore.getTagKeypoints($stateParams.tagName)
+                .then(function(resp) {
+                    vm.keypoints = resp.data.data;
+                });
+        }
+    }
+
+    angular
+        .module('app.pages.tag')
+        .controller('TagController', TagController);
+})();
+
+(function() {
+    'use strict';
+
+    function config($stateProvider) {
+        $stateProvider
+            .state('tag', {
+                url: '/tag?tagName',
+                views: {
+                    'content@': {
+                        templateUrl: 'tag/tag.tpl.html',
+                        controllerAs: 'vm',
+                        controller: 'TagController'
+                    }
+                },
+                data: {
+                    pageTitle: 'Tag'
+                }
+            });
+    }
+
+    angular.module('app.pages.tag')
         .config(['$stateProvider', config]);
 
 }());
@@ -706,6 +764,7 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 			add: add,
 			addTags: addTags,
 			del: del,
+			getTagKeypoints: getTagKeypoints,
 			getTopicKeypoints: getTopicKeypoints,
 			getAll: getAll,
 			init: init,
@@ -763,6 +822,14 @@ $templateCache.put("topics/topics.tpl.html","<section class=topics><div class=ui
 			return $http({
 				url: base + 'all',
 				method: 'GET'
+			});
+		}
+
+		function getTagKeypoints(tagName) {
+			return $http({
+				url: base + 'tag-keypoints',
+				method: 'GET',
+				params: { tagName: tagName }
 			});
 		}
 

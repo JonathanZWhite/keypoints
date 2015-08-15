@@ -91,6 +91,23 @@ keypoint = {
             });
         });
     },
+    getTagKeypoints: function(userId, tagName, callback) {
+        dataProvider.keypoint.get({ user: userId, 'tags.name': tagName }, function(err, keypoints) {
+            if (err) return errorhandler(err);
+            if (!keypoints) {
+                return callback({
+                    status: false,
+                    message: 'tag not found',
+                    data: []
+                });
+            }
+
+            return callback({
+                status: true,
+                data: keypoints
+            });
+        });
+    },
     getTopicKeypoints: function(userId, url, callback) {
         var tasks;
 
