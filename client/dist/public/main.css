@@ -126,6 +126,7 @@ body {
   padding-bottom: 25px;
 }
 .u-truncate {
+  display: inline-block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -442,8 +443,9 @@ p,
   padding: 0 12.5px;
   margin: 12.5px 0;
 }
-.kp__content--link a {
+.kp__content--link p {
   margin-left: 3.125px;
+  width: 250px;
 }
 .kp__head {
   width: 100%;

@@ -5,7 +5,7 @@ var errorhandler = require('../utils').errorhandler;
 
 tags = {
     getAll: function(userId, callback) {
-        dataProvider.keypoint.getDistinct({ user: userId }, 'tags', function(err, tags) {
+        dataProvider.keypoint.getDistinct({ user: userId }, 'tags.name', function(err, tags) {
             if (err) return errorhandler(err);
 
             callback({
