@@ -3,7 +3,7 @@
 
     "name": "Keypoints",
     "description": "Keep track of what you’ve read. Highlight => right click => save as a keypoint (sortable by page/tags)!",
-    "version": "1.1",
+    "version": "1.2",
     "background": {
       "scripts": ["dist/background.bundle.js"]
     },
