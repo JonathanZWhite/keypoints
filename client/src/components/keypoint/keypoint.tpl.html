@@ -3,7 +3,7 @@
     ng-class="{ 'keypoint--contenteditable': vm.keypoint.isContenteditable, 'keypoint--preview': vm.keypoint.contentType === 'image' }">
 
     <delete-button delete="vm.delKeypoint()"></delete-button>
-    
+
     <div
         class="kp__meta"
         ng-if="vm.showDetail">
@@ -27,6 +27,20 @@
     </div>
 
     <div
+        class="kp__content kp__content--link"
+        ng-if="vm.keypoint.contentType === 'link'">
+        <i class="text-dark--light inline fa fa-link"></i>
+        <a
+            ng-href="{{ vm.keypoint.linkUrl }}"
+            target="_blank">
+            <p
+            class="text-dark--light u-reset-lh u-truncate"
+            ng-bind="vm.keypoint.keypoint"><p>
+        </a>
+    </div>
+
+
+    <div
         class="kp__preview"
         ng-if="vm.keypoint.contentType === 'image'"
         ng-style="{ 'background-image': 'url(' + vm.keypoint.image + ')' }"></div>
@@ -34,7 +48,7 @@
     <div
         class="kp__meta"
         ng-if="vm.keypoint.tags.length !== 0">
-        <tags tags="vm.keypoint.tags"></tags>
+        <keypoint-tags tags="vm.keypoint.tags"></keypoint-tags>
     </div>
 
     <button

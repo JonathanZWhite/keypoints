@@ -21,6 +21,7 @@ KeypointSchema = new Schema({
     contentType: String,
     keypoint: String,
     image: String,
+    linkUrl: String,
     user: { type : mongoose.Schema.ObjectId, ref : 'user' },
     tags: [TagSchema]
 });
@@ -28,6 +29,7 @@ KeypointSchema = new Schema({
 KeypointSchema.statics.add = add;
 KeypointSchema.statics.edit = edit;
 KeypointSchema.statics.get = get;
+KeypointSchema.statics.getDistinct = getDistinct;
 KeypointSchema.statics.updateField = updateField;
 Keypoint = mongoose.model('keypoint', KeypointSchema);
 
@@ -40,6 +42,12 @@ function edit(oldData, newData, callback) {
     updated.save(callback);
 }
 
+/**
+ * ## Get
+ * Finds all keypoints that matches query
+ * @param {object} data
+ * @param {Function} callback
+ */
 function get(data, callback) {
     Keypoint
         .find(data)
@@ -48,6 +56,21 @@ function get(data, callback) {
         .exec(callback);
 }
 
+function getDistinct(data, field, callback) {
+    Keypoint
+        .find(data)
+        .distinct(field)
+        .exec(callback);
+}
+
+/**
+ * ## UpdateField
+ * updates specific field of a keypoint
+ * @param  {Integer} keypointId
+ * @param  {Object} data
+ * @param  {String} field
+ * @param  {Function} callback
+ */
 function updateField(keypointId, data, field, callback) {
     var tasks;
 

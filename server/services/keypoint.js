@@ -8,12 +8,12 @@ var errorhandler = require('../utils').errorhandler;
 var utils = require('../../shared/utils');
 
 keypoint = {
-    add: function(userId, payload, callback) {
+    add: function(userId, keypoint, callback) {
         var tasks;
         var self = this;
 
         function createTopic(next) {
-            var url = utils.removeUrlIdentifier(payload.url);
+            var url = utils.removeUrlIdentifier(keypoint.url);
             var query = { user: userId, url: url };
 
             db.get('topic', query, function(err, topic) {
@@ -22,7 +22,7 @@ keypoint = {
                 if (topic) {
                     next(null, topic._id);
                 } else {
-                    topicService.create(userId, payload.url, function(resp) {
+                    topicService.create(userId, keypoint.url, function(resp) {
                         next(null, resp._id);
                     });
                 }
@@ -30,21 +30,22 @@ keypoint = {
         }
 
         function createKeypoint(topicId, next) {
-            var contentType = payload.keypoint ? 'text' : 'image';
-            var formattedTags = self._formatTags(payload.tags);
+            var contentType = self._getContentType(keypoint);
+            var formattedTags = self._formatTags(keypoint.tags);
 
             var keypointData = {
                 topic: topicId,
                 contentType: contentType,
-                keypoint: payload.keypoint,
-                image: payload.image,
+                keypoint: keypoint.keypoint,
+                linkUrl: keypoint.linkUrl,
+                image: keypoint.image,
                 tags: formattedTags,
                 user: userId
             };
 
-            dataProvider.keypoint.add(keypointData, function(err, keypoint) {
+            dataProvider.keypoint.add(keypointData, function(err, newKeypoint) {
                 if (err) return errorhandler(err);
-                next(null, keypoint);
+                next(null, newKeypoint);
             });
         }
 
@@ -86,6 +87,23 @@ keypoint = {
 
             callback({
                 status: 200,
+                data: keypoints
+            });
+        });
+    },
+    getTagKeypoints: function(userId, tagName, callback) {
+        dataProvider.keypoint.get({ user: userId, 'tags.name': tagName }, function(err, keypoints) {
+            if (err) return errorhandler(err);
+            if (!keypoints) {
+                return callback({
+                    status: false,
+                    message: 'tag not found',
+                    data: []
+                });
+            }
+
+            return callback({
+                status: true,
                 data: keypoints
             });
         });
@@ -132,7 +150,7 @@ keypoint = {
         var tasks;
 
         function get(next) {
-            dataProvider.keypoint.findById('keypoint', keypoint._id, function(err, oldKeypoint) {
+            dataProvider.keypoint.findById(keypoint._id, function(err, oldKeypoint) {
                 if (err) return errorhandler(err);
                 next(null, oldKeypoint);
             });
@@ -151,6 +169,11 @@ keypoint = {
             if (err) return errorhandler(err);
             callback({ status: true });
         });
+    },
+    _getContentType: function(keypoint) {
+        if (keypoint.keypoint && !keypoint.linkUrl) return 'text';
+        else if (keypoint.image) return 'image';
+        else if (keypoint.keypoint && keypoint.linkUrl) return 'link';
     },
     _formatTags: function (tags) {
         return tags.map(function(tag) {

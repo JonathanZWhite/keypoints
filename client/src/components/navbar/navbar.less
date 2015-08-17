@@ -8,8 +8,20 @@
     height: 40px;
     line-height: 40px;
     padding: 0 @space-medium;
+    text-align: justify;
+    -ms-text-justify: distribute-all-lines;
+    text-justify: distribute-all-lines;
 }
+
+    .navbar > a {
+        display: inline-block;
+    }
 
     .navbar--active {
         color: @color-brand-highlight;
+    }
+
+    .navbar__stretcher {
+        width: 100%;
+        display: inline-block;
     }

@@ -1,8 +1,8 @@
 (function() {
     'use strict';
 
-    LoginController.$inject = ['$state', '$stateParams', 'AuthService'];
-    function LoginController($state, $stateParams, AuthService) {
+    LoginController.$inject = ['$state', '$stateParams', 'AnalyticsService', 'AuthService'];
+    function LoginController($state, $stateParams, AnalyticsService, AuthService) {
         var vm = this;
         // view model
         vm.user = {
@@ -24,9 +24,11 @@
 
             AuthService.login(vm.user)
                 .then(function(resp) {
-                    console.log('<<<<<<', resp);
                     if (!resp.data.status) return _fillMessage('error', resp.data.message);
-                    if (resp.data) $state.go('topic', { url: $stateParams.url });
+                    if (resp.data) {
+                        AnalyticsService.trackLogin(resp.data);
+                        $state.go('topic', { url: $stateParams.url });
+                    }
                 });
         }
 

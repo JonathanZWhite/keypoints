@@ -1,0 +1,10 @@
+<section class="ui-page">
+    <navbar></navbar>
+    <div class="ui-container">
+        <div
+            class="tags__item"
+            ng-repeat="tag in vm.tags"
+            ng-bind="tag"
+            ui-sref="tag({ tagName: tag })"></div>
+    </div>
+</section>

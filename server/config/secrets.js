@@ -1,5 +1,5 @@
 module.exports = {
-	local: {
+	development: {
 		port: process.env.PORT || 5000,
 		mongoDB: process.env.MONGODB || 'mongodb://localhost:27017/keypoints'
 	},
@@ -11,4 +11,4 @@ module.exports = {
 		port: 80,
 		mongoDB: process.env.MONGOHQ_URL || 'mongodb://localhost/keypoints'
 	}
-}[process.env.NODE_ENV || 'local'];
+}[process.env.NODE_ENV || 'development'];

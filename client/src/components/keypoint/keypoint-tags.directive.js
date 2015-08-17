@@ -1,15 +1,15 @@
 (function () {
     'use strict';
 
-    Tags.$inject = [];
-    function Tags() {
+    KeypointTags.$inject = [];
+    function KeypointTags() {
         return {
             restrict: 'E',
             replace: true,
             scope: {
                 tags: '='
             },
-            templateUrl: 'tags/tags.tpl.html',
+            templateUrl: 'keypoint/keypoint-tags.tpl.html',
             controllerAs: 'vm',
             bindToController: true,
             controller: Controller
@@ -21,7 +21,7 @@
     }
 
     angular
-        .module('app.components.tags')
-        .directive('tags', Tags);
+        .module('app.components.keypoint')
+        .directive('keypointTags', KeypointTags);
 
 }());
